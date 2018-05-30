@@ -1,13 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { AppComponent } from './app.component';
+import { OgrodjeComponent } from './ogrodje/ogrodje.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { HttpClientModule } from "@angular/common/http";
 
 @NgModule({
   declarations: [
-    AppComponent
+    OgrodjeComponent
   ],
   imports: [
     BrowserModule,
@@ -15,6 +15,6 @@ import { HttpClientModule } from "@angular/common/http";
     HttpClientModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [OgrodjeComponent]
 })
 export class AppModule { }
