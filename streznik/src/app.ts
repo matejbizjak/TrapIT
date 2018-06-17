@@ -1,24 +1,30 @@
 import * as express from "express";
 import * as bodyParser from "body-parser";
-import { Routes } from "./routes/crmRoutes";
+import {Routes} from "./routes";
 import "reflect-metadata";
+import {createConnection} from "typeorm";
 
-class App {
 
-    public app: express.Application;
-    public routePrv: Routes = new Routes();
+createConnection().then(async connection => {
 
-    constructor() {
-        this.app = express();
-        this.config();
-        this.routePrv.routes(this.app);
-    }
+    // create express app
+    const app = express();
 
-    private config(): void{
-        this.app.use(bodyParser.json());
-        this.app.use(bodyParser.urlencoded({ extended: false }));
-    }
+    // register express routes from defined application routes
+    Routes.forEach(route => {
+        (app as any)[route.method](route.route, (req: Request, res: Response, next: Function) => {
+            const result = (new (route.controller as any))[route.action](req, res, next);
+            console.log(result);
+        });
+    });
 
-}
+    // setup express app here
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({extended: false}));
 
-export default new App().app;
+    // start express server
+    app.listen(3000);
+
+    console.log("Express server has started on port 3000.");
+
+}).catch(error => console.log(error));
