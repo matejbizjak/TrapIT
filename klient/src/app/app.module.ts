@@ -5,11 +5,15 @@ import {OgrodjeComponent} from "./ogrodje/ogrodje.component";
 import {AppRoutingModule} from ".//app-routing.module";
 import {HttpClientModule} from "@angular/common/http";
 import {PrijavaComponent} from "./controllers/prijava/prijava.component";
+import {AuthService} from "./services/avtentikacija/auth.service";
 
 @NgModule({
   declarations: [
+    // komponente
     OgrodjeComponent,
-    PrijavaComponent
+    PrijavaComponent,
+    // storitve
+    AuthService
   ],
   imports: [
     BrowserModule,
