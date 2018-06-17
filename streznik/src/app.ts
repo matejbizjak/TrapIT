@@ -3,6 +3,7 @@ import * as bodyParser from "body-parser";
 import {Routes} from "./routes";
 import "reflect-metadata";
 import {createConnection} from "typeorm";
+import {InitDatabase} from "./services/init-database/initDatabase";
 
 
 createConnection().then(async connection => {
@@ -21,6 +22,9 @@ createConnection().then(async connection => {
     // setup express app here
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({extended: false}));
+
+    // napolni bazo s sifranti
+    // InitDatabase.init(connection);
 
     // start express server
     app.listen(3000);
