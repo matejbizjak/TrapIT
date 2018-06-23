@@ -1,6 +1,5 @@
 import {NextFunction, Request, Response} from "express";
 import {AuthService} from "../services/AuthService";
-import * as fs from "fs";
 import * as jwt from "jsonwebtoken";
 
 export class AuthController {
@@ -10,16 +9,16 @@ export class AuthController {
     }
 
     async login(req: Request, res: Response, next: NextFunction) {
-        const RSA_PRIVATE_KEY = fs.readFileSync('./demos/private.key');
+        // const RSA_PRIVATE_KEY = fs.readFileSync('./demos/private.key');
 
         const username = req.body.username,
             password = req.body.password;
-
+        console.log("tuuuuuuu");
         this.authService.preveriUpImeInGeslo(username, password).then(
             (userId: number) => {
 
                 if (userId !== -1) {
-                    const jwtBearerToken = jwt.sign({}, RSA_PRIVATE_KEY, {
+                    const jwtBearerToken = jwt.sign({}, "aas", {
                         algorithm: 'RS256',
                         expiresIn: 120,
                         subject: userId

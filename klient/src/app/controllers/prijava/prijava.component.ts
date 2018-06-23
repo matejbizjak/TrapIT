@@ -16,7 +16,7 @@ export class PrijavaComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      email: ["", Validators.required],
+      username: ["", Validators.required],
       password: ["", Validators.required]
     });
   }

@@ -10,6 +10,9 @@ createConnection().then(async connection => {
     // create express app
     const app = express();
 
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({extended: false}));
+
     // register express routes from defined application routes
     Routes.forEach(route => {
         (app as any)[route.method](route.route, (req: Request, res: Response, next: Function) => {
@@ -24,8 +27,6 @@ createConnection().then(async connection => {
     });
 
     // setup express app here
-    app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded({extended: false}));
 
     // start express server
     app.listen(3000);
@@ -42,6 +43,6 @@ createConnection().then(async connection => {
     //     age: 24
     // }));
 
-    console.log("Express server has started on port 3000. Open http://localhost:3000/users to see results");
+    console.log("Express server has started on port 3000.");
 
 }).catch(error => console.log(error));

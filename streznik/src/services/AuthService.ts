@@ -8,17 +8,18 @@ export class AuthService {
 
     public async preveriUpImeInGeslo(username: string, password: string): Promise<number> {
         const user: User = await this.userRepository.findOne({username: username});
-
-        if (user === undefined) {
-            return -1;
-        } else {
-            bcrypt.compare(password, user.password).then(
-                () => {
-                    return user.user_id;
-                }, () => {
-                    return -1;
-                });
-        }
+        return new Promise<number>((resolve, reject) => {
+            if (user === undefined) {
+                reject();
+            } else {
+                bcrypt.compare(password, user.password).then(
+                    () => {
+                        resolve(user.user_id);
+                    }, () => {
+                        reject();
+                    });
+            }
+        });
     }
 }
 
