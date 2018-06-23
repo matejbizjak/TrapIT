@@ -26,7 +26,11 @@ export class AuthController {
                     });
 
                     // send the JWT back to the user
-                    // TODO - multiple options available
+
+                    res.status(200).json({
+                        idToken: jwtBearerToken,
+                        expiresIn: 3600
+                    });
                 }
                 else {
                     res.sendStatus(401);

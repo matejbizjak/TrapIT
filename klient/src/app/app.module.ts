@@ -12,15 +12,16 @@ import {AuthService} from "./services/avtentikacija/auth.service";
     // komponente
     OgrodjeComponent,
     PrijavaComponent,
-    // storitve
-    AuthService
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+    // storitve
+    AuthService
+  ],
   bootstrap: [OgrodjeComponent]
 })
 export class AppModule {

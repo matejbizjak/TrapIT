@@ -27,12 +27,19 @@ export class PrijavaComponent implements OnInit {
     if (val.username && val.password) {
       const data: PrijavaRequest = new PrijavaRequest(val.username, val.password);
       this.authService.prijaviUporabnika(data)
-        .subscribe(
+        .then(
           () => {
             console.log("User is logged in");
             this.router.navigateByUrl("/");
+          }, (err) => {
+            console.log("Napaka pri prijavi:", err);
           }
         );
     }
+  }
+
+  odjaviUporabnika() {
+    this.authService.odjaviUporabnika();
+    this.router.navigateByUrl("/prijava");
   }
 }

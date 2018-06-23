@@ -1,38 +1,40 @@
 import {UserController} from "./controller/UserController";
 import {AuthController} from "./controller/AuthController";
 
+const rootRoute = "/api";
+
 export const Routes = [
     // AUTH
     {
         method: "post",
-        route: "/login",
+        route: rootRoute + "/login",
         controller: AuthController,
         action: "login"
     }, {
         method: "post",
-        route: "/logout",
+        route: rootRoute + "/logout",
         controller: AuthController,
         action: "logout"
     },
     //
     {
         method: "get",
-        route: "/users",
+        route: rootRoute + "/users",
         controller: UserController,
         action: "all"
     }, {
         method: "get",
-        route: "/users/:id",
+        route: rootRoute + "/users/:id",
         controller: UserController,
         action: "one"
     }, {
         method: "post",
-        route: "/users",
+        route: rootRoute + "/users",
         controller: UserController,
         action: "save"
     }, {
         method: "delete",
-        route: "/users",
+        route: rootRoute + "/users",
         controller: UserController,
         action: "remove"
     }];

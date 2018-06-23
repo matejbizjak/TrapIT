@@ -1,6 +1,8 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {PrijavaRequest} from "../../models/requests/prijava.request";
+import * as moment from "moment";
+import {JwtResponse} from "../../models/responses/jwt.response";
 
 @Injectable()
 export class AuthService {
@@ -8,8 +10,45 @@ export class AuthService {
   constructor(private http: HttpClient) {
   }
 
-  prijaviUporabnika(uporabnik: PrijavaRequest) {
-    const url = "";
-    return this.http.post(url, uporabnik); // TODO
+  prijaviUporabnika(uporabnik: PrijavaRequest): Promise<any> {
+    const url = "/api/login";
+
+    return new Promise((resolve, reject) => {
+      this.http.post(url, uporabnik).subscribe(
+        (res: JwtResponse) => {
+          this.nastaviSejo(res);
+          resolve();
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    });
+  }
+
+  nastaviSejo(authRes: JwtResponse) {
+    const expiresAt = moment().add(authRes.expiresIn, "second");
+
+    localStorage.setItem("id_token", authRes.idToken);
+    localStorage.setItem("expires_at", JSON.stringify(expiresAt.valueOf()));
+  }
+
+  odjaviUporabnika() {
+    localStorage.removeItem("id_token");
+    localStorage.removeItem("expires_at");
+  }
+
+  public jePrijavljen() {
+    return moment().isBefore(this.getExpiration());
+  }
+
+  public jeOdjavljen() {
+    return !this.jePrijavljen();
+  }
+
+  getExpiration() {
+    const expiration = localStorage.getItem("expires_at");
+    const expiresAt = JSON.parse(expiration);
+    return moment(expiresAt);
   }
 }
