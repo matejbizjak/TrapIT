@@ -1,13 +1,13 @@
 import {NextFunction, Request, Response} from "express";
 import {AuthService} from "../services/AuthService";
 import * as jwt from "jsonwebtoken";
+import * as fs from "fs";
 
 export class AuthController {
     private authService: AuthService = new AuthService();
 
     login(req: Request, res: Response, next: NextFunction) {
-        // const RSA_PRIVATE_KEY = fs.readFileSync('./demos/private.key'); TODO
-        const RSA_PRIVATE_KEY = "skrivnost";
+        const RSA_PRIVATE_KEY = fs.readFileSync("rsa-key/private.key");
 
         const username = req.body.username,
             password = req.body.password;
@@ -17,9 +17,8 @@ export class AuthController {
                 const jwtBearerToken = jwt.sign({}, RSA_PRIVATE_KEY, {
                     algorithm: 'RS256',
                     expiresIn: 3600,
-                    subject: userId
+                    subject: JSON.stringify(userId)
                 });
-
                 // send the JWT back to the user
                 res.status(200).json({
                     idToken: jwtBearerToken,
@@ -27,7 +26,11 @@ export class AuthController {
                 });
             }, () => {
                 res.sendStatus(401);
+            }).catch(err => {
+            res.sendStatus(500).json({
+                error: err
             });
+        });
 
     }
 

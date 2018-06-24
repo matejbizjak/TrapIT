@@ -13,6 +13,13 @@ createConnection().then(async connection => {
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({extended: false}));
 
+    // cors allow
+    app.use(function (req, res, next) {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        next();
+    });
+
     // register express routes from defined application routes
     Routes.forEach(route => {
         (app as any)[route.method](route.route, (req: Request, res: Response, next: Function) => {
