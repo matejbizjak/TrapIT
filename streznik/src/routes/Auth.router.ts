@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const authController = require("../controller/AuthController");
+const AuthController = require("../controller/AuthController");
 
 // middleware that is specific to this router
 router.use(function timeLog(req, res, next) {
@@ -9,6 +9,6 @@ router.use(function timeLog(req, res, next) {
     next()
 });
 // define the home page route
-router.post('/login', authController.login);
+router.post('/login', AuthController.login);
 
 module.exports = router;

@@ -2,16 +2,16 @@ import {NextFunction, Request, Response} from "express";
 import * as jwt from "jsonwebtoken";
 import * as fs from "fs";
 
+const AuthService = require("../services/AuthService");
 
 module.exports.login = function (req: Request, res: Response, next: NextFunction) {
+    const authService = new AuthService();
     const RSA_PRIVATE_KEY = fs.readFileSync("rsa-key/private.key");
-
-    console.log("TU SEM");
 
     const username = req.body.username,
         password = req.body.password;
 
-    this.authService.preveriUpImeInGeslo(username, password).then(
+    authService.preveriUpImeInGeslo(username, password).then(
         (userId: number) => {
             const jwtBearerToken = jwt.sign({}, RSA_PRIVATE_KEY, {
                 algorithm: 'RS256',
@@ -30,5 +30,4 @@ module.exports.login = function (req: Request, res: Response, next: NextFunction
             error: err
         });
     });
-
 };
