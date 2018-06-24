@@ -11,10 +11,15 @@ export const Routes = [
         controller: AuthController,
         action: "login"
     }, {
-        method: "post",
+        method: "get",
         route: rootRoute + "/logout",
         controller: AuthController,
         action: "logout"
+    }, {
+        method: "get",
+        route: rootRoute + "/generatePass",
+        controller: AuthController,
+        action: "gen"
     },
     //
     {

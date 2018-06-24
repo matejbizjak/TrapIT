@@ -31,8 +31,18 @@ export class AuthController {
 
     }
 
-    async logout(req: Request, res: Response, next: NextFunction) {
+    logout(req: Request, res: Response, next: NextFunction) {
         // TODO
     }
+
+    // genHash(req: Request, res: Response, next: NextFunction) {
+    //     this.authService.genHash().then(
+    //         (hash) => {
+    //             res.status(200).json({hash: hash});
+    //         }, (err) => {
+    //             res.status(500);
+    //         }
+    //     );
+    // }
 
 }

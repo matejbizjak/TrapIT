@@ -11,7 +11,7 @@ export class AuthService {
   }
 
   prijaviUporabnika(uporabnik: PrijavaRequest): Promise<any> {
-    const url = "/api/login";
+    const url = "/login";
 
     return new Promise((resolve, reject) => {
       this.http.post(url, uporabnik).subscribe(
