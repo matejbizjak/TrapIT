@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {PrijavaRequest} from "../../models/requests/prijava.request";
 import * as moment from "moment";
 import {JwtResponse} from "../../models/responses/jwt.response";
+import * as jwtDecode from "jwt-decode";
 
 @Injectable()
 export class AuthService {
@@ -27,15 +28,17 @@ export class AuthService {
   }
 
   nastaviSejo(authRes: JwtResponse) {
-    const expiresAt = moment().add(authRes.expiresIn, "second");
-
+    const decoded = jwtDecode(authRes.idToken);
+    const expiresAt = decoded.exp;
     localStorage.setItem("id_token", authRes.idToken);
     localStorage.setItem("expires_at", JSON.stringify(expiresAt.valueOf()));
+    localStorage.setItem("user_info", JSON.stringify(decoded));
   }
 
   odjaviUporabnika() {
     localStorage.removeItem("id_token");
     localStorage.removeItem("expires_at");
+    localStorage.removeItem("user_info");
   }
 
   public jePrijavljen() {

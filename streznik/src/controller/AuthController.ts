@@ -1,6 +1,7 @@
 import {NextFunction, Request, Response} from "express";
 import * as jwt from "jsonwebtoken";
 import * as fs from "fs";
+import {User} from "../entity/User";
 
 const AuthService = require("../services/AuthService");
 
@@ -12,16 +13,18 @@ module.exports.login = function (req: Request, res: Response, next: NextFunction
         password = req.body.password;
 
     authService.preveriUpImeInGeslo(username, password).then(
-        (userId: number) => {
-            const jwtBearerToken = jwt.sign({}, RSA_PRIVATE_KEY, {
+        (user: User) => {
+            const jwtBearerToken = jwt.sign({
+                userId: user.user_id,
+                username: user.username,
+                userRole: user.role_id.role
+            }, RSA_PRIVATE_KEY, {
                 algorithm: 'RS256',
                 expiresIn: 3600,
-                subject: JSON.stringify(userId)
             });
             // send the JWT back to the user
             res.status(200).json({
-                idToken: jwtBearerToken,
-                expiresIn: 3600
+                idToken: jwtBearerToken
             });
         }, () => {
             res.sendStatus(401);

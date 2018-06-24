@@ -6,16 +6,16 @@ module.exports = class AuthService {
 
     private userRepository = getRepository(User);
 
-    public async preveriUpImeInGeslo(username: string, password: string): Promise<number> {
-        const user: User = await this.userRepository.findOne({username: username});
+    public async preveriUpImeInGeslo(username: string, password: string): Promise<User> {
+        const user: User = await this.userRepository.findOne({where: {username: username}, relations: ["role_id"]});
 
-        return new Promise<number>((resolve, reject) => {
+        return new Promise<User>((resolve, reject) => {
             if (user === undefined) {
                 reject();
             } else {
                 bcrypt.compare(password, user.password).then(
                     () => {
-                        resolve(user.user_id);
+                        resolve(user);
                     }, () => {
                         reject();
                     });

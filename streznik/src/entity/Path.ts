@@ -11,5 +11,5 @@ export class Path {
     value: string;
 
     @OneToMany(type => Media, media => media.path_id)
-    media_id: Media;
+    medias: Media[];
 }

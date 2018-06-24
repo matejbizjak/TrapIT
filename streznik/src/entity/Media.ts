@@ -26,9 +26,9 @@ export class Media {
     @Column()
     comment: string;
 
-    @ManyToOne(type => Site, site => site.site_id)
+    @ManyToOne(type => Site, site => site.medias)
     site_id: number;
 
-    @ManyToOne(type => Path, path => path.path_id)
+    @ManyToOne(type => Path, path => path.medias)
     path_id: number;
 }

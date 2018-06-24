@@ -13,7 +13,7 @@ export class User {
     @Column()
     password: string;
 
-    @ManyToOne(type => Role, role => role.role_id)
+    @ManyToOne(type => Role, role => role.users)
     role_id: Role;
 
 }

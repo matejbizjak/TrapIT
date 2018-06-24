@@ -24,7 +24,8 @@
     "hoek": "^5.0.3",
     "rxjs": "^6.0.0",
     "zone.js": "^0.8.26",
-    "moment": "^2.22.2"
+    "moment": "^2.22.2",
+    "jwt-decode": "^2.2.0"
   },
   "devDependencies": {
     "@angular/compiler-cli": "^6.0.3",

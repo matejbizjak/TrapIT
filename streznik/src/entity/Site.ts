@@ -12,5 +12,5 @@ export class Site {
     name: string;
 
     @OneToMany(type => Media, media => media.site_id)
-    media_id: Media;
+    medias: Media[];
 }
