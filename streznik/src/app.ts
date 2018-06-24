@@ -1,9 +1,9 @@
 import "reflect-metadata";
 import {createConnection} from "typeorm";
 import * as express from "express";
-import {Request, Response} from "express";
 import * as bodyParser from "body-parser";
-import {Routes} from "./routes";
+
+const authRouter = require('./routes/Auth.router');
 
 createConnection().then(async connection => {
 
@@ -16,22 +16,27 @@ createConnection().then(async connection => {
     // cors allow
     app.use(function (req, res, next) {
         res.header("Access-Control-Allow-Origin", "*");
-        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        // res.header("Access-Control-Allow-Credentials", "true");
+        // res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+        // res.header("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
+        res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
         next();
     });
 
-    // register express routes from defined application routes
-    Routes.forEach(route => {
-        (app as any)[route.method](route.route, (req: Request, res: Response, next: Function) => {
-            const result = (new (route.controller as any))[route.action](req, res, next);
-            if (result instanceof Promise) {
-                result.then(result => result !== null && result !== undefined ? res.send(result) : undefined);
+    app.use('/api/auth', authRouter);
 
-            } else if (result !== null && result !== undefined) {
-                res.json(result);
-            }
-        });
-    });
+    // // register express routes from defined application routes
+    // Routes.forEach(route => {
+    //     (app as any)[route.method](route.route, (req: Request, res: Response, next: Function) => {
+    //         const result = (new (route.controller as any))[route.action](req, res, next);
+    //         if (result instanceof Promise) {
+    //             result.then(result => result !== null && result !== undefined ? res.send(result) : undefined);
+    //
+    //         } else if (result !== null && result !== undefined) {
+    //             res.json(result);
+    //         }
+    //     });
+    // });
 
     // setup express app here
 
