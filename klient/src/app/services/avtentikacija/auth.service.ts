@@ -4,11 +4,13 @@ import {PrijavaRequest} from "../../models/requests/prijava.request";
 import * as moment from "moment";
 import {JwtResponse} from "../../models/responses/jwt.response";
 import * as jwtDecode from "jwt-decode";
+import {User} from "../../models/entities/user.entity";
+import {AuthEmitter} from "../emitters/auth.emitter";
 
 @Injectable()
 export class AuthService {
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private emitter: AuthEmitter) {
   }
 
   prijaviUporabnika(uporabnik: PrijavaRequest): Promise<any> {
@@ -32,13 +34,15 @@ export class AuthService {
     const expiresAt = decoded.exp;
     localStorage.setItem("id_token", authRes.idToken);
     localStorage.setItem("expires_at", JSON.stringify(expiresAt.valueOf()));
-    localStorage.setItem("user_info", JSON.stringify(decoded));
+    localStorage.setItem("user_info", JSON.stringify(decoded.user_info));
+    this.emitter.sporociSprememboAvtentikacije(true);
   }
 
   odjaviUporabnika() {
     localStorage.removeItem("id_token");
     localStorage.removeItem("expires_at");
     localStorage.removeItem("user_info");
+    this.emitter.sporociSprememboAvtentikacije(false);
   }
 
   public jePrijavljen() {
@@ -49,9 +53,13 @@ export class AuthService {
     return !this.jePrijavljen();
   }
 
+  public trenutniUporabnik(): User {
+    return <User> JSON.parse(localStorage.getItem("user_info"));
+  }
+
   getExpiration() {
     const expiration = localStorage.getItem("expires_at");
-    const expiresAt = JSON.parse(expiration);
+    const expiresAt = JSON.parse(expiration) * 1000;
     return moment(expiresAt);
   }
 }

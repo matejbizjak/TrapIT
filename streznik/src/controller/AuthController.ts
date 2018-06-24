@@ -15,12 +15,10 @@ module.exports.login = function (req: Request, res: Response, next: NextFunction
     authService.preveriUpImeInGeslo(username, password).then(
         (user: User) => {
             const jwtBearerToken = jwt.sign({
-                userId: user.user_id,
-                username: user.username,
-                userRole: user.role_id.role
+                user_info: user
             }, RSA_PRIVATE_KEY, {
                 algorithm: 'RS256',
-                expiresIn: 3600,
+                expiresIn: "1h"
             });
             // send the JWT back to the user
             res.status(200).json({

@@ -1,45 +1,46 @@
 import {Component, OnInit} from "@angular/core";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {AuthService} from "../../services/avtentikacija/auth.service";
 import {PrijavaRequest} from "../../models/requests/prijava.request";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: "app-prijava",
   templateUrl: "./prijava.component.html"
 })
 export class PrijavaComponent implements OnInit {
-  form: FormGroup;
+  prijavaRequest: PrijavaRequest;
+  napaka: string;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService, private router: Router) {
   }
 
   ngOnInit(): void {
-    this.form = this.fb.group({
-      username: ["", Validators.required],
-      password: ["", Validators.required]
-    });
+    this.prijavaRequest = new PrijavaRequest();
+    this.napaka = null;
   }
 
   prijaviUporabnika() {
-    const val = this.form.value;
-
-    if (val.username && val.password) {
-      const data: PrijavaRequest = new PrijavaRequest(val.username, val.password);
-      this.authService.prijaviUporabnika(data)
+    if (this.prijavaRequest.username && this.prijavaRequest.password) {
+      this.authService.prijaviUporabnika(this.prijavaRequest)
         .then(
           () => {
-            console.log("User is logged in");
-            this.router.navigateByUrl("/");
-          }, (err) => {
-            console.log("Napaka pri prijavi:", err);
+            this.router.navigate(["/"]);
+          }, (err: HttpErrorResponse) => {
+            switch (err.status) {
+              case 401:
+                this.napaka = "Napačna email in/ali geslo!";
+                break;
+              default:
+                this.napaka = "Napaka na strežniku! Prijava trenutno ni na voljo";
+                break;
+            }
           }
         );
     }
-  }
-
-  odjaviUporabnika() {
-    this.authService.odjaviUporabnika();
-    this.router.navigateByUrl("/prijava");
+    {
+      this.napaka = "Prosim izpolnite vse podatke!";
+      return false;
+    }
   }
 }

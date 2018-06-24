@@ -1,0 +1,6 @@
+<div>
+    <app-index-admin-component *ngIf="vloga == vlogeEnum.ADMIN"></app-index-admin-component>
+    <app-index-reviewer-component *ngIf="vloga == vlogeEnum.REVIEWER"></app-index-reviewer-component>
+    <app-index-viewer-component *ngIf="vloga == vlogeEnum.VIEWER"></app-index-viewer-component>
+</div>
+
