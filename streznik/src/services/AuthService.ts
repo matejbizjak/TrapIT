@@ -8,6 +8,7 @@ export class AuthService {
 
     public async preveriUpImeInGeslo(username: string, password: string): Promise<number> {
         const user: User = await this.userRepository.findOne({username: username});
+
         return new Promise<number>((resolve, reject) => {
             if (user === undefined) {
                 reject();

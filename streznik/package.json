@@ -22,7 +22,7 @@
    "scripts": {
       "build": "tsc",
       "dev": "ts-node ./src/app.ts",
-      "start": "tsc --watch | nodemon --inspect ./dist/app.js --watch dist",
+     "start": "nodemon",
       "prod": "npm run build && npm run start"
    }
 }
