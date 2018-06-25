@@ -22,4 +22,5 @@ import {AlertModule, BsDropdownModule, ModalModule, TimepickerModule, TooltipMod
         BsDropdownModule
     ]
 })
-export class BootstrapModule {}
+export class BootstrapModule {
+}

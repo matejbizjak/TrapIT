@@ -9,30 +9,28 @@ import {Aguard, ARguard, AVguard, Rguard, RVguard, Vguard} from "./guards/role.g
 import {AuthEmitter} from "./emitters/auth.emitter";
 
 @NgModule({
-  imports: [
-    CommonModule,
-    // HttpClient
-  ],
-  exports: [
-
-  ],
-  providers: [
-    // storitve
-    AuthService,
-    // emitters
-    AuthEmitter,
-    // interceptors
-    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
-    {provide: HTTP_INTERCEPTORS, useClass: UrlInterceptor, multi: true},
-    // guards
-    PrijavaGuard,
-    Aguard,
-    Rguard,
-    Vguard,
-    ARguard,
-    AVguard,
-    RVguard
-  ]
+    imports: [
+        CommonModule,
+        // HttpClient
+    ],
+    exports: [],
+    providers: [
+        // storitve
+        AuthService,
+        // emitters
+        AuthEmitter,
+        // interceptors
+        {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
+        {provide: HTTP_INTERCEPTORS, useClass: UrlInterceptor, multi: true},
+        // guards
+        PrijavaGuard,
+        Aguard,
+        Rguard,
+        Vguard,
+        ARguard,
+        AVguard,
+        RVguard
+    ]
 })
 export class ServicesModule {
 

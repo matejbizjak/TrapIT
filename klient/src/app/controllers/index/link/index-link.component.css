@@ -7,6 +7,7 @@
     border-radius: 5px;
     background-color: #f4e6d3;
 }
+
 .povezava span {
     position: relative;
     float: left;
@@ -17,6 +18,7 @@
     font-size: 20px;
     font-weight: bold;
 }
+
 .povezava:hover {
     background-color: #b3a699;
     cursor: pointer;

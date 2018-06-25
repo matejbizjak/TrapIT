@@ -1,33 +1,35 @@
 .fri-red {
-  background-color: #b4162c;
+    background-color: #b4162c;
 }
 
 .zaglavje {
-  height: 5em;
+    height: 5em;
 }
 
 main {
-  padding: 25px;
+    padding: 25px;
 }
 
 .header-title {
-  float: left;
-  color: white;
-  font-weight: bold;
-  font-size: 3em;
-  margin-left: 5px;
-  margin-top: 5px;
+    float: left;
+    color: white;
+    font-weight: bold;
+    font-size: 3em;
+    margin-left: 5px;
+    margin-top: 5px;
 }
 
 .spusti-dol {
-  display: inline;
-  float: right;
-  margin-right: 20px;
-  margin-top: 20px;
+    display: inline;
+    float: right;
+    margin-right: 20px;
+    margin-top: 20px;
 }
+
 .spusti-dol button {
-  color: white;
+    color: white;
 }
+
 .spusti-dol:hover button {
-  text-decoration: none;
+    text-decoration: none;
 }

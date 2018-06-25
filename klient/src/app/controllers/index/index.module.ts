@@ -10,19 +10,19 @@ import {IndexViewerComponent} from "./viewer/index-viewer.component";
 import {IndexLinkComponent} from "./link/index-link.component";
 
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule,
-    BootstrapModule,
-    FormsModule
-  ],
-  declarations: [
-    IndexComponent,
-    IndexAdminComponent,
-    IndexReviewerComponent,
-    IndexViewerComponent,
-    IndexLinkComponent
-  ]
+    imports: [
+        CommonModule,
+        RouterModule,
+        BootstrapModule,
+        FormsModule
+    ],
+    declarations: [
+        IndexComponent,
+        IndexAdminComponent,
+        IndexReviewerComponent,
+        IndexViewerComponent,
+        IndexLinkComponent
+    ]
 })
 export class IndexModule {
 

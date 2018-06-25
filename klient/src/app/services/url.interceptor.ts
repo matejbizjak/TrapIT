@@ -3,13 +3,13 @@ import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from "@angular/com
 import {Observable} from "rxjs";
 
 @Injectable()
-export class UrlInterceptor implements HttpInterceptor{
+export class UrlInterceptor implements HttpInterceptor {
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const url = "http://localhost:3000/api";
-    req = req.clone({
-      url: url + req.url
-    });
-    return next.handle(req);
-  }
+    intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+        const url = "http://localhost:3000/api";
+        req = req.clone({
+            url: url + req.url
+        });
+        return next.handle(req);
+    }
 }

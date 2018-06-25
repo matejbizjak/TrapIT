@@ -6,16 +6,16 @@ import {AuthService} from "../avtentikacija/auth.service";
 @Injectable()
 export class PrijavaGuard implements CanActivate {
 
-  constructor(private auth: AuthService, private router: Router) {
+    constructor(private auth: AuthService, private router: Router) {
 
-  }
-
-  canActivate(route: ActivatedRouteSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    if (this.auth.jePrijavljen()) {
-      return true;
-    } else {
-      this.router.navigate(["/prijava"]);
     }
-    return false;
-  }
+
+    canActivate(route: ActivatedRouteSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+        if (this.auth.jePrijavljen()) {
+            return true;
+        } else {
+            this.router.navigate(["/prijava"]);
+        }
+        return false;
+    }
 }

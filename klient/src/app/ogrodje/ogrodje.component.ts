@@ -6,46 +6,46 @@ import {RoleEnum} from "../models/entities/role.enum";
 import {AuthEmitter} from "../services/emitters/auth.emitter";
 
 @Component({
-  selector: "app-root",
-  templateUrl: "./ogrodje.component.html",
-  styleUrls: ["./ogrodje.component.css"]
+    selector: "app-root",
+    templateUrl: "./ogrodje.component.html",
+    styleUrls: ["./ogrodje.component.css"]
 })
 export class OgrodjeComponent implements OnInit {
-  subscription;
-  jePrijavljen = false;
-  trenutniUporabnik: User = new User();
-  roleEnum: any = RoleEnum;
+    subscription;
+    jePrijavljen = false;
+    trenutniUporabnik: User = new User();
+    roleEnum: any = RoleEnum;
 
-  constructor(private authService: AuthService, private router: Router, private emitter: AuthEmitter) {
-  }
-
-  ngOnInit(): void {
-    this.nastaviPodatke();
-
-    // spremljaj podatke v primeru prijave / odjave
-    this.subscription = this.emitter.pridobiSprememboAvtentikacije().subscribe(
-      (prijavljen: boolean) => {
-        if (prijavljen) {
-          this.nastaviPodatke();
-        } else {
-          this.jePrijavljen = false;
-          this.trenutniUporabnik = new User();
-        }
-      }
-    );
-  }
-
-  nastaviPodatke() {
-    this.jePrijavljen = this.authService.jePrijavljen();
-    if (this.jePrijavljen) {
-      this.trenutniUporabnik = this.authService.trenutniUporabnik();
-    } else {
-      this.trenutniUporabnik = new User();
+    constructor(private authService: AuthService, private router: Router, private emitter: AuthEmitter) {
     }
-  }
 
-  odjaviUporabnika() {
-    this.authService.odjaviUporabnika();
-    this.router.navigate(["/prijava"]);
-  }
+    ngOnInit(): void {
+        this.nastaviPodatke();
+
+        // spremljaj podatke v primeru prijave / odjave
+        this.subscription = this.emitter.pridobiSprememboAvtentikacije().subscribe(
+            (prijavljen: boolean) => {
+                if (prijavljen) {
+                    this.nastaviPodatke();
+                } else {
+                    this.jePrijavljen = false;
+                    this.trenutniUporabnik = new User();
+                }
+            }
+        );
+    }
+
+    nastaviPodatke() {
+        this.jePrijavljen = this.authService.jePrijavljen();
+        if (this.jePrijavljen) {
+            this.trenutniUporabnik = this.authService.trenutniUporabnik();
+        } else {
+            this.trenutniUporabnik = new User();
+        }
+    }
+
+    odjaviUporabnika() {
+        this.authService.odjaviUporabnika();
+        this.router.navigate(["/prijava"]);
+    }
 }

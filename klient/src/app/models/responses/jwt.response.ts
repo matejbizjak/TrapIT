@@ -1,3 +1,3 @@
 export class JwtResponse {
-  public idToken: string;
+    public idToken: string;
 }

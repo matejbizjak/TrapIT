@@ -1,8 +1,8 @@
 import {Component, OnInit} from "@angular/core";
 
 @Component({
-  selector: "app-index-viewer-sidebar",
-  template: `
+    selector: "app-index-viewer-sidebar",
+    template: `
     <hr/>
 
     <li class="nav-item">
@@ -12,11 +12,11 @@ import {Component, OnInit} from "@angular/core";
 })
 export class IndexViewerSidebarComponent implements OnInit {
 
-  constructor() {
-  }
+    constructor() {
+    }
 
-  ngOnInit(): void {
+    ngOnInit(): void {
 
-  }
+    }
 
 }

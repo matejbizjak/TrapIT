@@ -7,6 +7,7 @@ import {Component} from "@angular/core";
 })
 export class Napaka404Component {
 
-    constructor() {}
+    constructor() {
+    }
 
 }

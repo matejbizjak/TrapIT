@@ -12,30 +12,31 @@ import {IndexViewerSidebarComponent} from "./controllers/index/viewer/index-view
 import {IndexAdminSidebarComponent} from "./controllers/index/admin/index-admin-sidebar.component";
 import {IndexReviewerSidebarComponent} from "./controllers/index/reviewer/index-reviewer-sidebar.component";
 import {NapakeModule} from "./controllers/napake/napake.module";
+import {TranslateModule} from "@ngx-translate/core";
 
 @NgModule({
-  declarations: [
-    OgrodjeComponent,
-    PrijavaComponent,
-    IndexAdminSidebarComponent,
-    IndexReviewerSidebarComponent,
-    IndexViewerSidebarComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule,
-    BootstrapModule,
-    // services
-    ServicesModule,
-    IndexModule,
-    NapakeModule
-  ],
-  providers: [
-  ],
-  bootstrap: [OgrodjeComponent]
+    declarations: [
+        OgrodjeComponent,
+        PrijavaComponent,
+        IndexAdminSidebarComponent,
+        IndexReviewerSidebarComponent,
+        IndexViewerSidebarComponent
+    ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        FormsModule,
+        ReactiveFormsModule,
+        BootstrapModule,
+        TranslateModule.forRoot(),
+        // services
+        ServicesModule,
+        IndexModule,
+        NapakeModule
+    ],
+    providers: [],
+    bootstrap: [OgrodjeComponent]
 })
 export class AppModule {
 }

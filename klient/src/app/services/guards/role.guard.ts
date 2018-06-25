@@ -9,89 +9,89 @@ import {User} from "../../models/entities/user.entity";
 @Injectable()
 export class ARguard implements CanActivate {
 
-  constructor(private router: Router, private auth: AuthService) {
-  }
-
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    const trenutniUporabnik: User = this.auth.trenutniUporabnik();
-    if (trenutniUporabnik.role_id.role === "admin" || trenutniUporabnik.role_id.role === "reviewer") {
-      return true;
+    constructor(private router: Router, private auth: AuthService) {
     }
-    return false;
-  }
+
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+        const trenutniUporabnik: User = this.auth.trenutniUporabnik();
+        if (trenutniUporabnik.role_id.role === "admin" || trenutniUporabnik.role_id.role === "reviewer") {
+            return true;
+        }
+        return false;
+    }
 }
 
 @Injectable()
 export class AVguard implements CanActivate {
 
-  constructor(private router: Router, private auth: AuthService) {
-  }
-
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    const trenutniUporabnik: User = this.auth.trenutniUporabnik();
-    if (trenutniUporabnik.role_id.role === "admin" || trenutniUporabnik.role_id.role === "viewer") {
-      return true;
+    constructor(private router: Router, private auth: AuthService) {
     }
-    return false;
-  }
+
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+        const trenutniUporabnik: User = this.auth.trenutniUporabnik();
+        if (trenutniUporabnik.role_id.role === "admin" || trenutniUporabnik.role_id.role === "viewer") {
+            return true;
+        }
+        return false;
+    }
 }
 
 @Injectable()
 export class RVguard implements CanActivate {
-  constructor(private router: Router, private auth: AuthService) {
-  }
-
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    const trenutniUporabnik: User = this.auth.trenutniUporabnik();
-    if (trenutniUporabnik.role_id.role === "reviewer" || trenutniUporabnik.role_id.role === "viewer") {
-      return true;
+    constructor(private router: Router, private auth: AuthService) {
     }
-    return false;
-  }
+
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+        const trenutniUporabnik: User = this.auth.trenutniUporabnik();
+        if (trenutniUporabnik.role_id.role === "reviewer" || trenutniUporabnik.role_id.role === "viewer") {
+            return true;
+        }
+        return false;
+    }
 }
 
 
 @Injectable()
 export class Aguard implements CanActivate {
 
-  constructor(private router: Router, private auth: AuthService) {
-  }
-
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    const trenutniUporabnik: User = this.auth.trenutniUporabnik();
-    if (trenutniUporabnik.role_id.role === "admin") {
-      return true;
+    constructor(private router: Router, private auth: AuthService) {
     }
-    return false;
-  }
+
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+        const trenutniUporabnik: User = this.auth.trenutniUporabnik();
+        if (trenutniUporabnik.role_id.role === "admin") {
+            return true;
+        }
+        return false;
+    }
 }
 
 @Injectable()
 export class Rguard implements CanActivate {
 
-  constructor(private router: Router, private auth: AuthService) {
-  }
-
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    const trenutniUporabnik: User = this.auth.trenutniUporabnik();
-    if (trenutniUporabnik.role_id.role === "reviewer") {
-      return true;
+    constructor(private router: Router, private auth: AuthService) {
     }
-    return false;
-  }
+
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+        const trenutniUporabnik: User = this.auth.trenutniUporabnik();
+        if (trenutniUporabnik.role_id.role === "reviewer") {
+            return true;
+        }
+        return false;
+    }
 }
 
 @Injectable()
 export class Vguard implements CanActivate {
 
-  constructor(private router: Router, private auth: AuthService) {
-  }
-
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    const trenutniUporabnik: User = this.auth.trenutniUporabnik();
-    if (trenutniUporabnik.role_id.role === "viewer") {
-      return true;
+    constructor(private router: Router, private auth: AuthService) {
     }
-    return false;
-  }
+
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+        const trenutniUporabnik: User = this.auth.trenutniUporabnik();
+        if (trenutniUporabnik.role_id.role === "viewer") {
+            return true;
+        }
+        return false;
+    }
 }
