@@ -14,10 +14,12 @@ module.exports = class AuthService {
                 reject();
             } else {
                 bcrypt.compare(password, user.password).then(
-                    () => {
-                        resolve(user);
-                    }, () => {
-                        reject();
+                    (success) => {
+                        if (success) {
+                            resolve(user);
+                        } else {
+                            reject();
+                        }
                     });
             }
         });

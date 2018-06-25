@@ -37,8 +37,7 @@ export class PrijavaComponent implements OnInit {
             }
           }
         );
-    }
-    {
+    } else {
       this.napaka = "Prosim izpolnite vse podatke!";
       return false;
     }
