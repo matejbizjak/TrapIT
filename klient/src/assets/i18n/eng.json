@@ -1,0 +1,19 @@
+{
+  "OGRODJE": {
+    "ODJAVA": "Logout",
+    "MENU": {
+      "DOMOV": "Home",
+      "LINK": "Link",
+      "NASTAVITVE": "Settings"
+    }
+  },
+  "INDEX": {
+    "NASLOV": "Home page"
+  },
+  "PRIJAVA": {
+    "NASLOV": "Login",
+    "UPIME": "Username",
+    "GESLO": "Password",
+    "GUMB": "Login"
+  }
+}

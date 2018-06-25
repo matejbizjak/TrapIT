@@ -1,0 +1,19 @@
+{
+  "OGRODJE": {
+    "ODJAVA": "Odjava",
+    "MENU": {
+      "DOMOV": "Domov",
+      "LINK": "Povezava",
+      "NASTAVITVE": "Nastavitve"
+    }
+  },
+  "INDEX": {
+    "NASLOV": "Domača stran"
+  },
+  "PRIJAVA": {
+    "NASLOV": "Prijava",
+    "UPIME": "Uporabniško ime",
+    "GESLO": "Geslo",
+    "GUMB": "Prijava"
+  }
+}

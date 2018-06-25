@@ -3,6 +3,7 @@ import {Router} from "@angular/router";
 import {AuthService} from "../../services/avtentikacija/auth.service";
 import {PrijavaRequest} from "../../models/requests/prijava.request";
 import {HttpErrorResponse} from "@angular/common/http";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
     selector: "app-prijava",
@@ -12,7 +13,7 @@ export class PrijavaComponent implements OnInit {
     prijavaRequest: PrijavaRequest;
     napaka: string;
 
-    constructor(private authService: AuthService, private router: Router) {
+    constructor(private authService: AuthService, private router: Router, private translate: TranslateService) {
     }
 
     ngOnInit(): void {

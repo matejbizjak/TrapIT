@@ -7,7 +7,7 @@ const jwt = require("express-jwt");
 const AuthController = require("../controller/AuthController");
 const security = require("./security");
 
-const RSA_PUBLIC_KEY = fs.readFileSync("rsa-key/public.key");
+const RSA_PUBLIC_KEY = fs.readFileSync("resources/rsa-key/public.key");
 
 const prijavljen = jwt({
     secret: RSA_PUBLIC_KEY,

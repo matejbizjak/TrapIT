@@ -7,7 +7,7 @@ const AuthService = require("../services/AuthService");
 
 module.exports.login = function (req: Request, res: Response, next: NextFunction) {
     const authService = new AuthService();
-    const RSA_PRIVATE_KEY = fs.readFileSync("rsa-key/private.key");
+    const RSA_PRIVATE_KEY = fs.readFileSync("resources/rsa-key/private.key");
 
     const username = req.body.username,
         password = req.body.password;

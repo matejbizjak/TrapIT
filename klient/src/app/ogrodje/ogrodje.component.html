@@ -3,6 +3,12 @@
     <span class="header-title">
         <a [routerLink]="['/']" style="color: white; text-decoration: none; margin-left: 10px;">TrapIT</a>
     </span>
+    <span class="ml-2 mt-2">
+        <img src="../../assets/images/slv.png" alt="Slovenski jezik" height="20" width="20" style="cursor: pointer;"
+             class="mr-1" (click)="spremeniJezik('slv')">
+        <img src="../../assets/images/eng.png" alt="English language" height="20" width="20" style="cursor: pointer;"
+             class="mr-1" (click)="spremeniJezik('eng')">
+    </span>
     <!-- *********** DROPDOWN *********** -->
     <div *ngIf="jePrijavljen" dropdown class="spusti-dol btn-group" placement="bottom right">
         <button id="odjava-button" dropdownToggle type="button" class="btn btn-link dropdown-toggle">
@@ -13,7 +19,8 @@
         <ul id="odjava-dropdown" *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu"
             aria-labelledby="odjava-button">
             <li role="menuitem">
-                <a class="dropdown-item" [routerLink]="" (click)="odjaviUporabnika()">Odjava</a>
+                <a class="dropdown-item" [routerLink]="" (click)="odjaviUporabnika()">{{ "OGRODJE.ODJAVA" | translate
+                    }}</a>
             </li>
         </ul>
     </div>

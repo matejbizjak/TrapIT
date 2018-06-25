@@ -1,15 +1,15 @@
 <div class="wrapper">
     <div class="container h-100 mt-5">
         <div class="row h-100 justify-content-center align-items-center">
-            <h2 class="col-sm-12">Prijava</h2>
+            <h2 class="col-sm-12">{{ "PRIJAVA.NASLOV" | translate }}</h2>
             <form (submit)="prijaviUporabnika()" class="col-sm-5">
                 <div class="form-group">
-                    <label for="username">Uporabniško ime:</label>
+                    <label for="username">{{ "PRIJAVA.UPIME" | translate }}:</label>
                     <input class="form-control" type="text" id="username" name="username"
                            [(ngModel)]="prijavaRequest.username"/>
                 </div>
                 <div class="form-group">
-                    <label for="password">Geslo:</label>
+                    <label for="password">{{ "PRIJAVA.GESLO" | translate }}:</label>
                     <input class="form-control" type="password" id="password" name="password"
                            [(ngModel)]="prijavaRequest.password"/>
                 </div>
@@ -17,7 +17,8 @@
                     {{napaka}}
                 </div>
                 <div class="form-actions">
-                    <button type="submit" class="btn btn-outline-primary fri-button">Prijava</button>
+                    <button type="submit" class="btn btn-outline-primary fri-button">{{ "PRIJAVA.GUMB" | translate }}
+                    </button>
                 </div>
             </form>
         </div>
