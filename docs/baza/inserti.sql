@@ -10,7 +10,7 @@ VALUES 	(1, "project1"),
 		
         
 INSERT INTO `trapit`.`user`
-(`user_id`, `username`, `password`, `roleIdRoleId`)
+(`user_id`, `username`, `password`, `role_id`)
 VALUES
 (1, "admin", "$2b$10$AP4xtsOur0knwrq1ObleYekiJ52Z482DxXTmEXKRA7DFfSuGSFnu2", 1),
 (2, "reviewer", "$2b$10$AP4xtsOur0knwrq1ObleYekiJ52Z482DxXTmEXKRA7DFfSuGSFnu2", 2),
