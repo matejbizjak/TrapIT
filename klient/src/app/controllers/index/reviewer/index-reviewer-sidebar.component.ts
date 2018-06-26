@@ -6,7 +6,7 @@ import {Component, OnInit} from "@angular/core";
     <hr/>
 
     <li class="nav-item">
-      <a class="nav-link" [routerLink]="['/url']">Url</a>
+        <a class="nav-link" [routerLink]="['/projekt']">Projekt</a>
     </li>
 
   `

@@ -14,6 +14,7 @@ import {IndexReviewerSidebarComponent} from "./controllers/index/reviewer/index-
 import {NapakeModule} from "./controllers/napake/napake.module";
 import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
+import {ProjektComponent} from "./controllers/projekt/projekt.component";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -23,10 +24,11 @@ export function HttpLoaderFactory(http: HttpClient) {
 @NgModule({
     declarations: [
         OgrodjeComponent,
-        PrijavaComponent,
         IndexAdminSidebarComponent,
         IndexReviewerSidebarComponent,
-        IndexViewerSidebarComponent
+        IndexViewerSidebarComponent,
+        PrijavaComponent,
+        ProjektComponent
     ],
     imports: [
         BrowserModule,
