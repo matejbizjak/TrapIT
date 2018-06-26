@@ -7,7 +7,8 @@ module.exports = class AuthService {
     private userRepository = getRepository(User);
 
     public async preveriUpImeInGeslo(username: string, password: string): Promise<User> {
-        const user: User = await this.userRepository.findOne({where: {username: username}, relations: ["roleId"]});
+
+        let user: User = await this.userRepository.findOne({where: {username: username}, relations: ["roleId"]});
 
         return new Promise<User>((resolve, reject) => {
             if (user === undefined) {
