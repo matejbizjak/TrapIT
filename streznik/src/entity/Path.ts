@@ -4,12 +4,12 @@ import {Media} from "./Media";
 @Entity()
 export class Path {
 
-    @PrimaryGeneratedColumn()
-    path_id: number;
+    @PrimaryGeneratedColumn({name: "path_id"})
+    pathId: number;
 
     @Column()
     value: string;
 
-    @OneToMany(type => Media, media => media.path_id)
+    @OneToMany(type => Media, media => media.path)
     medias: Media[];
 }

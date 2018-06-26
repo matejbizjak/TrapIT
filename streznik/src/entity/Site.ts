@@ -5,12 +5,12 @@ import {Media} from "./Media";
 @Entity()
 export class Site {
 
-    @PrimaryGeneratedColumn()
-    site_id: number;
+    @PrimaryGeneratedColumn({name: "site_id"})
+    siteId: number;
 
     @Column()
     name: string;
 
-    @OneToMany(type => Media, media => media.site_id)
+    @OneToMany(type => Media, media => media.site)
     medias: Media[];
 }

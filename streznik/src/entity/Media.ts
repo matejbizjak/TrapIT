@@ -1,12 +1,12 @@
-import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 import {Site} from "./Site";
 import {Path} from "./Path";
 
 @Entity()
 export class Media {
 
-    @PrimaryGeneratedColumn()
-    media_id: number;
+    @PrimaryGeneratedColumn({name: "media_id"})
+    mediaId: number;
 
     @Column()
     date: Date;
@@ -26,9 +26,11 @@ export class Media {
     @Column()
     comment: string;
 
-    @ManyToOne(type => Site, site => site.medias)
-    site_id: number;
+    @ManyToOne(type => Site)
+    @JoinColumn({name: "site_id"})
+    site: Site;
 
-    @ManyToOne(type => Path, path => path.medias)
-    path_id: number;
+    @ManyToOne(type => Path)
+    @JoinColumn({name: "path_id"})
+    path: Path;
 }

@@ -14,7 +14,7 @@ export class ARguard implements CanActivate {
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
         const trenutniUporabnik: User = this.auth.trenutniUporabnik();
-        if (trenutniUporabnik.role_id.role === "admin" || trenutniUporabnik.role_id.role === "reviewer") {
+        if (trenutniUporabnik.roleId.role === "admin" || trenutniUporabnik.roleId.role === "reviewer") {
             return true;
         }
         return false;
@@ -29,7 +29,7 @@ export class AVguard implements CanActivate {
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
         const trenutniUporabnik: User = this.auth.trenutniUporabnik();
-        if (trenutniUporabnik.role_id.role === "admin" || trenutniUporabnik.role_id.role === "viewer") {
+        if (trenutniUporabnik.roleId.role === "admin" || trenutniUporabnik.roleId.role === "viewer") {
             return true;
         }
         return false;
@@ -43,7 +43,7 @@ export class RVguard implements CanActivate {
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
         const trenutniUporabnik: User = this.auth.trenutniUporabnik();
-        if (trenutniUporabnik.role_id.role === "reviewer" || trenutniUporabnik.role_id.role === "viewer") {
+        if (trenutniUporabnik.roleId.role === "reviewer" || trenutniUporabnik.roleId.role === "viewer") {
             return true;
         }
         return false;
@@ -59,7 +59,7 @@ export class Aguard implements CanActivate {
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
         const trenutniUporabnik: User = this.auth.trenutniUporabnik();
-        if (trenutniUporabnik.role_id.role === "admin") {
+        if (trenutniUporabnik.roleId.role === "admin") {
             return true;
         }
         return false;
@@ -74,7 +74,7 @@ export class Rguard implements CanActivate {
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
         const trenutniUporabnik: User = this.auth.trenutniUporabnik();
-        if (trenutniUporabnik.role_id.role === "reviewer") {
+        if (trenutniUporabnik.roleId.role === "reviewer") {
             return true;
         }
         return false;
@@ -89,7 +89,7 @@ export class Vguard implements CanActivate {
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
         const trenutniUporabnik: User = this.auth.trenutniUporabnik();
-        if (trenutniUporabnik.role_id.role === "viewer") {
+        if (trenutniUporabnik.roleId.role === "viewer") {
             return true;
         }
         return false;

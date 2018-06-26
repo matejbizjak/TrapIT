@@ -15,7 +15,7 @@ export class IndexComponent implements OnInit {
 
     ngOnInit(): void {
         const trenutniUporabnik = this.auth.trenutniUporabnik();
-        this.vloga = trenutniUporabnik.role_id.role;
+        this.vloga = trenutniUporabnik.roleId.role;
     }
 
 }

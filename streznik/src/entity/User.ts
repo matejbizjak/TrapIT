@@ -1,11 +1,11 @@
-import {Entity, PrimaryGeneratedColumn, Column, ManyToOne} from "typeorm";
+import {Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 import {Role} from "./Role";
 
 @Entity()
 export class User {
 
-    @PrimaryGeneratedColumn()
-    user_id: number;
+    @PrimaryGeneratedColumn({name: "user_id"})
+    userId: number;
 
     @Column()
     username: string;
@@ -13,7 +13,8 @@ export class User {
     @Column()
     password: string;
 
-    @ManyToOne(type => Role, role => role.users)
-    role_id: Role;
+    @ManyToOne(type => Role)
+    @JoinColumn({name: "role_id"})
+    role: Role;
 
 }

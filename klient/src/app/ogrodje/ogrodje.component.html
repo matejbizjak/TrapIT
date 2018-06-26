@@ -36,11 +36,11 @@
                         <a class="nav-link" [routerLink]="['/']">Domov</a>
                     </li>
                     <app-index-admin-sidebar
-                            *ngIf="trenutniUporabnik.role_id.role == roleEnum.ADMIN"></app-index-admin-sidebar>
+                            *ngIf="trenutniUporabnik.roleId.role == roleEnum.ADMIN"></app-index-admin-sidebar>
                     <app-index-reviewer-sidebar
-                            *ngIf="trenutniUporabnik.role_id.role == roleEnum.REVIEWER"></app-index-reviewer-sidebar>
+                            *ngIf="trenutniUporabnik.roleId.role == roleEnum.REVIEWER"></app-index-reviewer-sidebar>
                     <app-index-viewer-sidebar
-                            *ngIf="trenutniUporabnik.role_id.role == roleEnum.VIEWER"></app-index-viewer-sidebar>
+                            *ngIf="trenutniUporabnik.roleId.role == roleEnum.VIEWER"></app-index-viewer-sidebar>
                 </ul>
             </div>
         </nav>
