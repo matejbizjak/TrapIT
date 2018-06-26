@@ -2,7 +2,6 @@ import {Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn} from "typ
 import {User} from "./User";
 import {Tag} from "./Tag";
 import {Media} from "./Media";
-import {TagValue} from "./TagValue";
 
 @Entity()
 export class MediaTag {
@@ -21,10 +20,6 @@ export class MediaTag {
     @ManyToOne(type => Media)
     @JoinColumn({name: "media_id"})
     mediaId: Media;
-
-    @ManyToOne(type => TagValue)
-    @JoinColumn({name: "tag_value_id"})
-    tagValueId: TagValue;
 
     @Column({name: "input_value"})
     inputValue: number;
