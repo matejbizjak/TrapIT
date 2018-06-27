@@ -12,7 +12,7 @@
         <th scope="row"></th>
         <td [ngStyle]="globina < 2 && {'cursor': 'pointer'}" (click)="naprejVMapo(datoteka)">{{ datoteka }}</td>
         <td>
-            <button class="btn btn-sm" (click)="izberiMapo(datoteka)">Izberi</button>
+            <button *ngIf="globina == 2" class="btn btn-sm" (click)="izberiMapo(datoteka)">Izberi</button>
         </td>
     </tr>
     </tbody>
