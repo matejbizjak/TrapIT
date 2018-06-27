@@ -12,4 +12,11 @@ export class ProjektService {
 
         return this.http.post(url, {pot: pot});
     }
+
+    dobiMozneTage(projectId: number) {
+        // const url = "/projekt/tagi/" + projectId;
+        const url = "/projekt/tagi";
+
+        return this.http.get(url);
+    }
 }

@@ -4,6 +4,7 @@ import {SharingService} from "../../services/sharing.service";
 import {ProjektService} from "../../services/projekt/projekt.service";
 import {OznacevanjeService} from "../../services/oznacevanje/oznacevanje.service";
 import {Router} from "@angular/router";
+import {Tag} from "@angular/compiler/src/i18n/serializers/xml_helper";
 
 @Component({
     selector: "app-oznacevanje",
@@ -15,6 +16,8 @@ export class OznacevanjeComponent implements OnInit {
     stVsehSlikVMapi: number;
     zapStSlike: number;
     potDoSlike: string;
+    projectId: number; // TODO dovoli samo tage, ki so definirani za ta projekt
+    mozniTagi: Tag[];
 
     constructor(private translate: TranslateService, private sharingService: SharingService, private projektService: ProjektService,
                 private oznacevanjeService: OznacevanjeService, private router: Router) {
@@ -34,6 +37,8 @@ export class OznacevanjeComponent implements OnInit {
             }, (err) => {
                 console.log(err);
             });
+
+        this.dobiMozneTage();
     }
 
     dobiVseSlike(): Promise<any> { // dobi imena vseh slik v tej mapi
@@ -55,6 +60,16 @@ export class OznacevanjeComponent implements OnInit {
         this.potDoSlike = this.potDoSlike.replace(/\//g, "|");
     }
 
+    dobiMozneTage() {
+        this.projektService.dobiMozneTage(null).subscribe(
+            (mozniTagi: Tag[]) => {
+                console.log(mozniTagi);
+            }, (err) => {
+                console.log(err);
+            }
+        );
+    }
+
     // dobiSliko() {
     //     this.oznacevanjeService.dobiSliko(this.potDoSlike).subscribe((slika) => {
     //
@@ -67,6 +82,7 @@ export class OznacevanjeComponent implements OnInit {
         if (this.zapStSlike !== 0) {
             this.zapStSlike--;
             this.nastaviPoDoSlike();
+            this.dobiTage();
         }
     }
 
@@ -74,7 +90,18 @@ export class OznacevanjeComponent implements OnInit {
         if (this.zapStSlike !== this.stVsehSlikVMapi - 1) {
             this.zapStSlike++;
             this.nastaviPoDoSlike();
+            this.dobiTage();
         }
+    }
+
+    dobiTage() {
+        this.oznacevanjeService.dobiTage(this.potDoSlike).subscribe(
+            (tagi) => {
+
+            }, err => {
+                console.log(err);
+            }
+        );
     }
 
 }

@@ -28,9 +28,9 @@ export class Media {
 
     @ManyToOne(type => Site)
     @JoinColumn({name: "site_id"})
-    site: Site;
+    siteId: Site;
 
     @ManyToOne(type => Path)
     @JoinColumn({name: "path_id"})
-    path: Path;
+    pathId: Path;
 }

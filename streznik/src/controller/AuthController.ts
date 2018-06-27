@@ -27,7 +27,7 @@ module.exports.login = function (req: Request, res: Response, next: NextFunction
         }, () => {
             res.sendStatus(401);
         }).catch(err => {
-        res.sendStatus(500).json({
+        res.sendStatus(400).json({
             error: err
         });
     });

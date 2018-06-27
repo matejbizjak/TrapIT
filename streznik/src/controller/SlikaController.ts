@@ -1,4 +1,7 @@
 import {NextFunction, Request, Response} from "express";
+import {Media} from "../entity/Media";
+import {MediaTag} from "../entity/MediaTag";
+const SlikaService = require("../services/SlikaService");
 
 const basePath = "D:/OneDrive - inc/FRI/3. letnik/2. semester/PKP/slike";  // TODO
 
@@ -18,4 +21,25 @@ module.exports.dobiSliko = function (req: Request, res: Response, next: NextFunc
             console.log(err);
         }
     });
+};
+
+module.exports.dobiTage = function (req: Request, res: Response, next: NextFunction) {
+    const slikaService = new SlikaService();
+    const potDoSlike: string = req.params.pot.replace(/\|/g, "/");
+
+    slikaService.dobiMediaId(potDoSlike).then(
+        (media: Media) => {
+
+            slikaService.dobiTage(media.mediaId).then(
+                (tagi: MediaTag[]) => {
+                    res.status(200).json({tagi: tagi});
+                }, (err) => {
+                    res.status(400).json({err: err});
+                }
+            )
+
+        }, (err) => {
+            res.status(400).json({err: err});
+        }
+    );
 };
