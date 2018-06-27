@@ -7,9 +7,6 @@ const basePath = "D:/OneDrive - inc/FRI/3. letnik/2. semester/PKP/slike";  // TO
 // const basePath = "D:/";
 
 module.exports.dobiDir = function (req: Request, res: Response, next: NextFunction) {
-    console.log("TUUUUUUUUUU SEM");
-    console.log(req.body);
-    console.log(basePath + req.body.pot);
     fs.readdir(basePath + req.body.pot, (err, files) => {
         if (err) {
             res.status(400).json({napaka: err});

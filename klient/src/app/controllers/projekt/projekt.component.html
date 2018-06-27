@@ -1,0 +1,19 @@
+<table class="table table-sm">
+    <thead>
+    <tr>
+        <th scope="col"><i class="material-icons" style="cursor: pointer"
+                           (click)="potNazaj()">subdirectory_arrow_left</i></th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let datoteka of files">
+        <th scope="row"></th>
+        <td [ngStyle]="globina < 2 && {'cursor': 'pointer'}" (click)="naprejVMapo(datoteka)">{{ datoteka }}</td>
+        <td>
+            <button class="btn btn-sm" (click)="izberiMapo(datoteka)">Izberi</button>
+        </td>
+    </tr>
+    </tbody>
+</table>
