@@ -8,7 +8,9 @@ import {PrijavaGuard} from "./guards/prijava.guard";
 import {Aguard, ARguard, AVguard, Rguard, RVguard, Vguard} from "./guards/role.guard";
 import {AuthEmitter} from "./emitters/auth.emitter";
 import {LanguageService} from "./language.service";
-import {ProjektService} from "./projekt.service";
+import {ProjektService} from "./projekt/projekt.service";
+import {SharingService} from "./sharing.service";
+import {OznacevanjeService} from "./oznacevanje/oznacevanje.service";
 
 @NgModule({
     imports: [
@@ -19,8 +21,10 @@ import {ProjektService} from "./projekt.service";
     providers: [
         // storitve
         AuthService,
+        SharingService,
         LanguageService,
         ProjektService,
+        OznacevanjeService,
         // emitters
         AuthEmitter,
         // interceptors

@@ -1,6 +1,8 @@
 import {Component, OnInit} from "@angular/core";
 import {TranslateService} from "@ngx-translate/core";
-import {ProjektService} from "../../services/projekt.service";
+import {ProjektService} from "../../services/projekt/projekt.service";
+import {SharingService} from "../../services/sharing.service";
+import {Router} from "@angular/router";
 
 @Component({
     selector: "app-projekt",
@@ -11,7 +13,8 @@ export class ProjektComponent implements OnInit {
     globina: number;
     files: string[];
 
-    constructor(private translate: TranslateService, private projektService: ProjektService) {
+    constructor(private router: Router, private translate: TranslateService, private projektService: ProjektService,
+                private sharingService: SharingService) {
     }
 
     ngOnInit(): void {
@@ -32,7 +35,8 @@ export class ProjektComponent implements OnInit {
     }
 
     izberiMapo(datoteka: string) {
-
+        this.sharingService.saveItem("potDoMapeSlik", this.pot + datoteka + "/");
+        this.router.navigate(["/oznacevanje"]);
     }
 
     naprejVMapo(datoteka: string) {
