@@ -4,7 +4,8 @@ import {SharingService} from "../../services/sharing.service";
 import {ProjektService} from "../../services/projekt/projekt.service";
 import {OznacevanjeService} from "../../services/oznacevanje/oznacevanje.service";
 import {Router} from "@angular/router";
-import {Tag} from "@angular/compiler/src/i18n/serializers/xml_helper";
+import {Tag} from "../../models/entities/tag.entity";
+import {TagParent} from "../../models/entities/custom/tag-parent.entity";
 
 @Component({
     selector: "app-oznacevanje",
@@ -17,7 +18,11 @@ export class OznacevanjeComponent implements OnInit {
     zapStSlike: number;
     potDoSlike: string;
     projectId: number; // TODO dovoli samo tage, ki so definirani za ta projekt
-    mozniTagi: Tag[];
+    mozniTagi: TagParent[];
+
+    // stupid
+    vstavljenih = 0;
+    bul = false;
 
     constructor(private translate: TranslateService, private sharingService: SharingService, private projektService: ProjektService,
                 private oznacevanjeService: OznacevanjeService, private router: Router) {
@@ -63,7 +68,7 @@ export class OznacevanjeComponent implements OnInit {
     dobiMozneTage() {
         this.projektService.dobiMozneTage(null).subscribe(
             (mozniTagi: Tag[]) => {
-                console.log(mozniTagi);
+                this.pretvoriTageVLepObjekt(mozniTagi["mozniTagi"]);
             }, (err) => {
                 console.log(err);
             }
@@ -104,4 +109,136 @@ export class OznacevanjeComponent implements OnInit {
         );
     }
 
+    pretvoriTageVLepObjekt(tagi: Tag[]) {
+        const tagiCopy: Tag[] = JSON.parse(JSON.stringify(tagi));
+        this.mozniTagi = [];
+
+        tagi = JSON.parse(JSON.stringify(tagiCopy));
+        let stIzbrisanih = 0;
+        for (let i = 0; i < tagi.length; i++) {
+            if (tagi[i].parentTagId === null) {
+                this.mozniTagi.push(new TagParent(tagi[i].tagId, tagi[i].name, [], tagi[i].input));
+                this.vstavljenih++;
+                tagiCopy.splice(i - stIzbrisanih, 1);
+                this.bul = false;
+                stIzbrisanih++;
+
+            } else {
+                if (this.dodajStarsuCeObstaja(this.mozniTagi, tagi[i])) {
+                    tagiCopy.splice(i - stIzbrisanih, 1);
+                    this.bul = false;
+                    stIzbrisanih++;
+                } else if (this.bul) {
+                    tagiCopy.splice(i - stIzbrisanih, 1);
+                    this.bul = false;
+                    stIzbrisanih++;
+                }
+            }
+        }
+    }
+
+    dodajStarsuCeObstaja(lepiTagi: TagParent[], tag: Tag): boolean {
+        if (lepiTagi === undefined) {
+            return false;
+        }
+        for (let i = 0; i < lepiTagi.length; i++) {
+            if (lepiTagi[i].tagId === tag.parentTagId.tagId) {
+                this.vstaviVMozneTage(lepiTagi[i], tag);
+                // this.mozniTagi[i].childTags.push(new TagParent(tag.tagId, tag.name, [], tag.input));
+                return true;
+            }
+            if (lepiTagi[i].childTags.length > 0) {
+                this.dodajStarsuCeObstaja(lepiTagi[i].childTags, tag);
+            }
+        }
+        return false;
+    }
+
+    vstaviVMozneTage(parent: TagParent, child: Tag) {
+        for (let i = 0; i < this.mozniTagi.length; i++) {
+            if (this.mozniTagi[i].tagId === parent.tagId) {
+                this.mozniTagi[i].childTags.push(new TagParent(child.tagId, child.name, [], child.input));
+                this.bul = true;
+                this.vstavljenih++;
+                return;
+            }
+            for (let j = 0; j < this.mozniTagi[i].childTags.length; j++) {
+                if (this.mozniTagi[i].childTags[j].tagId === parent.tagId) {
+                    this.mozniTagi[i].childTags[j].childTags.push(new TagParent(child.tagId, child.name, [], child.input));
+                    this.bul = true;
+                    this.vstavljenih++;
+                    return;
+                }
+                for (let k = 0; k < this.mozniTagi[i].childTags[j].childTags.length; k++) {
+                    if (this.mozniTagi[i].childTags[j].childTags[k].tagId === parent.tagId) {
+                        this.mozniTagi[i].childTags[j].childTags[k].childTags.push(new TagParent(child.tagId, child.name, [], child.input));
+                        this.bul = true;
+                        this.vstavljenih++;
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+
+    // zelo bolj optimalno ampak nisem pršu do končne rešitve
+
+//     pretvoriTageVLepObjekt(tagi: Tag[]) {
+//         let tagiCopy: Tag[] = JSON.parse(JSON.stringify(tagi));
+//         let lepiTagi: TagParent[] = [];
+//
+//         while (true) {
+//             tagi = JSON.parse(JSON.stringify(tagiCopy));
+//             let stIzbrisanih = 0;
+//             for (let i = 0; i < tagi.length; i++) {
+//                 if (tagi[i].parentTagId === null) {
+//                     lepiTagi.push(new TagParent(tagi[i].tagId, tagi[i].name, [], tagi[i].input));
+//                     tagiCopy.splice(i - stIzbrisanih, 1);
+//                     stIzbrisanih++;
+//
+//                 } else {
+//                     const odgovor: MyTuple = this.dodajStarsuCeObstaja(lepiTagi, tagi[i]);
+//                     lepiTagi = odgovor.tabela;
+//                     if (odgovor.dodal) {
+//                         tagiCopy.splice(i - stIzbrisanih, 1);
+//                         stIzbrisanih++;
+//                     }
+//                 }
+//             }
+//
+//             if (tagiCopy.length === 0) {
+//                 return;
+//             }
+//         }
+//         console.log(lepiTagi);
+//     }
+//
+//     dodajStarsuCeObstaja(lepiTagi: TagParent[], tag: Tag): MyTuple {
+//         if (lepiTagi === undefined) {
+//             return {tabela: lepiTagi, dodal: false};
+//         }
+//         for (let i = 0; i < lepiTagi.length; i++) {
+//             if (lepiTagi[i].tagId === tag.parentTagId.tagId) {
+//                 lepiTagi[i].childTags.push(new TagParent(tag.tagId, tag.name, [], tag.input));
+//                 return {tabela: lepiTagi, dodal: true};
+//             }
+//
+//             const odgovor: MyTuple = this.dodajStarsuCeObstaja(lepiTagi[i].childTags, tag);
+//             if (odgovor.dodal) {
+//                 return odgovor;
+//             }
+//         }
+//         return {tabela: lepiTagi, dodal: false};
+//     }
+// }
+//
+// class MyTuple {
+//     public tabela: TagParent[];
+//     public dodal: boolean;
+//
+//     constructor(tabela: TagParent[], dodal: boolean) {
+//         this.tabela = tabela;
+//         this.dodal = dodal;
+//     }
 }

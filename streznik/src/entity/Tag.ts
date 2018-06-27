@@ -10,6 +10,9 @@ export class Tag {
     @Column()
     name: string;
 
+    @Column()
+    input: boolean;
+
     @ManyToOne(type => Tag)
     @JoinColumn({name: "parent_tag_id"})
     parentTagId: Tag;

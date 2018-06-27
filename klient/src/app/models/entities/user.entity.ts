@@ -5,4 +5,5 @@ export class User {
     public username: string;
     public password: string;
     public roleId: Role;
+    public active: boolean;
 }
