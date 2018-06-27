@@ -7,9 +7,12 @@ export class OznacevanjeService {
     constructor(private http: HttpClient) {
     }
 
-    dobiSliko(potDoSlik: string, imeSlike: string) {
-        // const url = "/projekt/dir";
-        //
-        // return this.http.post(url, {pot: pot});
-    }
+    // dobiSliko(potDoSlike: string) {
+    //     // const url = "/slika" + potDoSlike;
+    //     potDoSlike = potDoSlike.replace(/\//g , "|");
+    //     const url = "/slika/" + potDoSlike;
+    //     console.log(url);
+    //     return this.http.get(url);
+    //     // return this.http.post(url, {pot: potDoSlike});
+    // }
 }

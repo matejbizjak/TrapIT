@@ -5,6 +5,7 @@ import * as bodyParser from "body-parser";
 
 const authRouter = require('./routes/Auth.router');
 const projektRouter = require('./routes/Projekt.router');
+const slikaRouter = require('./routes/Slika.router');
 
 createConnection().then(async connection => {
 
@@ -24,6 +25,7 @@ createConnection().then(async connection => {
     // register routes
     app.use('/api/auth', authRouter);
     app.use('/api/projekt', projektRouter);
+    app.use('/api/slika', slikaRouter);
 
     // start express server
     app.listen(3000);

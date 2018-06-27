@@ -1,0 +1,16 @@
+<div class="container">
+    <div class="row mb-2">
+        <div class="col-3">
+            <button class="btn" (click)="prejsnjaSlika()">Nazaj</button>
+        </div>
+        <div class="col-3">
+            <button class="btn" (click)="naslednjaSlika()">Naprej</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <img *ngIf="potDoSlike" style="width: 100%; height: auto;"
+                 src="http://localhost:3000/api/slika/{{ potDoSlike }}">
+        </div>
+    </div>
+</div>

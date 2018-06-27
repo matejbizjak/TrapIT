@@ -1,7 +1,7 @@
 import {NextFunction, Request, Response} from "express";
 import * as fs from "fs";
 
-const ProjectService = require("../services/ProjektService");
+const ProjektService = require("../services/ProjektService");
 
 const basePath = "D:/OneDrive - inc/FRI/3. letnik/2. semester/PKP/slike";  // TODO
 // const basePath = "D:/";
