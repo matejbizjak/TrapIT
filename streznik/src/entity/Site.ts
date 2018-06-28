@@ -11,6 +11,6 @@ export class Site {
     @Column()
     name: string;
 
-    @OneToMany(type => Media, media => media.site)
+    @OneToMany(type => Media, media => media.siteId)
     medias: Media[];
 }

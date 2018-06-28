@@ -10,6 +10,6 @@ export class Path {
     @Column()
     value: string;
 
-    @OneToMany(type => Media, media => media.path)
+    @OneToMany(type => Media, media => media.pathId)
     medias: Media[];
 }
