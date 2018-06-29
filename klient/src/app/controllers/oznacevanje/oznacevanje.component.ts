@@ -6,6 +6,7 @@ import {OznacevanjeService} from "../../services/oznacevanje/oznacevanje.service
 import {Router} from "@angular/router";
 import {Tag} from "../../models/entities/tag.entity";
 import {TagParent} from "../../models/entities/custom/tag-parent.entity";
+import {MediaTag} from "../../models/entities/media-tag.entity";
 
 @Component({
     selector: "app-oznacevanje",
@@ -44,6 +45,7 @@ export class OznacevanjeComponent implements OnInit {
             });
 
         this.dobiMozneTage();
+        this.dobiTage();
     }
 
     dobiVseSlike(): Promise<any> { // dobi imena vseh slik v tej mapi
@@ -75,14 +77,6 @@ export class OznacevanjeComponent implements OnInit {
         );
     }
 
-    // dobiSliko() {
-    //     this.oznacevanjeService.dobiSliko(this.potDoSlike).subscribe((slika) => {
-    //
-    //     }, (err) => {
-    //
-    //     });
-    // }
-
     prejsnjaSlika() {
         if (this.zapStSlike !== 0) {
             this.zapStSlike--;
@@ -101,8 +95,8 @@ export class OznacevanjeComponent implements OnInit {
 
     dobiTage() {
         this.oznacevanjeService.dobiTage(this.potDoSlike).subscribe(
-            (tagi) => {
-
+            (tagi: MediaTag[]) => {
+                console.log(tagi);
             }, err => {
                 console.log(err);
             }

@@ -9,7 +9,6 @@ module.exports = class SlikaService {
     public dobiMediaId(potDoSlike: string): Promise<Media> {
         const potSplit: string[] = potDoSlike.split("/");
         const potZaIskanje = "/" + potSplit[3] + "/" + potSplit[4];
-        console.log(potZaIskanje);
 
         return new Promise<Media>((resolve, reject) => {
             this.mediaRepository.findOne({where: {name: potZaIskanje}, relations: ["siteId", "pathId"]}).then(
