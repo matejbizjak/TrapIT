@@ -32,16 +32,18 @@ export class AuthService {
     nastaviSejo(authRes: JwtResponse) {
         const decoded = jwtDecode(authRes.idToken);
         const expiresAt = decoded.exp;
-        localStorage.setItem("id_token", authRes.idToken);
-        localStorage.setItem("expires_at", JSON.stringify(expiresAt.valueOf()));
-        localStorage.setItem("user_info", JSON.stringify(decoded.user_info));
+        localStorage.setItem("trapitIdToken", authRes.idToken);
+        localStorage.setItem("trapitExpiresAt", JSON.stringify(expiresAt.valueOf()));
+        localStorage.setItem("trapitUserInfo", JSON.stringify(decoded.user_info));
         this.emitter.sporociSprememboAvtentikacije(true);
     }
 
     odjaviUporabnika() {
-        localStorage.removeItem("id_token");
-        localStorage.removeItem("expires_at");
-        localStorage.removeItem("user_info");
+        localStorage.removeItem("trapitIdToken");
+        localStorage.removeItem("trapitExpiresAt");
+        localStorage.removeItem("trapitUserInfo");
+        localStorage.removeItem("trapitImeProjekta");
+        localStorage.removeItem("trapitMozniTagi");
         this.emitter.sporociSprememboAvtentikacije(false);
     }
 
@@ -54,11 +56,11 @@ export class AuthService {
     }
 
     public trenutniUporabnik(): User {
-        return <User> JSON.parse(localStorage.getItem("user_info"));
+        return <User> JSON.parse(localStorage.getItem("trapitUserInfo"));
     }
 
     getExpiration() {
-        const expiration = localStorage.getItem("expires_at");
+        const expiration = localStorage.getItem("trapitExpiresAt");
         const expiresAt = JSON.parse(expiration) * 1000;
         return moment(expiresAt);
     }

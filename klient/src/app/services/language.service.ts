@@ -7,7 +7,7 @@ export class LanguageService {
     }
 
     dobiTrenutniJezik(): Promise<string> {
-        const jezik = localStorage.getItem("trapit_language");
+        const jezik = localStorage.getItem("trapitLanguage");
 
         return new Promise((resolve, reject) => {
             if (jezik !== null) {
@@ -19,6 +19,6 @@ export class LanguageService {
     }
 
     nastaviNovJezik(jezik: string) {
-        localStorage.setItem("trapit_language", jezik);
+        localStorage.setItem("trapitLanguage", jezik);
     }
 }
