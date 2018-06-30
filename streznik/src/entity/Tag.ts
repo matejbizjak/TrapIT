@@ -13,6 +13,9 @@ export class Tag {
     @Column()
     input: boolean;
 
+    @Column()
+    checkbox: boolean;
+
     @ManyToOne(type => Tag)
     @JoinColumn({name: "parent_tag_id"})
     parentTagId: Tag;

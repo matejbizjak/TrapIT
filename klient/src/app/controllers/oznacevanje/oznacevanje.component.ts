@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, ElementRef, Inject, OnInit, Renderer2, ViewEncapsulation} from "@angular/core";
 import {TranslateService} from "@ngx-translate/core";
 import {SharingService} from "../../services/sharing.service";
 import {ProjektService} from "../../services/projekt/projekt.service";
@@ -7,10 +7,12 @@ import {Router} from "@angular/router";
 import {Tag} from "../../models/entities/tag.entity";
 import {TagParent} from "../../models/entities/custom/tag-parent.entity";
 import {MediaTag} from "../../models/entities/media-tag.entity";
+import {DOCUMENT} from "@angular/common";
 
 @Component({
     selector: "app-oznacevanje",
-    templateUrl: "./oznacevanje.component.html"
+    templateUrl: "./oznacevanje.component.html",
+    encapsulation: ViewEncapsulation.None
 })
 export class OznacevanjeComponent implements OnInit {
     potDoMapeSlik: string;
@@ -26,7 +28,8 @@ export class OznacevanjeComponent implements OnInit {
     bul = false;
 
     constructor(private translate: TranslateService, private sharingService: SharingService, private projektService: ProjektService,
-                private oznacevanjeService: OznacevanjeService, private router: Router) {
+                private oznacevanjeService: OznacevanjeService, private router: Router, private elementRef: ElementRef,
+                private renderer: Renderer2, @Inject(DOCUMENT) private document) {
     }
 
     ngOnInit(): void {
@@ -40,12 +43,12 @@ export class OznacevanjeComponent implements OnInit {
         this.dobiVseSlike().then(
             () => {
                 this.nastaviPoDoSlike();
+                this.dobiTage();
             }, (err) => {
                 console.log(err);
             });
 
         this.dobiMozneTage();
-        this.dobiTage();
     }
 
     dobiVseSlike(): Promise<any> { // dobi imena vseh slik v tej mapi
@@ -70,7 +73,11 @@ export class OznacevanjeComponent implements OnInit {
     dobiMozneTage() {
         this.projektService.dobiMozneTage(null).subscribe(
             (mozniTagi: Tag[]) => {
-                this.pretvoriTageVLepObjekt(mozniTagi["mozniTagi"]);
+                this.pretvoriTageVLepObjekt(mozniTagi["mozniTagi"]).then(
+                    () => {
+                        // this.dodajInpute();
+                    }
+                );
             }, (err) => {
                 console.log(err);
             }
@@ -103,32 +110,125 @@ export class OznacevanjeComponent implements OnInit {
         );
     }
 
-    pretvoriTageVLepObjekt(tagi: Tag[]) {
-        const tagiCopy: Tag[] = JSON.parse(JSON.stringify(tagi));
-        this.mozniTagi = [];
+    // dodajInpute() {
+    //     const formTagi = <HTMLFormElement> document.getElementById("tagi");
+    //
+    //     // divTagi.innerHTML = "addd";
+    //     let html = "";
+    //
+    //     for (const mozniTag of this.mozniTagi) {
+    //         if (mozniTag.childTags.length > 0) {
+    //             html += "<label>" + mozniTag.name + "</label>\n" +
+    //                 "<select class='form-control form-control-sm' id='" + mozniTag.tagId + "_1" + "' name='" + mozniTag.tagId + "'>";
+    //             // html += "<option disabled selected></option>";
+    //             for (const childTag of mozniTag.childTags) {
+    //                 html += "<option value='" + childTag.tagId + "'>" + childTag.name + "</option>";
+    //             }
+    //             html += "</select>";
+    //
+    //             formTagi.innerHTML = html;
+    //
+    //
+    //             // this.elementRef.nativeElement.getElementById(mozniTag.tagId + "_1").addEventListener("click", this.posodobiPolja);
+    //             this.elementRef.nativeElement[mozniTag.tagId + "_1"].addEventListener("click", this.posodobiPolja);
+    //             // document.getElementById(mozniTag.tagId + "_1").addEventListener("click", this.posodobiPolja);
+    //         } else if (mozniTag.childTags.length === 0 && mozniTag.input === true) {
+    //             html += "<label>" + mozniTag.name + "</label>\n" +
+    //                 "<input type='number' class='form-control form-control-sm' name='" + mozniTag.tagId + "'></input>";
+    //             formTagi.innerHTML = html;
+    //         }
+    //     }
+    // }
 
-        tagi = JSON.parse(JSON.stringify(tagiCopy));
-        let stIzbrisanih = 0;
-        for (let i = 0; i < tagi.length; i++) {
-            if (tagi[i].parentTagId === null) {
-                this.mozniTagi.push(new TagParent(tagi[i].tagId, tagi[i].name, [], tagi[i].input));
-                this.vstavljenih++;
-                tagiCopy.splice(i - stIzbrisanih, 1);
-                this.bul = false;
-                stIzbrisanih++;
+    // dodajPolja(el, parentTag: TagParent) {
+    //     let izbranTag: TagParent;
+    //     for (const childTag of parentTag.childTags) {
+    //         if (childTag.tagId == el.target.value) {
+    //             izbranTag = childTag;
+    //         }
+    //     }
+    //
+    //     if (izbranTag.childTags.length > 0) {
+    //         console.log(el);
+    //         console.log(izbranTag);
+    //
+    //         const novDiv = document.createElement("div");
+    //         let html = "";
+    //
+    //         html += "<label>" + izbranTag.name + "</label>\n" +
+    //             "<select class='form-control form-control-sm' name='" + izbranTag.tagId + "'>";
+    //         html += "<option disabled selected></option>";
+    //         for (const c of izbranTag.childTags) {
+    //             html += "<option value='" + c.tagId + "'>" + c.name + "</option>";
+    //         }
+    //         html += "</select>";
+    //
+    //         novDiv.innerHTML = html;
+    //
+    //         console.log(el);
+    //     }
+    // }
 
+    jeIzbralNivo(el, parentTag: TagParent) {
+        let izbranTag: TagParent;
+        for (const childTag of parentTag.childTags) {
+            if (childTag.tagId == el.target.value) {
+                izbranTag = childTag;
+            }
+        }
+
+        for (const mozniTagiKey of this.mozniTagi) {
+            if (mozniTagiKey.tagId === parentTag.tagId) {
+                mozniTagiKey.selectedChild = izbranTag;
             } else {
-                if (this.dodajStarsuCeObstaja(this.mozniTagi, tagi[i])) {
-                    tagiCopy.splice(i - stIzbrisanih, 1);
-                    this.bul = false;
-                    stIzbrisanih++;
-                } else if (this.bul) {
-                    tagiCopy.splice(i - stIzbrisanih, 1);
-                    this.bul = false;
-                    stIzbrisanih++;
+                for (const childTag of mozniTagiKey.childTags) {
+                    if (childTag.tagId === parentTag.tagId) {
+                        childTag.selectedChild = izbranTag;
+                    }
                 }
             }
         }
+
+        console.log(this.mozniTagi);
+    }
+
+    shraniVnose() {
+        // const formData = new FormData(<HTMLFormElement> document.getElementById("tagi"));
+        // for (const pair of formData.entries()) {
+        //     console.log(pair[0] + ", " + pair[1]);
+        // }
+    }
+
+    pretvoriTageVLepObjekt(tagi: Tag[]): Promise<any> {
+        return new Promise(resolve => {
+            const tagiCopy: Tag[] = JSON.parse(JSON.stringify(tagi));
+            this.mozniTagi = [];
+
+            tagi = JSON.parse(JSON.stringify(tagiCopy));
+            let stIzbrisanih = 0;
+            for (let i = 0; i < tagi.length; i++) {
+                if (tagi[i].parentTagId === null) {
+                    this.mozniTagi.push(new TagParent(tagi[i].tagId, tagi[i].name, [], tagi[i].input, tagi[i].checkbox, null));
+                    this.vstavljenih++;
+                    tagiCopy.splice(i - stIzbrisanih, 1);
+                    this.bul = false;
+                    stIzbrisanih++;
+
+                } else {
+                    if (this.dodajStarsuCeObstaja(this.mozniTagi, tagi[i])) {
+                        tagiCopy.splice(i - stIzbrisanih, 1);
+                        this.bul = false;
+                        stIzbrisanih++;
+                    } else if (this.bul) {
+                        tagiCopy.splice(i - stIzbrisanih, 1);
+                        this.bul = false;
+                        stIzbrisanih++;
+                    }
+                }
+            }
+            console.log(this.mozniTagi);
+            resolve();
+        });
     }
 
     dodajStarsuCeObstaja(lepiTagi: TagParent[], tag: Tag): boolean {
@@ -151,21 +251,23 @@ export class OznacevanjeComponent implements OnInit {
     vstaviVMozneTage(parent: TagParent, child: Tag) {
         for (let i = 0; i < this.mozniTagi.length; i++) {
             if (this.mozniTagi[i].tagId === parent.tagId) {
-                this.mozniTagi[i].childTags.push(new TagParent(child.tagId, child.name, [], child.input));
+                this.mozniTagi[i].childTags.push(new TagParent(child.tagId, child.name, [], child.input, child.checkbox, null));
                 this.bul = true;
                 this.vstavljenih++;
                 return;
             }
             for (let j = 0; j < this.mozniTagi[i].childTags.length; j++) {
                 if (this.mozniTagi[i].childTags[j].tagId === parent.tagId) {
-                    this.mozniTagi[i].childTags[j].childTags.push(new TagParent(child.tagId, child.name, [], child.input));
+                    this.mozniTagi[i].childTags[j].childTags.push(new TagParent(child.tagId, child.name, [], child.input,
+                        child.checkbox, null));
                     this.bul = true;
                     this.vstavljenih++;
                     return;
                 }
                 for (let k = 0; k < this.mozniTagi[i].childTags[j].childTags.length; k++) {
                     if (this.mozniTagi[i].childTags[j].childTags[k].tagId === parent.tagId) {
-                        this.mozniTagi[i].childTags[j].childTags[k].childTags.push(new TagParent(child.tagId, child.name, [], child.input));
+                        this.mozniTagi[i].childTags[j].childTags[k].childTags.push(new TagParent(child.tagId, child.name, [],
+                            child.input, child.checkbox, null));
                         this.bul = true;
                         this.vstavljenih++;
                         return;

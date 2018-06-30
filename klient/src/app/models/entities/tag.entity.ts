@@ -2,5 +2,6 @@ export class Tag {
     public tagId: number;
     public name: string;
     public parentTagId: Tag;
-    input: boolean;
+    public input: boolean;
+    public checkbox: boolean;
 }

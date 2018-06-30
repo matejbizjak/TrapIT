@@ -28,3 +28,36 @@
         <div class="col-6"></div>
     </div>
 </div>
+
+<button class="btn btn-success" (click)="shraniVnose()">Shrani</button>
+
+
+<div>
+    <form id="tagi">
+        <div class="form-group" *ngFor="let tag of mozniTagi">
+            <div *ngIf="tag.childTags.length > 0">
+                <label>{{tag.name}}</label>
+                <select class="form-control form-control-sm" [id]="tag.tagId" [name]="tag.tagId"
+                        (change)="jeIzbralNivo($event, tag)">
+                    <option selected></option>
+                    <option *ngFor="let child of tag.childTags" [value]="child.tagId">{{child.name}}</option>
+                </select>
+
+                <div *ngIf="tag.selectedChild && tag.selectedChild.childTags.length > 0">
+                    <label>{{tag.selectedChild.name}}</label>
+                    <select class="form-control form-control-sm" [id]="tag.selectedChild.tagId"
+                            [name]="tag.selectedChild.tagId" (change)="jeIzbralNivo($event, tag.selectedChild)">
+                        <option disabled selected hidden></option>
+                        <option *ngFor="let child2 of tag.selectedChild.childTags" [value]="child2.tagId">
+                            {{child2.name}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div *ngIf="tag.childTags.length === 0 && tag.input">
+                <label>{{tag.name}}</label>
+                <input class="form-control form-control-sm" type="number" [name]="tag.tagId">
+            </div>
+        </div>
+    </form>
+</div>

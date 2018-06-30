@@ -7,11 +7,11 @@ export class ProjektService {
     constructor(private http: HttpClient) {
     }
 
-    // dobiDatoteke(pot: string) {
-    //     const url = "/projekt/dir";
-    //
-    //     return this.http.post(url, {pot: pot});
-    // }
+    dobiDatoteke(pot: string) {
+        const url = "/projekt/dir";
+
+        return this.http.post(url, {pot: pot});
+    }
 
     dobiMozneTage(projectId: number) {
         // const url = "/projekt/tagi/" + projectId;
