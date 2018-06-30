@@ -36,27 +36,69 @@
     <form id="tagi">
         <div class="form-group" *ngFor="let tag of mozniTagi">
             <div *ngIf="tag.childTags.length > 0">
-                <label>{{tag.name}}</label>
-                <select class="form-control form-control-sm" [id]="tag.tagId" [name]="tag.tagId"
-                        (change)="jeIzbralNivo($event, tag)">
-                    <option selected></option>
-                    <option *ngFor="let child of tag.childTags" [value]="child.tagId">{{child.name}}</option>
-                </select>
+                <div *ngIf="!tag.checkbox">
+                    <label>{{tag.name}}</label>
+                    <select class="form-control form-control-sm" [id]="tag.tagId" (change)="jeIzbralNivo($event, tag)">
+                        <option selected></option>
+                        <option *ngFor="let child of tag.childTags" [value]="child.tagId">{{child.name}}</option>
+                    </select>
+                </div>
+                <div *ngIf="tag.checkbox">
+                    <input class="form-check-input" type="checkbox" (change)="jeIzbralNivo($event, tag)">
+                    <label class="form-check-label">{{tag.name}}</label>
+                </div>
 
                 <div *ngIf="tag.selectedChild && tag.selectedChild.childTags.length > 0">
-                    <label>{{tag.selectedChild.name}}</label>
-                    <select class="form-control form-control-sm" [id]="tag.selectedChild.tagId"
-                            [name]="tag.selectedChild.tagId" (change)="jeIzbralNivo($event, tag.selectedChild)">
-                        <option disabled selected hidden></option>
-                        <option *ngFor="let child2 of tag.selectedChild.childTags" [value]="child2.tagId">
-                            {{child2.name}}
-                        </option>
-                    </select>
+                    <div *ngIf="!tag.selectedChild.checkbox">
+                        <label>{{tag.selectedChild.name}}</label>
+                        <select class="form-control form-control-sm" [id]="tag.selectedChild.tagId"
+                                (change)="jeIzbralNivo($event, tag.selectedChild)">
+                            <option selected></option>
+                            <option *ngFor="let child2 of tag.selectedChild.childTags" [value]="child2.tagId">
+                                {{child2.name}}
+                            </option>
+                        </select>
+                    </div>
+                    <div *ngIf="tag.selectedChild.checkbox">
+                        <input class="form-check-input" type="checkbox"
+                               (change)="jeIzbralNivo($event, tag.selectedChild)">
+                        <label class="form-check-label">{{tag.selectedChild.name}}</label>
+                    </div>
+
+                    <div *ngIf="tag.selectedChild.selectedChild && tag.selectedChild.selectedChild.input">
+                        <label>število</label>
+                        <input class="form-control form-control-sm" type="number" (change)="zapisiSteviloZivali($event,
+                        tag.selectedChild.selectedChild)">
+                    </div>
+
+                    <div *ngIf="tag.selectedChild.selectedChild && tag.selectedChild.selectedChild.childTags.length > 0">
+                        <div *ngIf="!tag.selectedChild.selectedChild.checkbox">
+                            <label>{{tag.selectedChild.selectedChild.name}}</label>
+                            <select class="form-control form-control-sm" [id]="tag.selectedChild.selectedChild.tagId"
+                                    (change)="jeIzbralNivo($event, tag.selectedChild.selectedChild)">
+                                <option selected></option>
+                                <option *ngFor="let child3 of tag.selectedChild.selectedChild.childTags"
+                                        [value]="child3.tagId">
+                                    {{child3.name}}
+                                </option>
+                            </select>
+                        </div>
+                        <div *ngIf="tag.selectedChild.selectedChild.checkbox">
+                            <input class="form-check-input" type="checkbox" (change)="jeIzbralNivo($event, tag)">
+                            <label class="form-check-label">{{tag.selectedChild.selectedChild.name}}</label>
+                        </div>
+
+                        <div *ngIf="tag.selectedChild.selectedChild.selectedChild && tag.selectedChild.selectedChild.selectedChild.input">
+                            <label>število</label>
+                            <input class="form-control form-control-sm" type="number" (change)="zapisiSteviloZivali($event,
+                        tag.selectedChild.selectedChild.selectedChild)">
+                        </div>
+                    </div>
                 </div>
             </div>
             <div *ngIf="tag.childTags.length === 0 && tag.input">
                 <label>{{tag.name}}</label>
-                <input class="form-control form-control-sm" type="number" [name]="tag.tagId">
+                <input class="form-control form-control-sm" type="number">
             </div>
         </div>
     </form>

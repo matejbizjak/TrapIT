@@ -170,10 +170,22 @@ export class OznacevanjeComponent implements OnInit {
     // }
 
     jeIzbralNivo(el, parentTag: TagParent) {
+
         let izbranTag: TagParent;
-        for (const childTag of parentTag.childTags) {
-            if (childTag.tagId == el.target.value) {
-                izbranTag = childTag;
+
+        if (parentTag.checkbox) {
+            for (const childTag of parentTag.childTags) {
+                if (el.target.checked && childTag.name === "true") {
+                    izbranTag = childTag;
+                } else if (el.target.checked === false && childTag.name === "false") {
+                    izbranTag = childTag;
+                }
+            }
+        } else {
+            for (const childTag of parentTag.childTags) {
+                if (childTag.tagId === Number(el.target.value)) {
+                    izbranTag = childTag;
+                }
             }
         }
 
@@ -184,10 +196,25 @@ export class OznacevanjeComponent implements OnInit {
                 for (const childTag of mozniTagiKey.childTags) {
                     if (childTag.tagId === parentTag.tagId) {
                         childTag.selectedChild = izbranTag;
+                    } else {
+                        for (const childTag1 of childTag.childTags) {
+                            if (childTag1.tagId === parentTag.tagId) {
+                                childTag1.selectedChild = izbranTag;
+                            }
+                        }
                     }
                 }
             }
         }
+
+        console.log(this.mozniTagi);
+    }
+
+    zapisiSteviloZivali(el, parentTag: TagParent) {
+        parentTag.inputValue = Number(el.target.value);
+
+        console.log(el);
+        console.log(el.target.value);
 
         console.log(this.mozniTagi);
     }
@@ -208,7 +235,7 @@ export class OznacevanjeComponent implements OnInit {
             let stIzbrisanih = 0;
             for (let i = 0; i < tagi.length; i++) {
                 if (tagi[i].parentTagId === null) {
-                    this.mozniTagi.push(new TagParent(tagi[i].tagId, tagi[i].name, [], tagi[i].input, tagi[i].checkbox, null));
+                    this.mozniTagi.push(new TagParent(tagi[i].tagId, tagi[i].name, [], tagi[i].input, tagi[i].checkbox, null, null));
                     this.vstavljenih++;
                     tagiCopy.splice(i - stIzbrisanih, 1);
                     this.bul = false;
@@ -251,7 +278,7 @@ export class OznacevanjeComponent implements OnInit {
     vstaviVMozneTage(parent: TagParent, child: Tag) {
         for (let i = 0; i < this.mozniTagi.length; i++) {
             if (this.mozniTagi[i].tagId === parent.tagId) {
-                this.mozniTagi[i].childTags.push(new TagParent(child.tagId, child.name, [], child.input, child.checkbox, null));
+                this.mozniTagi[i].childTags.push(new TagParent(child.tagId, child.name, [], child.input, child.checkbox, null, null));
                 this.bul = true;
                 this.vstavljenih++;
                 return;
@@ -259,7 +286,7 @@ export class OznacevanjeComponent implements OnInit {
             for (let j = 0; j < this.mozniTagi[i].childTags.length; j++) {
                 if (this.mozniTagi[i].childTags[j].tagId === parent.tagId) {
                     this.mozniTagi[i].childTags[j].childTags.push(new TagParent(child.tagId, child.name, [], child.input,
-                        child.checkbox, null));
+                        child.checkbox, null, null));
                     this.bul = true;
                     this.vstavljenih++;
                     return;
@@ -267,7 +294,7 @@ export class OznacevanjeComponent implements OnInit {
                 for (let k = 0; k < this.mozniTagi[i].childTags[j].childTags.length; k++) {
                     if (this.mozniTagi[i].childTags[j].childTags[k].tagId === parent.tagId) {
                         this.mozniTagi[i].childTags[j].childTags[k].childTags.push(new TagParent(child.tagId, child.name, [],
-                            child.input, child.checkbox, null));
+                            child.input, child.checkbox, null, null));
                         this.bul = true;
                         this.vstavljenih++;
                         return;
