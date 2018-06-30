@@ -35,6 +35,8 @@
 <div>
     <form id="tagi">
         <div class="form-group" *ngFor="let tag of mozniTagi">
+            <img src="../../../assets/images/plus.png" width="8px" height="8px" style="cursor: pointer"
+                 (click)="dodajSeEnTag(tag)">
             <div *ngIf="tag.childTags.length > 0">
                 <div *ngIf="!tag.checkbox">
                     <label>{{tag.name}}</label>

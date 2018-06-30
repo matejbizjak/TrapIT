@@ -212,11 +212,15 @@ export class OznacevanjeComponent implements OnInit {
 
     zapisiSteviloZivali(el, parentTag: TagParent) {
         parentTag.inputValue = Number(el.target.value);
+    }
 
-        console.log(el);
-        console.log(el.target.value);
-
-        console.log(this.mozniTagi);
+    dodajSeEnTag(tag: TagParent) {
+        for (let i = 0; i < this.mozniTagi.length; i++) {
+            if (this.mozniTagi[i].tagId === tag.tagId) {
+                this.mozniTagi.splice(i, 0, JSON.parse(JSON.stringify(tag)));
+                return;
+            }
+        }
     }
 
     shraniVnose() {
