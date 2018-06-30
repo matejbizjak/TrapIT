@@ -37,6 +37,9 @@
         <div class="form-group" *ngFor="let tag of mozniTagi">
             <img src="../../../assets/images/plus.png" width="8px" height="8px" style="cursor: pointer"
                  (click)="dodajSeEnTag(tag)">
+            <img *ngIf="preveriCeLahkoOdstraniTag(tag)" src="../../../assets/images/minus.png" width="8px" height="8px"
+                 style="cursor: pointer"
+                 (click)="odstraniTag(tag)" class="ml-2">
             <div *ngIf="tag.childTags.length > 0">
                 <div *ngIf="!tag.checkbox">
                     <label>{{tag.name}}</label>

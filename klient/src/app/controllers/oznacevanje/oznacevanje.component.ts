@@ -190,15 +190,15 @@ export class OznacevanjeComponent implements OnInit {
         }
 
         for (const mozniTagiKey of this.mozniTagi) {
-            if (mozniTagiKey.tagId === parentTag.tagId) {
+            if (mozniTagiKey === parentTag) {
                 mozniTagiKey.selectedChild = izbranTag;
             } else {
                 for (const childTag of mozniTagiKey.childTags) {
-                    if (childTag.tagId === parentTag.tagId) {
+                    if (childTag === parentTag) {
                         childTag.selectedChild = izbranTag;
                     } else {
                         for (const childTag1 of childTag.childTags) {
-                            if (childTag1.tagId === parentTag.tagId) {
+                            if (childTag1 === parentTag) {
                                 childTag1.selectedChild = izbranTag;
                             }
                         }
@@ -212,14 +212,35 @@ export class OznacevanjeComponent implements OnInit {
 
     zapisiSteviloZivali(el, parentTag: TagParent) {
         parentTag.inputValue = Number(el.target.value);
+        console.log(this.mozniTagi);
     }
 
     dodajSeEnTag(tag: TagParent) {
         for (let i = 0; i < this.mozniTagi.length; i++) {
             if (this.mozniTagi[i].tagId === tag.tagId) {
-                this.mozniTagi.splice(i, 0, JSON.parse(JSON.stringify(tag)));
+                const copy: TagParent = new TagParent(null, null, null, null, null, null, null);
+                Object.assign(copy, JSON.parse(JSON.stringify(tag)));
+                this.mozniTagi.splice(i, 0, copy);
                 return;
             }
+        }
+    }
+
+    preveriCeLahkoOdstraniTag(tag: TagParent): boolean {
+        let stTagovTeVrste = 0;
+        for (let i = 0; i < this.mozniTagi.length; i++) {
+            if (this.mozniTagi[i].tagId === tag.tagId) {
+                stTagovTeVrste++;
+            }
+        }
+        console.log(stTagovTeVrste);
+        return stTagovTeVrste > 1;
+    }
+
+    odstraniTag(tag: TagParent) {
+        const index = this.mozniTagi.indexOf(tag);
+        if (index > -1) {
+            this.mozniTagi.splice(index, 1);
         }
     }
 
