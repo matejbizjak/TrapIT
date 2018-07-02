@@ -206,21 +206,19 @@ export class OznacevanjeComponent implements OnInit {
                 }
             }
         }
-
-        console.log(this.mozniTagi);
     }
 
     zapisiSteviloZivali(el, parentTag: TagParent) {
         parentTag.inputValue = Number(el.target.value);
-        console.log(this.mozniTagi);
     }
 
     dodajSeEnTag(tag: TagParent) {
         for (let i = 0; i < this.mozniTagi.length; i++) {
-            if (this.mozniTagi[i].tagId === tag.tagId) {
+            if (this.mozniTagi[i] === tag) {
                 const copy: TagParent = new TagParent(null, null, null, null, null, null, null);
                 Object.assign(copy, JSON.parse(JSON.stringify(tag)));
-                this.mozniTagi.splice(i, 0, copy);
+                copy.selectedChild = null;
+                this.mozniTagi.splice(i + 1, 0, copy);
                 return;
             }
         }
@@ -233,7 +231,6 @@ export class OznacevanjeComponent implements OnInit {
                 stTagovTeVrste++;
             }
         }
-        console.log(stTagovTeVrste);
         return stTagovTeVrste > 1;
     }
 
@@ -278,7 +275,6 @@ export class OznacevanjeComponent implements OnInit {
                     }
                 }
             }
-            console.log(this.mozniTagi);
             resolve();
         });
     }
