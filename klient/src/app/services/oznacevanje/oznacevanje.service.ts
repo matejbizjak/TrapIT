@@ -29,7 +29,6 @@ export class OznacevanjeService {
         return new Promise((resolve, reject) => {
             this.pretovriVOblikoZaPosiljat(tagi).then(
                 (oznaceniTagi: TagZInputValue[]) => {
-                    console.log(oznaceniTagi);
                     const podatki = new TagShrani(this.auth.trenutniUporabnik(), potDoSlike, oznaceniTagi, Array.from(tagiZaProjektId));
                     const url = "/slika/tagi/";
                     this.http.post(url, {podatki: podatki}).subscribe((res) => {
