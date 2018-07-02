@@ -27,7 +27,6 @@ export class ProjektComponent implements OnInit {
         this.projektService.dobiDatoteke(this.pot).subscribe(
             (files) => {
                 this.files = files["files"];
-                console.log(files);
             }, (err) => {
                 console.log(err);
             }

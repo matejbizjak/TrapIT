@@ -26,9 +26,6 @@ export class OznacevanjeService {
     }
 
     shraniIzpolnjeneTage(potDoSlike: string, tagi: TagParent[], tagiZaProjektId: Set<number>): Promise<any> {
-        console.log(tagiZaProjektId, "kurac");
-        const a = Array.from(tagiZaProjektId);
-        console.log(a);
         return new Promise((resolve, reject) => {
             this.pretovriVOblikoZaPosiljat(tagi).then(
                 (oznaceniTagi: TagZInputValue[]) => {

@@ -42,16 +42,16 @@ export class OznacevanjeComponent implements OnInit {
 
         this.zapStSlike = 0;
 
-        this.dobiVseSlike().then(
-            () => {
-                this.nastaviPoDoSlike();
-                this.dobiTage();
-            }, (err) => {
-                console.log(err);
-            });
-
         this.mozniTagiSamoId = new Set();
-        this.dobiMozneTage();
+        this.dobiMozneTage().then(() => {
+                this.dobiVseSlike().then(() => {
+                    this.nastaviPoDoSlike();
+                    this.dobiTage();
+                }, (err) => {
+                    console.log(err);
+                });
+            }
+        );
     }
 
     dobiVseSlike(): Promise<any> { // dobi imena vseh slik v tej mapi
@@ -73,19 +73,23 @@ export class OznacevanjeComponent implements OnInit {
         this.potDoSlike = this.potDoSlike.replace(/\//g, "|");
     }
 
-    dobiMozneTage() {
-        this.projektService.dobiMozneTage(null).subscribe(
-            (mozniTagi: Tag[]) => {
-                this.pretvoriTageVLepObjekt(mozniTagi["mozniTagi"]).then(
-                    () => {
-                        this.mozniTagiCopy = [];
-                        Object.assign(this.mozniTagiCopy, JSON.parse(JSON.stringify(this.mozniTagi)));
-                    }
-                );
-            }, (err) => {
-                console.log(err);
-            }
-        );
+    dobiMozneTage(): Promise<any> {
+        return new Promise<any>((resolve, reject) => {
+            this.projektService.dobiMozneTage(null).subscribe(
+                (mozniTagi: Tag[]) => {
+                    this.pretvoriTageVLepObjekt(mozniTagi["mozniTagi"]).then(
+                        () => {
+                            this.mozniTagiCopy = [];
+                            Object.assign(this.mozniTagiCopy, JSON.parse(JSON.stringify(this.mozniTagi)));
+                            resolve();
+                        }
+                    );
+                }, (err) => {
+                    console.log(err);
+                    reject();
+                }
+            );
+        });
     }
 
     prejsnjaSlika() {
@@ -103,81 +107,74 @@ export class OznacevanjeComponent implements OnInit {
             this.nastaviPoDoSlike();
             this.dobiTage();
             Object.assign(this.mozniTagi, JSON.parse(JSON.stringify(this.mozniTagiCopy)));
-            console.log(this.mozniTagi);
         }
     }
 
     dobiTage() {
         this.oznacevanjeService.dobiTage(this.potDoSlike).subscribe(
             (tagi: MediaTag[]) => {
-                console.log(tagi);
+                this.napolniZeZnaneTage(tagi["tagi"]);
             }, err => {
                 console.log(err);
             }
         );
     }
 
-    // dodajInpute() {
-    //     const formTagi = <HTMLFormElement> document.getElementById("tagi");
-    //
-    //     // divTagi.innerHTML = "addd";
-    //     let html = "";
-    //
-    //     for (const mozniTag of this.mozniTagi) {
-    //         if (mozniTag.childTags.length > 0) {
-    //             html += "<label>" + mozniTag.name + "</label>\n" +
-    //                 "<select class='form-control form-control-sm' id='" + mozniTag.tagId + "_1" + "' name='" + mozniTag.tagId + "'>";
-    //             // html += "<option disabled selected></option>";
-    //             for (const childTag of mozniTag.childTags) {
-    //                 html += "<option value='" + childTag.tagId + "'>" + childTag.name + "</option>";
-    //             }
-    //             html += "</select>";
-    //
-    //             formTagi.innerHTML = html;
-    //
-    //
-    //             // this.elementRef.nativeElement.getElementById(mozniTag.tagId + "_1").addEventListener("click", this.posodobiPolja);
-    //             this.elementRef.nativeElement[mozniTag.tagId + "_1"].addEventListener("click", this.posodobiPolja);
-    //             // document.getElementById(mozniTag.tagId + "_1").addEventListener("click", this.posodobiPolja);
-    //         } else if (mozniTag.childTags.length === 0 && mozniTag.input === true) {
-    //             html += "<label>" + mozniTag.name + "</label>\n" +
-    //                 "<input type='number' class='form-control form-control-sm' name='" + mozniTag.tagId + "'></input>";
-    //             formTagi.innerHTML = html;
-    //         }
-    //     }
-    // }
+    napolniZeZnaneTage(tagi: MediaTag[]) {
+        const stNaPrvemNivoju = {};
 
-    // dodajPolja(el, parentTag: TagParent) {
-    //     let izbranTag: TagParent;
-    //     for (const childTag of parentTag.childTags) {
-    //         if (childTag.tagId == el.target.value) {
-    //             izbranTag = childTag;
-    //         }
-    //     }
-    //
-    //     if (izbranTag.childTags.length > 0) {
-    //         console.log(el);
-    //         console.log(izbranTag);
-    //
-    //         const novDiv = document.createElement("div");
-    //         let html = "";
-    //
-    //         html += "<label>" + izbranTag.name + "</label>\n" +
-    //             "<select class='form-control form-control-sm' name='" + izbranTag.tagId + "'>";
-    //         html += "<option disabled selected></option>";
-    //         for (const c of izbranTag.childTags) {
-    //             html += "<option value='" + c.tagId + "'>" + c.name + "</option>";
-    //         }
-    //         html += "</select>";
-    //
-    //         novDiv.innerHTML = html;
-    //
-    //         console.log(el);
-    //     }
-    // }
+        for (const tag of this.mozniTagi) {
+            stNaPrvemNivoju[Number(tag.tagId)] = 0;
+        }
+
+        for (let i = 0; i < tagi.length; i++) {
+            if (stNaPrvemNivoju.hasOwnProperty(Number(tagi[i].tagId.tagId))) {
+                stNaPrvemNivoju[Number(tagi[i].tagId.tagId)]++;
+
+                if (!tagi[i].inputValue) {
+                    tagi.splice(i, 1);
+                    i--;
+                }
+            }
+        }
+        console.log(tagi);
+
+        for (let i = 0; i < this.mozniTagi.length; i++) {
+            if (stNaPrvemNivoju[Number(this.mozniTagi[i].tagId)] > 1) {
+                for (let j = 0; j < stNaPrvemNivoju[Number(this.mozniTagi[i].tagId)] - 1; j++) {
+                    const copy: TagParent = new TagParent(null, null, null, null, null, null, null);
+                    Object.assign(copy, JSON.parse(JSON.stringify(this.mozniTagi[i])));
+                    i++;
+                    this.mozniTagi.splice(i, 0, copy);
+                }
+            }
+        }
+
+        // konec dodajanja praznih na prvem nivoju
+
+        for (const tag of tagi) {
+            this.najdiInNastaviIzbranega(tag);
+        }
+    }
+
+    najdiInNastaviIzbranega(tag: MediaTag) {
+        for (const tag1 of this.mozniTagi) {
+            if (tag1.tagId === tag.tagId.tagId) {
+                tag1.inputValue = tag.inputValue; // TODO osveži nekako podatek na zaslonu
+            }
+
+            for (const tag2 of tag1.childTags) {
+                if (tag2.tagId === tag.tagId.tagId) {
+                    tag2.inputValue = tag.inputValue;
+                    tag1.selectedChild = tag2;
+                }
+
+                // TODO nadaljuj na naslednjih nivojih
+            }
+        }
+    }
 
     jeIzbralNivo(el, parentTag: TagParent) {
-
         let izbranTag: TagParent;
 
         if (parentTag.checkbox) {
@@ -258,9 +255,9 @@ export class OznacevanjeComponent implements OnInit {
     shraniVnose() {
         this.oznacevanjeService.shraniIzpolnjeneTage(this.potDoSlike, this.mozniTagi, this.mozniTagiSamoId).then(
             () => {
-
+                console.log("SHRANJENO");
             }, (err) => {
-
+                console.log(err);
             }
         );
     }
