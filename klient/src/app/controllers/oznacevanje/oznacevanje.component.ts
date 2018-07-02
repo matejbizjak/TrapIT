@@ -137,12 +137,11 @@ export class OznacevanjeComponent implements OnInit {
                 }
             }
         }
-        console.log(tagi);
 
         for (let i = 0; i < this.mozniTagi.length; i++) {
             if (stNaPrvemNivoju[Number(this.mozniTagi[i].tagId)] > 1) {
                 for (let j = 0; j < stNaPrvemNivoju[Number(this.mozniTagi[i].tagId)] - 1; j++) {
-                    const copy: TagParent = new TagParent(null, null, null, null, null, null, null);
+                    const copy: TagParent = new TagParent(null, null, null, null, null, null, null, null, null);
                     Object.assign(copy, JSON.parse(JSON.stringify(this.mozniTagi[i])));
                     i++;
                     this.mozniTagi.splice(i, 0, copy);
@@ -150,26 +149,52 @@ export class OznacevanjeComponent implements OnInit {
             }
         }
 
-        // konec dodajanja praznih na prvem nivoju
 
+        // konec dodajanja praznih na prvem nivoju
+        console.log("POLNEM IZBRANE", this.mozniTagi);
+        console.log(tagi);
         for (const tag of tagi) {
             this.najdiInNastaviIzbranega(tag);
         }
     }
 
     najdiInNastaviIzbranega(tag: MediaTag) {
+        if (tag.tagId.tagId === 181) {
+            console.log("a");
+        }
         for (const tag1 of this.mozniTagi) {
-            if (tag1.tagId === tag.tagId.tagId) {
-                tag1.inputValue = tag.inputValue; // TODO osveži nekako podatek na zaslonu
+            if (tag1.tagId === tag.tagId.tagId && tag1.napolnjen !== true) {
+                tag1.inputValue = tag.inputValue;
+                tag1.napolnjen = true;
+                return;
             }
 
             for (const tag2 of tag1.childTags) {
-                if (tag2.tagId === tag.tagId.tagId) {
+                if (tag2.tagId === tag.tagId.tagId && tag1.napolnjen !== true) {
                     tag2.inputValue = tag.inputValue;
                     tag1.selectedChild = tag2;
+                    tag1.napolnjen = true;
+                    return;
                 }
 
-                // TODO nadaljuj na naslednjih nivojih
+                for (const tag3 of tag2.childTags) {
+                    if (tag3.tagId === tag.tagId.tagId && tag1.selectedChild.tagId === tag2.tagId && tag2.napolnjen !== true) {
+                        tag3.inputValue = tag.inputValue;
+                        tag2.selectedChild = tag3;
+                        tag2.napolnjen = true;
+                        return;
+                    }
+
+                    for (const tag4 of tag3.childTags) {
+                        if (tag4.tagId === tag.tagId.tagId && tag1.selectedChild.tagId === tag2.tagId &&
+                            tag2.selectedChild.tagId === tag3.tagId && tag3.napolnjen !== true) {
+                            tag4.inputValue = tag.inputValue;
+                            tag3.selectedChild = tag4;
+                            tag3.napolnjen = true;
+                            return;
+                        }
+                    }
+                }
             }
         }
     }
@@ -179,9 +204,9 @@ export class OznacevanjeComponent implements OnInit {
 
         if (parentTag.checkbox) {
             for (const childTag of parentTag.childTags) {
-                if (el.target.checked && childTag.name === "true") {
+                if (parentTag.checkboxValue && childTag.name === "true") {
                     izbranTag = childTag;
-                } else if (el.target.checked === false && childTag.name === "false") {
+                } else if (parentTag.checkboxValue === false && childTag.name === "false") {
                     izbranTag = childTag;
                 }
             }
@@ -210,16 +235,18 @@ export class OznacevanjeComponent implements OnInit {
                 }
             }
         }
+        console.log(this.mozniTagi);
     }
 
     zapisiSteviloZivali(el, parentTag: TagParent) {
+        console.log(this.mozniTagi);
         parentTag.inputValue = Number(el.target.value);
     }
 
     dodajSeEnTag(tag: TagParent) {
         for (let i = 0; i < this.mozniTagi.length; i++) {
             if (this.mozniTagi[i] === tag) {
-                const copy: TagParent = new TagParent(null, null, null, null, null, null, null);
+                const copy: TagParent = new TagParent(null, null, null, null, null, null, null, null, null);
                 Object.assign(copy, JSON.parse(JSON.stringify(tag)));
                 copy.selectedChild = null;
                 this.mozniTagi.splice(i + 1, 0, copy);
@@ -253,9 +280,12 @@ export class OznacevanjeComponent implements OnInit {
     }
 
     shraniVnose() {
+        console.log(this.mozniTagi);
         this.oznacevanjeService.shraniIzpolnjeneTage(this.potDoSlike, this.mozniTagi, this.mozniTagiSamoId).then(
             () => {
+                console.log(this.mozniTagi);
                 console.log("SHRANJENO");
+                console.log(this.mozniTagi);
             }, (err) => {
                 console.log(err);
             }
@@ -271,7 +301,8 @@ export class OznacevanjeComponent implements OnInit {
             let stIzbrisanih = 0;
             for (let i = 0; i < tagi.length; i++) {
                 if (tagi[i].parentTagId === null) {
-                    this.mozniTagi.push(new TagParent(tagi[i].tagId, tagi[i].name, [], tagi[i].input, tagi[i].checkbox, null, null));
+                    this.mozniTagi.push(new TagParent(tagi[i].tagId, tagi[i].name, [], tagi[i].input, tagi[i].checkbox,
+                        null, null, null, null));
                     this.mozniTagiSamoId.add(tagi[i].tagId);
                     this.vstavljenih++;
                     tagiCopy.splice(i - stIzbrisanih, 1);
@@ -313,7 +344,8 @@ export class OznacevanjeComponent implements OnInit {
     vstaviVMozneTage(parent: TagParent, child: Tag) {
         for (let i = 0; i < this.mozniTagi.length; i++) {
             if (this.mozniTagi[i].tagId === parent.tagId) {
-                this.mozniTagi[i].childTags.push(new TagParent(child.tagId, child.name, [], child.input, child.checkbox, null, null));
+                this.mozniTagi[i].childTags.push(new TagParent(child.tagId, child.name, [], child.input, child.checkbox,
+                    null, null, null, null));
                 this.mozniTagiSamoId.add(child.tagId);
                 this.bul = true;
                 this.vstavljenih++;
@@ -322,7 +354,7 @@ export class OznacevanjeComponent implements OnInit {
             for (let j = 0; j < this.mozniTagi[i].childTags.length; j++) {
                 if (this.mozniTagi[i].childTags[j].tagId === parent.tagId) {
                     this.mozniTagi[i].childTags[j].childTags.push(new TagParent(child.tagId, child.name, [], child.input,
-                        child.checkbox, null, null));
+                        child.checkbox, null, null, null, null));
                     this.mozniTagiSamoId.add(child.tagId);
                     this.bul = true;
                     this.vstavljenih++;
@@ -331,7 +363,7 @@ export class OznacevanjeComponent implements OnInit {
                 for (let k = 0; k < this.mozniTagi[i].childTags[j].childTags.length; k++) {
                     if (this.mozniTagi[i].childTags[j].childTags[k].tagId === parent.tagId) {
                         this.mozniTagi[i].childTags[j].childTags[k].childTags.push(new TagParent(child.tagId, child.name, [],
-                            child.input, child.checkbox, null, null));
+                            child.input, child.checkbox, null, null, null, null));
                         this.mozniTagiSamoId.add(child.tagId);
                         this.bul = true;
                         this.vstavljenih++;
