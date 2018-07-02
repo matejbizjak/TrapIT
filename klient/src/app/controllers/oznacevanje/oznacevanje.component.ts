@@ -97,6 +97,7 @@ export class OznacevanjeComponent implements OnInit {
             this.zapStSlike--;
             this.nastaviPoDoSlike();
             this.dobiTage();
+            this.mozniTagi = new Array();
             Object.assign(this.mozniTagi, JSON.parse(JSON.stringify(this.mozniTagiCopy)));
         }
     }
@@ -106,6 +107,7 @@ export class OznacevanjeComponent implements OnInit {
             this.zapStSlike++;
             this.nastaviPoDoSlike();
             this.dobiTage();
+            this.mozniTagi = new Array();
             Object.assign(this.mozniTagi, JSON.parse(JSON.stringify(this.mozniTagiCopy)));
         }
     }
@@ -114,8 +116,8 @@ export class OznacevanjeComponent implements OnInit {
         this.oznacevanjeService.dobiTage(this.potDoSlike).subscribe(
             (tagi: MediaTag[]) => {
                 this.napolniZeZnaneTage(tagi["tagi"]);
-            }, err => {
-                console.log(err);
+            }, (err) => {
+                console.log(err.error);
             }
         );
     }
@@ -148,20 +150,14 @@ export class OznacevanjeComponent implements OnInit {
                 }
             }
         }
-
-
         // konec dodajanja praznih na prvem nivoju
-        console.log("POLNEM IZBRANE", this.mozniTagi);
-        console.log(tagi);
+
         for (const tag of tagi) {
             this.najdiInNastaviIzbranega(tag);
         }
     }
 
     najdiInNastaviIzbranega(tag: MediaTag) {
-        if (tag.tagId.tagId === 181) {
-            console.log("a");
-        }
         for (const tag1 of this.mozniTagi) {
             if (tag1.tagId === tag.tagId.tagId && tag1.napolnjen !== true) {
                 tag1.inputValue = tag.inputValue;
@@ -174,6 +170,7 @@ export class OznacevanjeComponent implements OnInit {
                     tag2.inputValue = tag.inputValue;
                     tag1.selectedChild = tag2;
                     tag1.napolnjen = true;
+                    tag1.checkboxValue = tag.tagId.name === "true";
                     return;
                 }
 
@@ -235,11 +232,9 @@ export class OznacevanjeComponent implements OnInit {
                 }
             }
         }
-        console.log(this.mozniTagi);
     }
 
     zapisiSteviloZivali(el, parentTag: TagParent) {
-        console.log(this.mozniTagi);
         parentTag.inputValue = Number(el.target.value);
     }
 
@@ -280,12 +275,9 @@ export class OznacevanjeComponent implements OnInit {
     }
 
     shraniVnose() {
-        console.log(this.mozniTagi);
         this.oznacevanjeService.shraniIzpolnjeneTage(this.potDoSlike, this.mozniTagi, this.mozniTagiSamoId).then(
             () => {
-                console.log(this.mozniTagi);
-                console.log("SHRANJENO");
-                console.log(this.mozniTagi);
+
             }, (err) => {
                 console.log(err);
             }

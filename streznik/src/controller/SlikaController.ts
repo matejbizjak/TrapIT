@@ -43,15 +43,18 @@ module.exports.dobiTage = function (req: Request, res: Response, next: NextFunct
     const potDoSlike: string = req.params.pot.replace(/\|/g, "/");
     slikaService.dobiMediaId(potDoSlike).then(
         (media: Media) => {
-
-            slikaService.dobiTage(media.mediaId).then(
-                (tagi: MediaTag[]) => {
-                    res.status(200).json({tagi: tagi});
-                }, (err) => {
-                    res.status(400).json({err: err});
-                }
-            )
-
+            if (media !== undefined) {
+                slikaService.dobiTage(media.mediaId).then(
+                    (tagi: MediaTag[]) => {
+                        res.status(200).json({tagi: tagi});
+                    }, (err) => {
+                        res.status(400).json({err: err});
+                    }
+                )
+            }
+            else {
+                res.status(400).json({err: "Podatkov o sliki ni v bazi"});
+            }
         }, (err) => {
             res.status(400).json({err: err});
         }
