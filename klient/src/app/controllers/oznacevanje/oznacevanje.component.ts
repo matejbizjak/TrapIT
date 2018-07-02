@@ -93,6 +93,7 @@ export class OznacevanjeComponent implements OnInit {
     }
 
     prejsnjaSlika() {
+        this.shraniVnose();
         if (this.zapStSlike !== 0) {
             this.zapStSlike--;
             this.nastaviPoDoSlike();
@@ -103,6 +104,7 @@ export class OznacevanjeComponent implements OnInit {
     }
 
     naslednjaSlika() {
+        this.shraniVnose();
         if (this.zapStSlike !== this.stVsehSlikVMapi - 1) {
             this.zapStSlike++;
             this.nastaviPoDoSlike();
