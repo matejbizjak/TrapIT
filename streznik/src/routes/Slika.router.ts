@@ -24,6 +24,7 @@ const prijavljen = jwt({
 // router.post('/login', prijavljen, security.jeReviewer, AuthController.login);
 
 router.get('/slika/:pot', SlikaController.dobiSliko);
+router.post('/tagi/', SlikaController.shraniTage);
 router.get('/tagi/:pot', SlikaController.dobiTage);
 
 module.exports = router;

@@ -23,4 +23,11 @@ export class MediaTag {
 
     @Column({name: "input_value"})
     inputValue: number;
+
+    constructor(userId: User, tagId: Tag, mediaId: Media, inputValue: number) {
+        this.userId = userId;
+        this.tagId = tagId;
+        this.mediaId = mediaId;
+        this.inputValue = inputValue;
+    }
 }

@@ -22,6 +22,8 @@ export class OznacevanjeComponent implements OnInit {
     potDoSlike: string;
     projectId: number; // TODO dovoli samo tage, ki so definirani za ta projekt
     mozniTagi: TagParent[];
+    mozniTagiCopy: TagParent[];
+    mozniTagiSamoId: Set<number>;
 
     // stupid
     vstavljenih = 0;
@@ -48,6 +50,7 @@ export class OznacevanjeComponent implements OnInit {
                 console.log(err);
             });
 
+        this.mozniTagiSamoId = new Set();
         this.dobiMozneTage();
     }
 
@@ -75,7 +78,8 @@ export class OznacevanjeComponent implements OnInit {
             (mozniTagi: Tag[]) => {
                 this.pretvoriTageVLepObjekt(mozniTagi["mozniTagi"]).then(
                     () => {
-                        // this.dodajInpute();
+                        this.mozniTagiCopy = [];
+                        Object.assign(this.mozniTagiCopy, JSON.parse(JSON.stringify(this.mozniTagi)));
                     }
                 );
             }, (err) => {
@@ -89,6 +93,7 @@ export class OznacevanjeComponent implements OnInit {
             this.zapStSlike--;
             this.nastaviPoDoSlike();
             this.dobiTage();
+            Object.assign(this.mozniTagi, JSON.parse(JSON.stringify(this.mozniTagiCopy)));
         }
     }
 
@@ -97,6 +102,8 @@ export class OznacevanjeComponent implements OnInit {
             this.zapStSlike++;
             this.nastaviPoDoSlike();
             this.dobiTage();
+            Object.assign(this.mozniTagi, JSON.parse(JSON.stringify(this.mozniTagiCopy)));
+            console.log(this.mozniTagi);
         }
     }
 
@@ -224,6 +231,13 @@ export class OznacevanjeComponent implements OnInit {
         }
     }
 
+    preveriCeLahkoDodaTag(tag: TagParent): boolean {
+        if (tag.checkbox || tag.input) {
+            return false;
+        }
+        return true;
+    }
+
     preveriCeLahkoOdstraniTag(tag: TagParent): boolean {
         let stTagovTeVrste = 0;
         for (let i = 0; i < this.mozniTagi.length; i++) {
@@ -242,10 +256,13 @@ export class OznacevanjeComponent implements OnInit {
     }
 
     shraniVnose() {
-        // const formData = new FormData(<HTMLFormElement> document.getElementById("tagi"));
-        // for (const pair of formData.entries()) {
-        //     console.log(pair[0] + ", " + pair[1]);
-        // }
+        this.oznacevanjeService.shraniIzpolnjeneTage(this.potDoSlike, this.mozniTagi, this.mozniTagiSamoId).then(
+            () => {
+
+            }, (err) => {
+
+            }
+        );
     }
 
     pretvoriTageVLepObjekt(tagi: Tag[]): Promise<any> {
@@ -258,6 +275,7 @@ export class OznacevanjeComponent implements OnInit {
             for (let i = 0; i < tagi.length; i++) {
                 if (tagi[i].parentTagId === null) {
                     this.mozniTagi.push(new TagParent(tagi[i].tagId, tagi[i].name, [], tagi[i].input, tagi[i].checkbox, null, null));
+                    this.mozniTagiSamoId.add(tagi[i].tagId);
                     this.vstavljenih++;
                     tagiCopy.splice(i - stIzbrisanih, 1);
                     this.bul = false;
@@ -286,7 +304,6 @@ export class OznacevanjeComponent implements OnInit {
         for (let i = 0; i < lepiTagi.length; i++) {
             if (lepiTagi[i].tagId === tag.parentTagId.tagId) {
                 this.vstaviVMozneTage(lepiTagi[i], tag);
-                // this.mozniTagi[i].childTags.push(new TagParent(tag.tagId, tag.name, [], tag.input));
                 return true;
             }
             if (lepiTagi[i].childTags.length > 0) {
@@ -300,6 +317,7 @@ export class OznacevanjeComponent implements OnInit {
         for (let i = 0; i < this.mozniTagi.length; i++) {
             if (this.mozniTagi[i].tagId === parent.tagId) {
                 this.mozniTagi[i].childTags.push(new TagParent(child.tagId, child.name, [], child.input, child.checkbox, null, null));
+                this.mozniTagiSamoId.add(child.tagId);
                 this.bul = true;
                 this.vstavljenih++;
                 return;
@@ -308,6 +326,7 @@ export class OznacevanjeComponent implements OnInit {
                 if (this.mozniTagi[i].childTags[j].tagId === parent.tagId) {
                     this.mozniTagi[i].childTags[j].childTags.push(new TagParent(child.tagId, child.name, [], child.input,
                         child.checkbox, null, null));
+                    this.mozniTagiSamoId.add(child.tagId);
                     this.bul = true;
                     this.vstavljenih++;
                     return;
@@ -316,6 +335,7 @@ export class OznacevanjeComponent implements OnInit {
                     if (this.mozniTagi[i].childTags[j].childTags[k].tagId === parent.tagId) {
                         this.mozniTagi[i].childTags[j].childTags[k].childTags.push(new TagParent(child.tagId, child.name, [],
                             child.input, child.checkbox, null, null));
+                        this.mozniTagiSamoId.add(child.tagId);
                         this.bul = true;
                         this.vstavljenih++;
                         return;

@@ -29,13 +29,11 @@
     </div>
 </div>
 
-<button class="btn btn-success" (click)="shraniVnose()">Shrani</button>
-
-
 <div>
     <form id="tagi">
         <div class="form-group" *ngFor="let tag of mozniTagi">
-            <img src="../../../assets/images/plus.png" width="8px" height="8px" style="cursor: pointer"
+            <img *ngIf="preveriCeLahkoDodaTag(tag)" src="../../../assets/images/plus.png" width="8px" height="8px"
+                 style="cursor: pointer"
                  (click)="dodajSeEnTag(tag)">
             <img *ngIf="preveriCeLahkoOdstraniTag(tag)" src="../../../assets/images/minus.png" width="8px" height="8px"
                  style="cursor: pointer"
@@ -103,8 +101,10 @@
             </div>
             <div *ngIf="tag.childTags.length === 0 && tag.input">
                 <label>{{tag.name}}</label>
-                <input class="form-control form-control-sm" type="number">
+                <input class="form-control form-control-sm" type="number" (change)="zapisiSteviloZivali($event, tag)">
             </div>
         </div>
     </form>
 </div>
+
+<button class="btn btn-success" (click)="shraniVnose()">Shrani</button>
