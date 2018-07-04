@@ -5,7 +5,8 @@ import {TagShrani} from "../entity/requests/tag-shrani";
 
 const SlikaService = require("../services/SlikaService");
 
-const basePath = "D:/OneDrive - inc/FRI/3. letnik/2. semester/PKP/slike";  // TODO
+//const basePath = "D:/OneDrive - inc/FRI/3. letnik/2. semester/PKP/slike";  // TODO
+const basePath = "F:/TrapIT";  // TODO
 
 const options = {
     dotfiles: 'deny',
