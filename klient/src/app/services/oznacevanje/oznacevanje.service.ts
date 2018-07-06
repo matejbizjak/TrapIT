@@ -68,6 +68,11 @@ export class OznacevanjeService {
             resolve(oznaceniTagi);
         });
     }
+
+    nastaviPot(pot: String) {
+        const url = "/slika/pot";
+        return this.http.post(url, {pot: pot});
+    }
 }
 
 class TagZInputValue {

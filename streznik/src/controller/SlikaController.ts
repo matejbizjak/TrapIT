@@ -5,8 +5,10 @@ import {TagShrani} from "../entity/requests/tag-shrani";
 
 const SlikaService = require("../services/SlikaService");
 
+const PotService = require("../services/PotService");
+
 //const basePath = "D:/OneDrive - inc/FRI/3. letnik/2. semester/PKP/slike";  // TODO
-const basePath = "F:/TrapIT";  // TODO
+//const basePath = "F:/TrapIT";  // TODO
 
 const options = {
     dotfiles: 'deny',
@@ -16,10 +18,12 @@ const options = {
     }
 };
 
+var shranjenaPot = new PotService();
+
 module.exports.dobiSliko = function (req: Request, res: Response, next: NextFunction) {
     let pot = req.params.pot.replace(/\|/g, "/");
 
-    res.sendFile(basePath + pot, options, (err) => {
+    res.sendFile(shranjenaPot.basePath + pot, options, (err) => {
         if (err) {
             console.log(err);
         }
@@ -60,4 +64,9 @@ module.exports.dobiTage = function (req: Request, res: Response, next: NextFunct
             res.status(400).json({err: err});
         }
     );
+};
+
+module.exports.nastaviPot = function (req: Request, res: Response, next: NextFunction) {
+    shranjenaPot.setBasePath(req.body.pot);
+    res.status(200).json({message: "Pot uspešno nastavljena"});
 };

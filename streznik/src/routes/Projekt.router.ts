@@ -27,4 +27,6 @@ router.post('/dir', prijavljen, ProjektController.dobiDir);
 // router.get('/tagi/:projectId', prijavljen, ProjektController.dobiTage); // TODO
 router.get('/tagi', prijavljen, ProjektController.dobiTage);
 
+router.post('/pot', prijavljen, ProjektController.nastaviPot);
+
 module.exports = router;

@@ -27,4 +27,6 @@ router.get('/slika/:pot', SlikaController.dobiSliko);
 router.post('/tagi/', SlikaController.shraniTage);
 router.get('/tagi/:pot', SlikaController.dobiTage);
 
+router.post('/pot', SlikaController.nastaviPot);
+
 module.exports = router;

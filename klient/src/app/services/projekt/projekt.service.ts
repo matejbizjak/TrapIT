@@ -20,5 +20,8 @@ export class ProjektService {
         return this.http.get(url);
     }
 
-
+    nastaviPot(pot: String) {
+        const url = "/projekt/pot";
+        return this.http.post(url, {pot: pot});
+    }
 }
