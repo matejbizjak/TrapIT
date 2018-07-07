@@ -8,7 +8,7 @@ import {Napaka403Component} from "./controllers/napake/403/napaka403.component";
 import {ProjektComponent} from "./controllers/projekt/projekt.component";
 import {RVguard} from "./services/guards/role.guard";
 import {OznacevanjeComponent} from "./controllers/oznacevanje/oznacevanje.component";
-import {NastavitveComponent} from "./controllers/index/nastavitve/nastavitve.component";
+import {NastavitveComponent} from "./controllers/nastavitve/nastavitve.component";
 
 const routes: Routes = [
     // routes

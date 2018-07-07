@@ -16,7 +16,7 @@ import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {ProjektComponent} from "./controllers/projekt/projekt.component";
 import {OznacevanjeComponent} from "./controllers/oznacevanje/oznacevanje.component";
-import {NastavitveComponent} from "./controllers/index/nastavitve/nastavitve.component";
+import {NastavitveComponent} from "./controllers/nastavitve/nastavitve.component";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
