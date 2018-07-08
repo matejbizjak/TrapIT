@@ -13,3 +13,7 @@
     background-color: #ffffff;
     cursor: pointer;
 }
+
+.dropdown-item {
+    cursor: pointer;
+}

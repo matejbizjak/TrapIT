@@ -1,0 +1,79 @@
+<div id="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <h3>Nastavitve</h3>
+            <div class="card">
+                <div class="card-header">
+                    Pot do slik
+                </div>
+                <div class="card-body">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="C:/Mapa1/Mapa2/..." aria-label="potDoSlik"
+                               aria-describedby="basic-addon2" id="potID" [(ngModel)]="potDoSlik">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button" (click)="printDir()">Nastavi
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    Nastavitev projektov
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <div *ngIf="projekti != null" style="float: left">
+                                <div class="btn-group" dropdown>
+                                    <button id="projektDropdown" dropdownToggle type="button" class="btn btn-outline-dark dropdown-toggle">
+                                        {{projektName}}
+                                    </button>
+                                    <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+                                        role="menu">
+                                        <div *ngFor="let projekt of projekti">
+                                            <div class="dropdown-item" (click)="nastaviProjekt(projekt)">{{projekt.name}}</div>
+                                        </div>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div style="float: left">
+                                <button class="btn btn-outline-success ml-3" style="display: flex">
+                                    <i class="material-icons">
+                                        add_circle_outline
+                                    </i>
+                                    <span> Dodaj</span>
+                                </button>
+                            </div>
+                            <div style="float: left">
+                                <button class="btn btn-outline-danger ml-3" style="display: flex">
+                                    <i class="material-icons">
+                                        highlight_off
+                                    </i>
+                                    <span> Odstrani</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col text-right">
+                            <button class="btn btn-outline-dark">Nastavi</button>
+                        </div>
+                    </div>
+                    <hr>
+                    <div *ngIf="izbranProjekt != null">
+                        <div class="row">
+                            <div class="col-sm-3 mb-3" *ngFor="let tag of izbranProjekt['tags']">
+                                <div (click)="tag.active = !tag.active" class="card card-body" [ngClass]="{'tag-true': tag.active, 'tag-false': !tag.active}">
+                                    {{tag.name}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
