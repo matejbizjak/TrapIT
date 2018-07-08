@@ -1,6 +1,12 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 
+export interface Projekt {
+    id: number;
+    name: string;
+    tags: JSON;
+}
+
 @Injectable()
 export class ProjektService {
 
@@ -23,5 +29,10 @@ export class ProjektService {
     nastaviPot(pot: String) {
         const url = "/projekt/pot";
         return this.http.post(url, {pot: pot});
+    }
+
+    dobiProjekte() {
+        const url = "/projekt/projekti";
+        return this.http.get(url);
     }
 }

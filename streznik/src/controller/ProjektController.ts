@@ -38,3 +38,27 @@ module.exports.nastaviPot = function (req: Request, res: Response, next: NextFun
     shranjenaPot.setBasePath(req.body.pot);
     res.status(200).json({message: "Pot uspešno nastavljena"});
 };
+
+module.exports.dobiProjekte = function (req: Request, res: Response, next: NextFunction) {
+    res.status(200).json([
+        {id: 0, name: "Projekt 1", tags: [
+            {name: "Vrsta", active: true},
+            {name: "Kategorija", active: true},
+            {name: "Število", active: true},
+            {name: "Človeška Aktivnost", active: true},
+            {name: "Vedenje", active: true}
+        ]},
+            {id: 1, name: "Projekt 2", tags: [
+            {name: "Vrsta", active: true},
+            {name: "Kategorija", active: true},
+            {name: "Število", active: false},
+            {name: "Vedenje", active: true}
+        ]},
+            {id: 2, name: "Projekt 3", tags: [
+            {name: "Vrsta", active: true},
+            {name: "Kategorija", active: false},
+            {name: "Število", active: false},
+            {name: "Vedenje", active: true}
+        ]}
+    ]);
+};

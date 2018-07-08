@@ -1,5 +1,5 @@
 <div id="container">
-  <div class="row">
+  <div class="row mb-3">
     <div class="col-lg-12">
       <h3>Nastavitve</h3>
       <div class="card">
@@ -10,7 +10,50 @@
           <div class="input-group mb-3">
             <input type="text" class="form-control" placeholder="C:/Mapa1/Mapa2/..." aria-label="potDoSlik" aria-describedby="basic-addon2" id="potID">
             <div class="input-group-append">
-              <button class="btn btn-outline-secondary" type="button" (click)="printDir()">Nastavi</button>
+              <button class="btn btn-outline-secondary" type="button" (click)="updateDir()">Nastavi</button>
+            </div>
+          </div>
+          <button type="button" class="btn btn-sm btn-outline-dark" (click)="isCollapsed = !isCollapsed"
+                  [attr.aria-expanded]="!isCollapsed" aria-controls="navodila">Navodila
+          </button>
+          <div id="navodila" [collapse]="isCollapsed">
+            <p style="padding-top: 10px; font-size: 0.75em; color: grey">
+              //Navodila za nastavitev poti slike
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          Nastavitev projektov
+        </div>
+        <div class="card-body">
+          <div class="btn-group" dropdown>
+            <button id="projektDropdownBtn1" dropdownToggle type="button" class="btn btn-outline-dark dropdown-toggle"
+                    aria-controls="dropdownProjekti1">
+              {{imeProjekta}}
+            </button>
+            <ul id="dropdownProjekti1" *dropdownMenu class="dropdown-menu"
+                role="menu" aria-labelledby="projektDropdownBtn1">
+              <div *ngFor="let projekt of projekti">
+                <button class="dropdown-item" (click)="setProjekt(projekt)">{{ projekt.name }}</button>
+              </div>
+            </ul>
+          </div>
+          <button class="btn btn-outline-dark" style="float: right">Nastavi</button>
+        </div>
+        <div *ngIf="currProjekt!=null" style="padding: 15px">
+          <div class="row">
+            <div class="col-3 pb-2" *ngFor="let tag of currProjekt['tags']">
+              <div (click)="toggleValue(tag)">
+                <div [ngClass]="{'tag-true': tag.active, 'tag-false': !tag.active, 'card card-body': true}">
+                  {{ tag.name }}
+                </div>
+              </div>
             </div>
           </div>
         </div>

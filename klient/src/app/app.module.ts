@@ -17,6 +17,7 @@ import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {ProjektComponent} from "./controllers/projekt/projekt.component";
 import {OznacevanjeComponent} from "./controllers/oznacevanje/oznacevanje.component";
 import {NastavitveComponent} from "./controllers/index/nastavitve/nastavitve.component";
+import { CollapseModule } from "ngx-bootstrap/collapse";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -48,6 +49,7 @@ export function HttpLoaderFactory(http: HttpClient) {
                 deps: [HttpClient]
             }
         }),
+        CollapseModule,
         // services
         ServicesModule,
         IndexModule,
