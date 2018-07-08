@@ -2,18 +2,3 @@
     font-size: 0.75em;
     color: grey;
 }
-
-.tag-true {
-    background-color: #bcbbcb;
-    border-color: #b2001c;
-    cursor: pointer;
-}
-
-.tag-false {
-    background-color: #ffffff;
-    cursor: pointer;
-}
-
-.dropdown-item {
-    cursor: pointer;
-}

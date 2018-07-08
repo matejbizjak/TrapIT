@@ -1,7 +1,6 @@
 import {Component, OnInit} from "@angular/core";
 import {ProjektService, Projekt} from "../../services/projekt/projekt.service";
 import {OznacevanjeService} from "../../services/oznacevanje/oznacevanje.service";
-import {Tag} from "../../models/entities/tag.entity";
 
 @Component({
     selector: "app-nastavitve",
