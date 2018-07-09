@@ -15,4 +15,7 @@ export class ProjectTag {
     @ManyToOne(type => Tag)
     @JoinColumn({name: "tag_id"})
     tagId: Tag;
+
+    @Column({name: "active"})
+    active: boolean;
 }

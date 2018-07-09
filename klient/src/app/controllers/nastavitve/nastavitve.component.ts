@@ -1,5 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import {ProjektService, Projekt} from "../../services/projekt/projekt.service";
+import {ProjektService, Projekt, ProjektTag} from "../../services/projekt/projekt.service";
 import {OznacevanjeService} from "../../services/oznacevanje/oznacevanje.service";
 
 @Component({
@@ -13,6 +13,8 @@ export class NastavitveComponent implements OnInit {
     public projekti: Projekt[];
     public izbranProjekt: Projekt;
     public projektName = "Izbira projekta";
+
+    public projektTags: ProjektTag[];
 
     constructor(private projectService: ProjektService, private oznacevanjeService: OznacevanjeService) {
 
@@ -40,6 +42,15 @@ export class NastavitveComponent implements OnInit {
     public nastaviProjekt(proj: Projekt) {
         this.izbranProjekt = proj;
         this.projektName = proj.name;
+
+        this.projectService.dobiTageProjekta(proj.projectId).subscribe((data: ProjektTag[]) => {
+            this.projektTags = data;
+        });
+    }
+
+    public nastaviTage() {
+        //Shrani trenutno stanje JSON objekta "izbranProjekt" v podatkovno bazo
+        this.projectService.shraniTageProjekta(this.projektTags).subscribe();
     }
 
     ngOnInit() {

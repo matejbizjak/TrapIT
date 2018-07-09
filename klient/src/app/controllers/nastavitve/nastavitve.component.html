@@ -27,7 +27,7 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col">
+                        <div class="col-10">
                             <div *ngIf="projekti != null" style="float: left">
                                 <div class="btn-group" dropdown>
                                     <button id="projektDropdown" dropdownToggle type="button" class="btn btn-outline-dark dropdown-toggle">
@@ -59,15 +59,15 @@
                             </div>
                         </div>
                         <div class="col text-right">
-                            <button class="btn btn-outline-dark">Nastavi</button>
+                            <button class="btn btn-outline-dark" (click)="nastaviTage()">Nastavi</button>
                         </div>
                     </div>
                     <hr>
                     <div *ngIf="izbranProjekt != null">
                         <div class="row">
-                            <div class="col-sm-3 mb-3" *ngFor="let tag of izbranProjekt['tags']">
+                            <div class="col-sm-3 mb-3" *ngFor="let tag of projektTags">
                                 <div (click)="tag.active = !tag.active" class="card card-body" [ngClass]="{'tag-true': tag.active, 'tag-false': !tag.active}">
-                                    {{tag.name}}
+                                    {{tag.tagId.name}}
                                 </div>
                             </div>
                         </div>

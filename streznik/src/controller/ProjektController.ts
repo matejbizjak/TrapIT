@@ -1,6 +1,8 @@
 import {NextFunction, Request, Response} from "express";
 import * as fs from "fs";
 import {Tag} from "../entity/Tag";
+import {Project} from "../entity/Project";
+import {ProjectTag} from "../entity/ProjectTag";
 
 const ProjektService = require("../services/ProjektService");
 
@@ -40,25 +42,38 @@ module.exports.nastaviPot = function (req: Request, res: Response, next: NextFun
 };
 
 module.exports.dobiProjekte = function (req: Request, res: Response, next: NextFunction) {
-    res.status(200).json([
-        {id: 0, name: "Projekt 1", tags: [
-            {name: "Vrsta", active: true},
-            {name: "Kategorija", active: true},
-            {name: "Število", active: true},
-            {name: "Človeška Aktivnost", active: true},
-            {name: "Vedenje", active: true}
-        ]},
-            {id: 1, name: "Projekt 2", tags: [
-            {name: "Vrsta", active: true},
-            {name: "Kategorija", active: true},
-            {name: "Število", active: false},
-            {name: "Vedenje", active: true}
-        ]},
-            {id: 2, name: "Projekt 3", tags: [
-            {name: "Vrsta", active: true},
-            {name: "Kategorija", active: false},
-            {name: "Število", active: false},
-            {name: "Vedenje", active: true}
-        ]}
-    ]);
+    const projektService = new ProjektService();
+
+    projektService.dobiProjekte().then(
+        (projekti: Project[]) => {
+            res.status(200).json(projekti);
+        }, (err) => {
+            res.status(400).json({err: err});
+        }
+    );
 };
+
+module.exports.dobiTageProjekta = function(req: Request, res: Response, next: NextFunction) {
+    const projectID = parseInt(req.url.split("/")[2]);
+
+    const projektService = new ProjektService();
+
+    projektService.dobiTageProjekta(projectID).then(
+        (data: ProjectTag[]) => {
+            res.status(200).json(data);
+        }, (err) => {
+            res.status(400).json({err: err});
+        }
+    );
+}
+
+module.exports.shraniTageProjekta = function(req: Request, res: Response, next: NextFunction) {
+
+    const projektService = new ProjektService();
+
+    projektService.shraniTageProjekta(req.body).then(() => {
+        res.status(200);
+    }, (err) => {
+        res.status(400).json({err: err});
+    });
+}

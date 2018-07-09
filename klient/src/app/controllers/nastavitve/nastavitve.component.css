@@ -5,11 +5,14 @@
 
 .tag-true {
     background-color: #bcbbcb;
-    border-color: #b4162c;
+    border-color: #cc1616;
     cursor: pointer;
+    height: 100%;
 }
 
 .tag-false {
     background-color: #ffffff;
+    color: grey;
     cursor: pointer;
+    height: 100%;
 }

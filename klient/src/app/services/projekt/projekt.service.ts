@@ -1,10 +1,16 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
+import {Tag} from "../../models/entities/tag.entity";
 
 export interface Projekt {
-    id: number;
+    projectId: number;
     name: string;
-    tags: JSON;
+}
+
+export interface ProjektTag {
+    projectTagId: number;
+    active: boolean;
+    tagValues: Tag;
 }
 
 @Injectable()
@@ -34,5 +40,15 @@ export class ProjektService {
     dobiProjekte() {
         const url = "/projekt/projekti";
         return this.http.get(url);
+    }
+
+    dobiTageProjekta(projId: number) {
+        const url = "/projekt/projekti/" + projId;
+        return this.http.get(url);
+    }
+
+    shraniTageProjekta(projTags: ProjektTag[]) {
+        const url = "/projekt/projekti/";
+        return this.http.post(url, projTags);
     }
 }

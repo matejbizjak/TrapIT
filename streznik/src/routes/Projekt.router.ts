@@ -31,4 +31,8 @@ router.post('/pot', prijavljen, ProjektController.nastaviPot);
 
 router.get('/projekti', prijavljen, ProjektController.dobiProjekte);
 
+router.get('/projekti/:id', prijavljen, ProjektController.dobiTageProjekta);
+
+router.post('/projekti', prijavljen, ProjektController.shraniTageProjekta)
+
 module.exports = router;
