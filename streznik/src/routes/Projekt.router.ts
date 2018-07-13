@@ -25,7 +25,7 @@ const prijavljen = jwt({
 
 router.post('/dir', prijavljen, ProjektController.dobiDir);
 // router.get('/tagi/:projectId', prijavljen, ProjektController.dobiTage); // TODO
-router.get('/tagi', prijavljen, ProjektController.dobiTage);
+router.get('/tagi/:id', prijavljen, ProjektController.dobiTage);
 
 router.post('/pot', prijavljen, ProjektController.nastaviPot);
 
@@ -33,6 +33,12 @@ router.get('/projekti', prijavljen, ProjektController.dobiProjekte);
 
 router.get('/projekti/:id', prijavljen, ProjektController.dobiTageProjekta);
 
-router.post('/projekti', prijavljen, ProjektController.shraniTageProjekta)
+router.post('/projekti', prijavljen, ProjektController.shraniTageProjekta);
+
+router.get('/korenskiTagi', prijavljen, ProjektController.dobiKorenskeTage);
+
+router.post('/novProjekt', prijavljen, ProjektController.shraniNovProjekt);
+
+router.post('/del', prijavljen, ProjektController.izbrisiProjekt);
 
 module.exports = router;

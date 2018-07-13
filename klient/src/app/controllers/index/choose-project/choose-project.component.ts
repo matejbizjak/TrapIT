@@ -1,17 +1,19 @@
 import {Component, OnInit} from "@angular/core";
+import {Router} from "@angular/router";
 import {Projekt, ProjektService} from "../../../services/projekt/projekt.service";
-import {PaginationModule, PageChangedEvent} from "ngx-bootstrap/pagination";
+import {PageChangedEvent} from "ngx-bootstrap/pagination";
 
 @Component({
-    selector: "app-index-reviewer-component",
-    templateUrl: "index-reviewer.component.html"
+  selector: "app-index-choose-project",
+  templateUrl: "./choose-project.component.html",
+  styleUrls: ["./choose-project.component.css"]
 })
-export class IndexReviewerComponent implements OnInit {
+export class ChooseProjectComponent implements OnInit {
 
     public projekti: Projekt[];
     public prikazaniProjekti: Projekt[];
 
-    constructor(private projektService: ProjektService) {
+    constructor(private projektService: ProjektService, private router: Router) {
     }
 
     dobiProjekte(): Promise<any> {
@@ -37,6 +39,10 @@ export class IndexReviewerComponent implements OnInit {
         const startItem = (event.page - 1) * event.itemsPerPage;
         const endItem = event.page * event.itemsPerPage;
         this.prikazaniProjekti = this.projekti.slice(startItem, endItem);
+    }
+
+    public goTo(projID: number) {
+        this.router.navigate(["/projekt/" + projID]);
     }
 
     ngOnInit(): void {

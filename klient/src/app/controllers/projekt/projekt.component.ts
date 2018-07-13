@@ -1,8 +1,8 @@
 import {Component, OnInit} from "@angular/core";
 import {TranslateService} from "@ngx-translate/core";
-import {ProjektService} from "../../services/projekt/projekt.service";
+import {ProjektService, Projekt} from "../../services/projekt/projekt.service";
 import {SharingService} from "../../services/sharing.service";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
     selector: "app-projekt",
@@ -13,14 +13,18 @@ export class ProjektComponent implements OnInit {
     globina: number;
     files: string[];
 
+    public projektID: number;
+
     constructor(private router: Router, private translate: TranslateService, private projektService: ProjektService,
-                private sharingService: SharingService) {
+                private sharingService: SharingService, private activatedRoute: ActivatedRoute) {
     }
 
     ngOnInit(): void {
         this.pot = "/";
         this.globina = 0;
         this.dobiDatoteke();
+
+        this.projektID = parseInt(this.router.url.split("/")[2], 10);
     }
 
     dobiDatoteke() {
@@ -35,7 +39,7 @@ export class ProjektComponent implements OnInit {
 
     izberiMapo(datoteka: string) {
         this.sharingService.saveItem("potDoMapeSlik", this.pot + datoteka + "/");
-        this.router.navigate(["/oznacevanje"]);
+        this.router.navigate(["/oznacevanje/" + this.projektID]);
     }
 
     naprejVMapo(datoteka: string) {

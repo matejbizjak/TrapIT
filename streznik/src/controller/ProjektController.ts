@@ -8,8 +8,8 @@ const ProjektService = require("../services/ProjektService");
 
 const PotService = require("../services/PotService");
 
-//const basePath = "D:/OneDrive - inc/FRI/3. letnik/2. semester/PKP/slike";  // TODO
-//const basePath = "F:/TrapIT";  // TODO
+// const basePath = "D:/OneDrive - inc/FRI/3. letnik/2. semester/PKP/slike";  // TODO
+// const basePath = "E:/TrapIT/";  // TODO
 // const basePath = "D:/";
 
 var shranjenaPot = new PotService();
@@ -27,7 +27,9 @@ module.exports.dobiDir = function (req: Request, res: Response, next: NextFuncti
 module.exports.dobiTage = function (req: Request, res: Response, next: NextFunction) {
     const projektService = new ProjektService();
 
-    projektService.dobiMozneTage(null).then(
+    const projectID = parseInt(req.url.split("/")[2]);
+
+    projektService.dobiMozneTage(projectID).then(
         (mozniTagi: Tag[]) => {
             res.status(200).json({mozniTagi: mozniTagi});
         }, (err) => {
@@ -38,7 +40,7 @@ module.exports.dobiTage = function (req: Request, res: Response, next: NextFunct
 
 module.exports.nastaviPot = function (req: Request, res: Response, next: NextFunction) {
     shranjenaPot.setBasePath(req.body.pot);
-    res.status(200).json({message: "Pot uspešno nastavljena"});
+    res.status(200).json({message: "Success"});
 };
 
 module.exports.dobiProjekte = function (req: Request, res: Response, next: NextFunction) {
@@ -73,6 +75,36 @@ module.exports.shraniTageProjekta = function(req: Request, res: Response, next: 
 
     projektService.shraniTageProjekta(req.body).then(() => {
         res.status(200);
+    }, (err) => {
+        res.status(400).json({err: err});
+    });
+}
+
+module.exports.dobiKorenskeTage = function(req: Request, res: Response, next: NextFunction) {
+    const projektService = new ProjektService();
+
+    projektService.dobiKorenskeTage().then((data: Tag[]) => {
+        res.status(200).json(data);
+    }, (err) => {
+        res.status(400).json({err: err});
+    });
+}
+
+module.exports.shraniNovProjekt = function(req: Request, res: Response, next: NextFunction) {
+    const projektService = new ProjektService();
+
+    projektService.shraniNovProjekt(req.body.newProjName, req.body.newProjTags).then((message: string) => {
+        res.status(200).json({message: message});
+    }, (err) => {
+        res.status(400).json({err: err});
+    });
+}
+
+module.exports.izbrisiProjekt = function(req: Request, res: Response, next: NextFunction) {
+    const projektService = new ProjektService();
+
+    projektService.izbrisiProjekt(req.body.projId).then((message: string) => {
+        res.status(200).json({message: message});
     }, (err) => {
         res.status(400).json({err: err});
     });

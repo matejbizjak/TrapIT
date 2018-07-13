@@ -14,8 +14,8 @@ const routes: Routes = [
     // routes
     {path: "", component: IndexComponent, canActivate: [PrijavaGuard], pathMatch: "full"},
     {path: "prijava", component: PrijavaComponent},
-    {path: "projekt", component: ProjektComponent, canActivate: [RVguard]},
-    {path: "oznacevanje", component: OznacevanjeComponent, canActivate: [RVguard]},
+    {path: "projekt/:id", component: ProjektComponent, canActivate: [RVguard]},
+    {path: "oznacevanje/:id", component: OznacevanjeComponent, canActivate: [RVguard]},
     {path: "nastavitve", component: NastavitveComponent},
     // errors
     {path: "404", component: Napaka404Component},

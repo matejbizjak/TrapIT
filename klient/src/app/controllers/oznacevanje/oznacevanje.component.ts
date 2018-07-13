@@ -42,6 +42,8 @@ export class OznacevanjeComponent implements OnInit {
 
         this.zapStSlike = 0;
 
+        this.projectId = parseInt(this.router.url.split("/")[2], 10);
+
         this.mozniTagiSamoId = new Set();
         this.dobiMozneTage().then(() => {
                 this.dobiVseSlike().then(() => {
@@ -75,7 +77,7 @@ export class OznacevanjeComponent implements OnInit {
 
     dobiMozneTage(): Promise<any> {
         return new Promise<any>((resolve, reject) => {
-            this.projektService.dobiMozneTage(null).subscribe(
+            this.projektService.dobiMozneTage(this.projectId).subscribe(
                 (mozniTagi: Tag[]) => {
                     this.pretvoriTageVLepObjekt(mozniTagi["mozniTagi"]).then(
                         () => {
@@ -315,6 +317,7 @@ export class OznacevanjeComponent implements OnInit {
                     }
                 }
             }
+
             resolve();
         });
     }

@@ -10,7 +10,7 @@ export interface Projekt {
 export interface ProjektTag {
     projectTagId: number;
     active: boolean;
-    tagValues: Tag;
+    tagId: Tag;
 }
 
 @Injectable()
@@ -26,8 +26,8 @@ export class ProjektService {
     }
 
     dobiMozneTage(projectId: number) {
-        // const url = "/projekt/tagi/" + projectId;
-        const url = "/projekt/tagi";
+        const url = "/projekt/tagi/" + projectId;
+        // const url = "/projekt/tagi";
 
         return this.http.get(url);
     }
@@ -47,8 +47,23 @@ export class ProjektService {
         return this.http.get(url);
     }
 
+    dobiKorenskeTage() {
+        const url = "/projekt/korenskiTagi";
+        return this.http.get(url);
+    }
+
     shraniTageProjekta(projTags: ProjektTag[]) {
-        const url = "/projekt/projekti/";
+        const url = "/projekt/projekti";
         return this.http.post(url, projTags);
+    }
+
+    shraniNovProjekt(newProjName: string, newProjTags: ProjektTag[]) {
+        const url = "/projekt/novProjekt";
+        return this.http.post(url, {newProjName, newProjTags});
+    }
+
+    izbrisiProjekt(projId: number) {
+        const url = "/projekt/del";
+        return this.http.post(url, {projId});
     }
 }

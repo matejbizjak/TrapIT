@@ -17,6 +17,8 @@ import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {ProjektComponent} from "./controllers/projekt/projekt.component";
 import {OznacevanjeComponent} from "./controllers/oznacevanje/oznacevanje.component";
 import {NastavitveComponent} from "./controllers/nastavitve/nastavitve.component";
+import {ModalModule, BsModalService} from "ngx-bootstrap";
+import {PaginationModule} from "ngx-bootstrap";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -41,6 +43,8 @@ export function HttpLoaderFactory(http: HttpClient) {
         FormsModule,
         ReactiveFormsModule,
         BootstrapModule,
+        ModalModule.forRoot(),
+        PaginationModule.forRoot(),
         TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,
@@ -51,9 +55,11 @@ export function HttpLoaderFactory(http: HttpClient) {
         // services
         ServicesModule,
         IndexModule,
-        NapakeModule
+        NapakeModule,
     ],
-    providers: [],
+    providers: [
+        BsModalService,
+        PaginationModule],
     bootstrap: [OgrodjeComponent]
 })
 export class AppModule {

@@ -68,5 +68,5 @@ module.exports.dobiTage = function (req: Request, res: Response, next: NextFunct
 
 module.exports.nastaviPot = function (req: Request, res: Response, next: NextFunction) {
     shranjenaPot.setBasePath(req.body.pot);
-    res.status(200).json({message: "Pot uspešno nastavljena"});
+    res.status(200).json({message: "Success"});
 };

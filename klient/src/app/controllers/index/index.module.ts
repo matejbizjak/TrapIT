@@ -11,6 +11,8 @@ import {IndexLinkComponent} from "./link/index-link.component";
 import {HttpClient} from "@angular/common/http";
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
+import {PaginationModule} from "ngx-bootstrap";
+import { ChooseProjectComponent } from './choose-project/choose-project.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -23,6 +25,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         RouterModule,
         BootstrapModule,
         FormsModule,
+        PaginationModule.forRoot(),
         TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,
@@ -36,7 +39,8 @@ export function HttpLoaderFactory(http: HttpClient) {
         IndexAdminComponent,
         IndexReviewerComponent,
         IndexViewerComponent,
-        IndexLinkComponent
+        IndexLinkComponent,
+        ChooseProjectComponent
     ]
 })
 export class IndexModule {

@@ -7,13 +7,19 @@
                     Pot do slik
                 </div>
                 <div class="card-body">
-                    <div class="input-group mb-3">
+                    <div class="input-group">
                         <input type="text" class="form-control" placeholder="C:/Mapa1/Mapa2/..." aria-label="potDoSlik"
-                               aria-describedby="basic-addon2" id="potID" [(ngModel)]="potDoSlik">
+                               aria-describedby="basic-addon2" [(ngModel)]="potDoSlik">
                         <div class="input-group-append">
-                            <button class="btn btn-outline-secondary" type="button" (click)="printDir()">Nastavi
+                            <button class="btn btn-outline-secondary" type="button" (click)="setDir()">Nastavi
                             </button>
                         </div>
+                    </div>
+                    <div class="alert alert-success mt-1" role="alert" *ngIf="potSuccess1 && potSuccess2">
+                        Pot uspešno nastavljena
+                    </div>
+                    <div class="alert alert-danger mt-1" role="alert" *ngIf="potEmpty">
+                        Pot ne sme biti prazna
                     </div>
                 </div>
             </div>
@@ -26,48 +32,137 @@
                     Nastavitev projektov
                 </div>
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-10">
-                            <div *ngIf="projekti != null" style="float: left">
-                                <div class="btn-group" dropdown>
-                                    <button id="projektDropdown" dropdownToggle type="button" class="btn btn-outline-dark dropdown-toggle">
-                                        {{projektName}}
-                                    </button>
-                                    <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
-                                        role="menu">
-                                        <div *ngFor="let projekt of projekti">
-                                            <div class="dropdown-item" (click)="nastaviProjekt(projekt)">{{projekt.name}}</div>
-                                        </div>
-                                    </ul>
+                    <div class="row mb-2">
+                        <div class="col-12">
+                            <div class="form-inline">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" style="float: right" [(ngModel)]="searchTerm">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="button" style="display: flex" (click)="searchProjekt()">
+                                            <i class="material-icons">
+                                                search
+                                            </i>
+                                        </button>
+                                    </div>
                                 </div>
+                                <div style="float: left">
+                                    <button class="btn btn-outline-success ml-2" style="display: flex" type="button" (click)="ustvariNovProjekt(novProjekt)">
+                                        <i class="material-icons">
+                                            add_circle_outline
+                                        </i>
+                                        <span> Dodaj</span>
+                                    </button>
+                                </div>
+                                <div style="float: left" *ngIf="projektName != ''">
+                                    <button class="btn btn-outline-danger ml-2" style="display: flex" (click)="izbrisiModal(delProjekt)">
+                                        <i class="material-icons">
+                                            remove_circle_outline
+                                        </i>
+                                        <span> Odstrani</span>
+                                    </button>
+                                </div>
+                                <button class="btn btn-outline-dark ml-2" (click)="nastaviTage()">Nastavi</button>
                             </div>
-                            <div style="float: left">
-                                <button class="btn btn-outline-success ml-3" style="display: flex">
-                                    <i class="material-icons">
-                                        add_circle_outline
-                                    </i>
-                                    <span> Dodaj</span>
-                                </button>
-                            </div>
-                            <div style="float: left">
-                                <button class="btn btn-outline-danger ml-3" style="display: flex">
-                                    <i class="material-icons">
-                                        remove_circle_outline
-                                    </i>
-                                    <span> Odstrani</span>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="col text-right">
-                            <button class="btn btn-outline-dark" (click)="nastaviTage()">Nastavi</button>
+                            
+                            <ng-template #novProjekt>
+                                <div class="modal-header">
+                                    <h4 class="modal-title pull-left">Nov Projekt</h4>
+                                    <button type="button" class="close pull-right" aria-label="Close" (click)="novProjektRef.hide(novProjekt)">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="card card-body">
+                                        <input type="text" class="form-control" placeholder="Ime" [(ngModel)]="novProjektIme">
+                                        <div class="alert alert-danger mt-1" role="alert"  *ngIf="emptyProjektNameWarning">
+                                            Ime ne more biti prazno
+                                        </div>
+                                        <div class="alert alert-danger mt-1" role="alert"  *ngIf="duplicateProjectWarning">
+                                            Projekt s tem imenom že obstaja
+                                        </div>
+                                        <div class="alert alert-danger mt-1" role="alert"  *ngIf="otherErrorWarning">
+                                            Prišlo je do napake
+                                        </div>
+                                        <div class="alert alert-success mt-1" role="alert" *ngIf="projectCreateSuccess">
+                                            Projekt uspešno ustvarjen
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-md-6"  *ngFor="let element of novProjektTags">
+                                                    <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="" ng-checked="element.tagValues.active" (change)="changeBool(element)">
+                                                    <label class="form-check-label">
+                                                        {{element.tagId.name}}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <button type="button" class="btn btn-outline-danger ml-3" style="float: right; display: flex" (click)="novProjektRef.hide(novProjekt)">Prekliči</button>
+                                                <button type="button" class="btn btn-outline-success" style="float: right; display: flex" (click)="shraniNovProjekt()">Shrani</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
+                            <ng-template #delProjekt>
+                                <div class="modal-header">
+                                    <h4 class="modal-title pull-left">Izbriši Projekt</h4>
+                                    <button type="button" class="close pull-right" aria-label="Close" (click)="odstraniProjektRef.hide()">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="card card-body">
+                                        <div *ngIf="!projectDeleteSuccess">Ali ste prepričani, da želite izbrisati projekt <b>{{projektName}}</b>?</div>
+                                        <div class="alert alert-success mt-1" role="alert" *ngIf="projectDeleteSuccess">
+                                            Projekt uspešno izbrisan
+                                        </div>
+                                        <div class="alert alert-danger mt-1" role="alert" *ngIf="otherErrorWarning">
+                                            Prišlo je do napake
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <button type="button" class="btn btn-outline-danger ml-3" style="float: right; display: flex" (click)="odstraniProjektRef.hide()">Prekliči</button>
+                                                <button type="button" class="btn btn-outline-success" style="float: right; display: flex" (click)="izbrisiProjekt()">Izbriši</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
                         </div>
                     </div>
                     <hr>
-                    <div *ngIf="izbranProjekt != null">
-                        <div class="row">
-                            <div class="col-sm-3 mb-3" *ngFor="let tag of projektTags">
-                                <div (click)="tag.active = !tag.active" class="card card-body" [ngClass]="{'tag-true': tag.active, 'tag-false': !tag.active}">
-                                    {{tag.tagId.name}}
+                    <div class="row mb-2">
+                        <div class="col-12">
+                            <div class="pageContainer">
+                                <pagination [totalItems]="totalProjects" [itemsPerPage]="20" (pageChanged)="pageChanged($event)" previousText="&lsaquo;" nextText="&rsaquo;"></pagination>
+                            </div>
+                            <div class="card card-body">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div *ngFor="let projekt of prikazaniProjekti">
+                                            <button class="btn btn-outline-dark mb-2 mr-2" style="white-space: normal; float: left;" (click)="nastaviProjekt(projekt)">{{projekt.name}}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card card-body">
+                                <div *ngIf="izbranProjekt != null">
+                                    <div class="row">
+                                        <div class="col-sm-3 mb-3" *ngFor="let tag of projektTags">
+                                            <div (click)="tag.active = !tag.active" class="card card-body" [ngClass]="{'tag-true': tag.active, 'tag-false': !tag.active}">
+                                                {{tag.tagId.name}}
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
