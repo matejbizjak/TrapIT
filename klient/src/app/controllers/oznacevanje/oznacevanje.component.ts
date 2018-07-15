@@ -12,6 +12,7 @@ import {DOCUMENT} from "@angular/common";
 @Component({
     selector: "app-oznacevanje",
     templateUrl: "./oznacevanje.component.html",
+    styleUrls: [ './oznacevanje.component.css' ],
     encapsulation: ViewEncapsulation.None
 })
 export class OznacevanjeComponent implements OnInit {
@@ -82,6 +83,7 @@ export class OznacevanjeComponent implements OnInit {
                             this.mozniTagiCopy = [];
                             Object.assign(this.mozniTagiCopy, JSON.parse(JSON.stringify(this.mozniTagi)));
                             resolve();
+                            console.log(this.mozniTagi);
                         }
                     );
                 }, (err) => {

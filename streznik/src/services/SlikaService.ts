@@ -3,13 +3,15 @@ import {Media} from "../entity/Media";
 import {MediaTag} from "../entity/MediaTag";
 import {TagShrani} from "../entity/requests/tag-shrani";
 
+const searchPath = "V:/17"
+
 module.exports = class SlikaService {
     private mediaRepository = getRepository(Media);
     private mediaTagRepository = getRepository(MediaTag);
 
     public async dobiMediaId(potDoSlike: string): Promise<Media> {
         const potSplit: string[] = potDoSlike.split("/");
-        const potZaIskanje = "/" + potSplit[3] + "/" + potSplit[4];
+        const potZaIskanje = ("/" + potSplit[3] + "/" + potSplit[4]).substr(1);
         const media = await this.mediaRepository.findOne({
             where: {name: potZaIskanje},
             relations: ["siteId", "pathId"]

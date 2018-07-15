@@ -1,0 +1,39 @@
+.parentTag {
+    background: rgb(107, 122, 122);
+    color: white;
+    padding: 0.05em .3em;
+    margin: 3px 0px 3px 0px;
+    border-radius: 3px;
+}
+
+.parentTag .imgDiv {
+    margin-left: .6em;
+}
+.parentTag .imgDiv span{
+    color: rgb(255, 255, 255);
+}
+
+.childTag {
+    background: #899;
+    color: white;
+    padding: 0.05em .3em;
+    margin: 3px 0px 3px 0px;
+    border-radius: 3px;
+}
+
+.number {
+    background: rgb(176, 189, 189);
+    color: white;
+    padding: 0.05em .3em;
+    margin: 3px 0px 3px 0px;
+    border-radius: 3px;
+}
+
+#tagi .form-group {
+    background: rgb(238, 238, 238);
+    padding: 4px 3px 4px 3px;
+    outline-color: rgb(245, 245, 245);
+    outline-style: double;
+    outline-width: 1px;
+    outline-width: 5px;
+}
