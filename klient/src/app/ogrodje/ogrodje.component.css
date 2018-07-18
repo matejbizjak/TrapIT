@@ -33,3 +33,19 @@ main {
 .spusti-dol:hover button {
     text-decoration: none;
 }
+
+.content {
+    width: 93%;
+    margin : 1%;
+}
+
+.sidebar {
+    width: 5%;
+    outline-color: #b4162c;
+    outline-style: solid;
+    outline-width: 2px;
+}
+
+.nav-bar {
+
+}

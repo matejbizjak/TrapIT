@@ -6,8 +6,9 @@ import {PrijavaGuard} from "./services/guards/prijava.guard";
 import {Napaka404Component} from "./controllers/napake/404/napaka404.component";
 import {Napaka403Component} from "./controllers/napake/403/napaka403.component";
 import {ProjektComponent} from "./controllers/projekt/projekt.component";
-import {RVguard} from "./services/guards/role.guard";
+import {Aguard, RVguard} from "./services/guards/role.guard";
 import {OznacevanjeComponent} from "./controllers/oznacevanje/oznacevanje.component";
+import {UploadComponent} from "./controllers/upload/upload.component";
 
 const routes: Routes = [
     // routes
@@ -15,6 +16,7 @@ const routes: Routes = [
     {path: "prijava", component: PrijavaComponent},
     {path: "projekt", component: ProjektComponent, canActivate: [RVguard]},
     {path: "oznacevanje", component: OznacevanjeComponent, canActivate: [RVguard]},
+    {path: "upload", component: UploadComponent, canActivate: [Aguard]},
     // errors
     {path: "404", component: Napaka404Component},
     {path: "403", component: Napaka403Component},

@@ -16,6 +16,9 @@ import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {ProjektComponent} from "./controllers/projekt/projekt.component";
 import {OznacevanjeComponent} from "./controllers/oznacevanje/oznacevanje.component";
+import { TagComponent } from './controllers/oznacevanje/tag/tag.component';
+import { UploadComponent } from './controllers/upload/upload.component';
+import { ImgComponent } from './controllers/oznacevanje/img/img.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -30,7 +33,10 @@ export function HttpLoaderFactory(http: HttpClient) {
         IndexViewerSidebarComponent,
         PrijavaComponent,
         ProjektComponent,
-        OznacevanjeComponent
+        OznacevanjeComponent,
+        TagComponent,
+        UploadComponent,
+        ImgComponent
     ],
     imports: [
         BrowserModule,

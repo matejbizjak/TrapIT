@@ -4,7 +4,6 @@ import {Component, OnInit} from "@angular/core";
   selector: "app-index-admin-sidebar",
   template: `
     <hr/>
-
     <li class="nav-item">
       <a class="nav-link" [routerLink]="['/url']">Url</a>
     </li>

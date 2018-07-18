@@ -25,6 +25,10 @@ module.exports.dobiSliko = function (req: Request, res: Response, next: NextFunc
     });
 };
 
+module.exports.uploadFolder = function (req: Request, res: Response, next: NextFunction) {
+    console.log(req);
+}
+
 module.exports.shraniTage = function (req: Request, res: Response, next: NextFunction) {
     const slikaService = new SlikaService();
     const podatki: TagShrani = req.body.podatki;

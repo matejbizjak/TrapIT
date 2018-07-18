@@ -1,3 +1,11 @@
+.nav-bar {
+    background: crimson;
+    position: sticky;
+    top: 0px;
+    border-radius: 4px;
+    z-index: +1;
+}
+
 .parentTag {
     background: rgb(107, 122, 122);
     color: white;
@@ -37,3 +45,41 @@
     outline-width: 1px;
     outline-width: 5px;
 }
+
+#siteImg {
+    width: 100%;
+    border-radius: 3px;
+}
+
+#imgContainer {
+    margin: 3%;
+    float: left;
+    width: 40%;
+    height: 60%;
+}
+
+
+
+#tagContainer {
+    float: right;
+    width: 40%;
+    height: 50%;
+    overflow: scroll;
+}
+
+#tagForm {
+    float: right;
+    width: 95%;
+    position: relative;
+    right: 1em;
+}
+
+.form-check-label {
+    padding-left: 2em;
+}
+
+.form-check-input {
+    position: relative;
+    left: 1.5em;
+}
+

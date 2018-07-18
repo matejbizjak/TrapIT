@@ -8,6 +8,7 @@ import {Tag} from "../../models/entities/tag.entity";
 import {TagParent} from "../../models/entities/custom/tag-parent.entity";
 import {MediaTag} from "../../models/entities/media-tag.entity";
 import {DOCUMENT} from "@angular/common";
+import {ImgComponent} from "./img/img.component";
 
 @Component({
     selector: "app-oznacevanje",

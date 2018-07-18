@@ -26,6 +26,7 @@ createConnection().then(async connection => {
     app.use('/api/auth', authRouter);
     app.use('/api/projekt', projektRouter);
     app.use('/api/slika', slikaRouter);
+    app.use('/api/upload', slikaRouter);
 
     // start express server
     app.listen(3000);

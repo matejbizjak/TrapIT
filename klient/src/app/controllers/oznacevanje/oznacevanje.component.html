@@ -1,33 +1,14 @@
-<div class="container m-2">
-    <div class="row mb-2">
-        <div class="col-3">
-            <button class="btn" (click)="prejsnjaSlika()">Nazaj</button>
-        </div>
-        <div class="col-3">
-            <button class="btn" (click)="naslednjaSlika()">Naprej</button>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-6">
-            <img *ngIf="potDoSlike" style="width: 100%; height: auto;" src="http://localhost:3000/api/slika/slika/{{ potDoSlike }}">
-        </div>
-    </div>
+<div class="nav-bar ">
+        <button class="btn" style="margin:0 20px 0 20px " (click)="prejsnjaSlika()">Nazaj</button>
+        <button class="btn"  style="margin:0 20px 0 20px " (click)="naslednjaSlika()">Naprej</button>
 </div>
 
-<div class="container m-2">
-    <div class="row">
-        <div class="col-3">
-
-        </div>
-        <div class="col-3">
-
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-6"></div>
-    </div>
+<div id="imgContainer">
+    <app-img [imgPath] = potDoSlike></app-img>
 </div>
 
+<div id="tagContainer">
+    <div id="tagForm">
 <div>
     <form id="tagi">
         <div class="form-group" *ngFor="let tag of mozniTagi">
@@ -103,11 +84,12 @@
                 </div>
             </div>
             <div *ngIf="tag.childTags.length === 0 && tag.input">
-                <label>{{tag.name}}</label>
+                <label class="parentTag">{{tag.name}}</label>
                 <input class="form-control form-control-sm" type="number" [(ngModel)]="tag.inputValue" [ngModelOptions]="{standalone: true}">
             </div>
         </div>
     </form>
 </div>
-
+    </div>
+</div>
 <!--<button class="btn btn-success" (click)="shraniVnose()">Shrani</button>-->
