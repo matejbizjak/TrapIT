@@ -6,16 +6,16 @@ import {ProjectTag} from "../entity/ProjectTag";
 
 const ProjektService = require("../services/ProjektService");
 
-const PotService = require("../services/PotService");
+const GlobalVarService = require("../services/GlobalVarService");
 
 // const basePath = "D:/OneDrive - inc/FRI/3. letnik/2. semester/PKP/slike";  // TODO
 // const basePath = "E:/TrapIT/";  // TODO
 // const basePath = "D:/";
 
-var shranjenaPot = new PotService();
+var globalVarService = new GlobalVarService();
 
 module.exports.dobiDir = function (req: Request, res: Response, next: NextFunction) {
-    fs.readdir(shranjenaPot.basePath + req.body.pot, (err, files) => {
+    fs.readdir(globalVarService.getBasePath() + req.body.pot, (err, files) => {
         if (err) {
             res.status(400).json({err: err});
         } else {
@@ -39,7 +39,7 @@ module.exports.dobiTage = function (req: Request, res: Response, next: NextFunct
 };
 
 module.exports.nastaviPot = function (req: Request, res: Response, next: NextFunction) {
-    shranjenaPot.setBasePath(req.body.pot);
+    globalVarService.setBasePath(req.body.pot);
     res.status(200).json({message: "Success"});
 };
 

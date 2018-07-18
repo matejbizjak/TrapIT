@@ -25,7 +25,7 @@ module.exports = class ProjektService {
                         });
                     });
 
-                    console.log(retArr);
+                    //console.log(retArr);
 
                     resolve(retArr);
                 }, (err) => {

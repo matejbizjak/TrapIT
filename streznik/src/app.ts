@@ -6,6 +6,7 @@ import * as bodyParser from "body-parser";
 const authRouter = require('./routes/Auth.router');
 const projektRouter = require('./routes/Projekt.router');
 const slikaRouter = require('./routes/Slika.router');
+const settingsRouter = require('./routes/Settings.router');
 
 createConnection().then(async connection => {
 
@@ -26,6 +27,9 @@ createConnection().then(async connection => {
     app.use('/api/auth', authRouter);
     app.use('/api/projekt', projektRouter);
     app.use('/api/slika', slikaRouter);
+
+    // TODO only admin can use next routes
+    app.use('/api/settings', settingsRouter);
 
     // start express server
     app.listen(3000);

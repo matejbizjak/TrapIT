@@ -3,6 +3,10 @@
     color: grey;
 }
 
+#basePath{
+    font-weight: bolder;
+}
+
 .tag-true {
     background-color: #bcbbcb;
     border-color: #cc1616;

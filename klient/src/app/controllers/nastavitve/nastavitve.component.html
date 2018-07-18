@@ -21,6 +21,7 @@
                     <div class="alert alert-danger mt-1" role="alert" *ngIf="potEmpty">
                         Pot ne sme biti prazna
                     </div>
+                    <div class="mt-3">Trenutna pot do slik: <span id="basePath">{{serverBasePath}}</span> <button class="btn btn-outline-dark ml-2" (click)="getBasePath()">Osveži</button> </div>
                 </div>
             </div>
         </div>
@@ -171,4 +172,6 @@
             </div>
         </div>
     </div>
+    <!-- adding folders div -->
+    <app-add-folder ></app-add-folder>
 </div>

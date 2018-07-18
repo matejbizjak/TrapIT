@@ -3,13 +3,19 @@ import {Media} from "../entity/Media";
 import {MediaTag} from "../entity/MediaTag";
 import {TagShrani} from "../entity/requests/tag-shrani";
 
+//basePath gatherer
+var globalVarService = require("../services/GlobalVarService");
+
+
+//TODO SEARCH BY IMAGE_PATH+IMAGE_NAME (this kind of search might result in problems)
 module.exports = class SlikaService {
     private mediaRepository = getRepository(Media);
     private mediaTagRepository = getRepository(MediaTag);
 
     public async dobiMediaId(potDoSlike: string): Promise<Media> {
         const potSplit: string[] = potDoSlike.split("/");
-        const potZaIskanje = "/" + potSplit[3] + "/" + potSplit[4];
+        const potZaIskanje =  potSplit[3] + "/" + potSplit[4];
+
         const media = await this.mediaRepository.findOne({
             where: {name: potZaIskanje},
             relations: ["siteId", "pathId"]
