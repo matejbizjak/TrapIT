@@ -4,8 +4,7 @@ import {MediaTag} from "../entity/MediaTag";
 import {TagShrani} from "../entity/requests/tag-shrani";
 
 const SlikaService = require("../services/SlikaService");
-
-const PotService = require("../services/PotService");
+const GlobalVarService = require("../services/GlobalVarService");
 
 //const basePath = "D:/OneDrive - inc/FRI/3. letnik/2. semester/PKP/slike";  // TODO
 //const basePath = "F:/TrapIT";  // TODO
@@ -18,12 +17,12 @@ const options = {
     }
 };
 
-var shranjenaPot = new PotService();
+var globalVarService = new GlobalVarService();
 
 module.exports.dobiSliko = function (req: Request, res: Response, next: NextFunction) {
     let pot = req.params.pot.replace(/\|/g, "/");
 
-    res.sendFile(shranjenaPot.basePath + pot, options, (err) => {
+    res.sendFile(globalVarService.getBasePath() + pot, options, (err) => {
         if (err) {
             console.log(err);
         }
@@ -67,6 +66,6 @@ module.exports.dobiTage = function (req: Request, res: Response, next: NextFunct
 };
 
 module.exports.nastaviPot = function (req: Request, res: Response, next: NextFunction) {
-    shranjenaPot.setBasePath(req.body.pot);
+    globalVarService.setBasePath(req.body.pot);
     res.status(200).json({message: "Success"});
 };

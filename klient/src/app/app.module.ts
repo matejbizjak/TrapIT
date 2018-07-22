@@ -19,6 +19,7 @@ import {OznacevanjeComponent} from "./controllers/oznacevanje/oznacevanje.compon
 import {NastavitveComponent} from "./controllers/nastavitve/nastavitve.component";
 import {ModalModule, BsModalService} from "ngx-bootstrap";
 import {PaginationModule} from "ngx-bootstrap";
+import { AddFolderComponent } from './controllers/nastavitve/add-folder/add-folder.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -34,7 +35,8 @@ export function HttpLoaderFactory(http: HttpClient) {
         PrijavaComponent,
         ProjektComponent,
         OznacevanjeComponent,
-        NastavitveComponent
+        NastavitveComponent,
+        AddFolderComponent
     ],
     imports: [
         BrowserModule,

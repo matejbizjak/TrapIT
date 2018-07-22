@@ -4,7 +4,10 @@ import {OznacevanjeService} from "../../services/oznacevanje/oznacevanje.service
 import {BsModalService, BsModalRef} from "ngx-bootstrap";
 import {PaginationModule, PageChangedEvent} from "ngx-bootstrap/pagination";
 import {Tag} from "../../models/entities/tag.entity";
+import {ApiService} from "../../services/api/api.service";
+
 import {ActivatedRoute} from "@angular/router";
+import {AddFolderComponent} from "./add-folder/add-folder.component";
 
 @Component({
     selector: "app-nastavitve",
@@ -13,6 +16,7 @@ import {ActivatedRoute} from "@angular/router";
 })
 export class NastavitveComponent implements OnInit, ErrorHandler {
 
+    public serverBasePath: string;
     public potDoSlik: string;
     public projekti: Projekt[];
     public prikazaniProjekti: Projekt[];
@@ -42,16 +46,18 @@ export class NastavitveComponent implements OnInit, ErrorHandler {
     public noResults = true;
 
     constructor(private projectService: ProjektService, private oznacevanjeService: OznacevanjeService,
-                private modalService: BsModalService) {
+                private modalService: BsModalService, private apiService: ApiService) {
 
     }
 
     public setDir() {
         this.clearAlerts();
+
         if (this.potDoSlik) {
             this.projectService.nastaviPot(this.potDoSlik).subscribe((res) => {
                 if (res["message"] === "Success") {
                     this.potSuccess1 = true;
+                    this.getBasePath();
                 }
             });
             this.oznacevanjeService.nastaviPot(this.potDoSlik).subscribe((res) => {
@@ -62,6 +68,12 @@ export class NastavitveComponent implements OnInit, ErrorHandler {
         } else {
             this.potEmpty = true;
         }
+    }
+
+    getBasePath(){
+        this.apiService.apiCall("/settings/basePath").subscribe((data: {basePath}) => {
+            this.serverBasePath = data.basePath;
+        });
     }
 
     dobiProjekte(): Promise<any> {
@@ -212,5 +224,6 @@ export class NastavitveComponent implements OnInit, ErrorHandler {
     ngOnInit() {
         this.projekti = new Array;
         this.dobiProjekte();
+        this.getBasePath();
     }
 }

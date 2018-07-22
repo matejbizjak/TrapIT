@@ -1,0 +1,25 @@
+<div class="card mt-3">
+    <div class="card-header">
+        Dodajanje nove mape
+    </div>
+    <div class="card-body">
+        <!-- functional part -->
+        <!-- current basePath name-->
+        <div>Trenutna pot do slik: <span id="basePath">{{basePath}}</span> <button class="btn btn-outline-dark ml-2" (click)="getBasePath()">Osveži</button> </div>
+        <!-- what is the new folders name -->
+        <hr>
+        <div>Navodila za dodajanje nove mape slik v bazo:</div>
+        <ul>
+            <li>Naložite novo mapo z novimi slikami na strežnik in si zapomnite pot do nove mape!</li>
+            <li>Izpolnite spodnji obrazec in sledite nadaljnim navodilom: </li>
+        </ul>
+        <input class="form-control mt-3" placeholder="ime mape (npr. nova_mapa)" [formControl]=""/>
+        <!-- warning form / instruction div-->
+        <div *ngIf="serverReply" class="card card-body mt-3">
+            <div>Odgovor strežnika:</div>
+            <hr>
+            <div id="server-reply">{{serverReply}}</div>
+        </div>
+        <!-- functional part end -->
+    </div>
+</div>
