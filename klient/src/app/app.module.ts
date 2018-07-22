@@ -17,9 +17,9 @@ import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {ProjektComponent} from "./controllers/projekt/projekt.component";
 import {OznacevanjeComponent} from "./controllers/oznacevanje/oznacevanje.component";
 import {NastavitveComponent} from "./controllers/nastavitve/nastavitve.component";
-import {ModalModule, BsModalService} from "ngx-bootstrap";
-import {PaginationModule} from "ngx-bootstrap";
-import { AddFolderComponent } from './controllers/nastavitve/add-folder/add-folder.component';
+import {BsModalService, ModalModule, PaginationModule} from "ngx-bootstrap";
+import {AddFolderComponent} from "./controllers/nastavitve/add-folder/add-folder.component";
+import {Projekt2Component} from "./controllers/projekt2/projekt2.component";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -34,6 +34,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         IndexViewerSidebarComponent,
         PrijavaComponent,
         ProjektComponent,
+        Projekt2Component,
         OznacevanjeComponent,
         NastavitveComponent,
         AddFolderComponent

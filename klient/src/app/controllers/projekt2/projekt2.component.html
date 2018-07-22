@@ -1,0 +1,113 @@
+<div>
+    <form id="tagi">
+        <div class="form-group" *ngFor="let tag of mozniTagi">
+            <img *ngIf="preveriCeLahkoDodaTag(tag)" src="../../../assets/images/plus.png" width="8px" height="8px"
+                 style="cursor: pointer"
+                 (click)="dodajSeEnTag(tag)">
+            <img *ngIf="preveriCeLahkoOdstraniTag(tag)" src="../../../assets/images/minus.png" width="8px" height="8px"
+                 style="cursor: pointer"
+                 (click)="odstraniTag(tag)" class="ml-2">
+            <div *ngIf="tag.childTags.length > 0">
+                <div *ngIf="!tag.checkbox">
+                    <label>{{tag.name}}</label>
+                    <select class="form-control form-control-sm" [id]="tag.tagId" [(ngModel)]="tag.selectedChild"
+                            [ngModelOptions]="{standalone: true}">
+                        <option selected></option>
+                        <option *ngFor="let child of tag.childTags" [ngValue]="child">{{child.name}}</option>
+                    </select>
+                </div>
+                <div *ngIf="tag.checkbox">
+                    <input class="form-check-input" type="checkbox" [(ngModel)]="tag.checkboxValue"
+                           (ngModelChange)="jeIzbralNivo($event, tag)" [ngModelOptions]="{standalone: true}">
+                    <label class="form-check-label">{{tag.name}}</label>
+                </div>
+
+                <div *ngIf="tag.selectedChild && tag.selectedChild.childTags.length > 0">
+                    <div *ngIf="!tag.selectedChild.checkbox">
+                        <label>{{tag.selectedChild.name}}</label>
+                        <select class="form-control form-control-sm" [id]="tag.selectedChild.tagId"
+                                [(ngModel)]="tag.selectedChild.selectedChild"
+                                [ngModelOptions]="{standalone: true}">
+                            <option selected></option>
+                            <option *ngFor="let child2 of tag.selectedChild.childTags" [ngValue]="child2">
+                                {{child2.name}}
+                            </option>
+                        </select>
+                    </div>
+                    <div *ngIf="tag.selectedChild.checkbox">
+                        <input class="form-check-input" type="checkbox" [(ngModel)]="tag.selectedChild.checkboxValue"
+                               (ngModelChange)="jeIzbralNivo($event, tag.selectedChild)"
+                               [ngModelOptions]="{standalone: true}">
+                        <label class="form-check-label">{{tag.selectedChild.name}}</label>
+                    </div>
+
+                    <div *ngIf="tag.selectedChild.selectedChild && tag.selectedChild.selectedChild.input">
+                        <label>število</label>
+                        <input class="form-control form-control-sm" type="number"
+                               [(ngModel)]="tag.selectedChild.selectedChild.inputValue"
+                               [ngModelOptions]="{standalone: true}">
+                    </div>
+
+                    <div *ngIf="tag.selectedChild.selectedChild && tag.selectedChild.selectedChild.childTags.length > 0">
+                        <div *ngIf="!tag.selectedChild.selectedChild.checkbox">
+                            <label>{{tag.selectedChild.selectedChild.name}}</label>
+                            <select class="form-control form-control-sm" [id]="tag.selectedChild.selectedChild.tagId"
+                                    [(ngModel)]="tag.selectedChild.selectedChild.selectedChild"
+                                    [ngModelOptions]="{standalone: true}">
+                                <option selected></option>
+                                <option *ngFor="let child3 of tag.selectedChild.selectedChild.childTags"
+                                        [ngValue]="child3">
+                                    {{child3.name}}
+                                </option>
+                            </select>
+                        </div>
+                        <div *ngIf="tag.selectedChild.selectedChild.checkbox">
+                            <input class="form-check-input" type="checkbox"
+                                   [(ngModel)]="tag.selectedChild.selectedChild.checkboxValue"
+                                   (ngModelChange)="jeIzbralNivo($event, tag.selectedChild.selectedChild)"
+                                   [ngModelOptions]="{standalone: true}">
+                            <label class="form-check-label">{{tag.selectedChild.selectedChild.name}}</label>
+                        </div>
+
+                        <div *ngIf="tag.selectedChild.selectedChild.selectedChild && tag.selectedChild.selectedChild.selectedChild.input">
+                            <label>število</label>
+                            <input class="form-control form-control-sm" type="number"
+                                   [(ngModel)]="tag.selectedChild.selectedChild.selectedChild.inputValue"
+                                   [ngModelOptions]="{standalone: true}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="tag.childTags.length === 0 && tag.input">
+                <label>{{tag.name}}</label>
+                <input class="form-control form-control-sm" type="number" [(ngModel)]="tag.inputValue"
+                       [ngModelOptions]="{standalone: true}">
+            </div>
+        </div>
+    </form>
+</div>
+
+<button class="btn btn-success" (click)="filtrirajPrikaz()">Filtriraj</button>
+
+<table class="table table-sm">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>site</th>
+        <th>datum</th>
+        <th>tip</th>
+        <th>prazna</th>
+        <th>zanimiva</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let medij of medijiSeznam">
+        <td>{{medij.mediaId}}</td>
+        <td>{{medij.siteId.name}}</td>
+        <td>{{medij.date | date:"dd.MM.yyyy"}}</td>
+        <td>{{medij.image ? "slika" : "video"}}</td>
+        <td>{{medij.empty}}</td>
+        <td>{{medij.interesting}}</td>
+    </tr>
+    </tbody>
+</table>

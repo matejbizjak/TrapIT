@@ -1,6 +1,7 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {Tag} from "../../models/entities/tag.entity";
+import {TagZInputValue} from "../../models/entities/custom/tag-z-input-value";
 
 export interface Projekt {
     projectId: number;
@@ -65,5 +66,10 @@ export class ProjektService {
     izbrisiProjekt(projId: number) {
         const url = "/projekt/del";
         return this.http.post(url, {projId});
+    }
+
+    filtrirajSlike(izbraniTagi: TagZInputValue[]) {
+        const url = "/projekt/filter";
+        return this.http.post(url, {tagi: izbraniTagi});
     }
 }

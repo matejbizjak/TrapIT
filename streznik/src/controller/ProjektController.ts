@@ -3,6 +3,7 @@ import * as fs from "fs";
 import {Tag} from "../entity/Tag";
 import {Project} from "../entity/Project";
 import {ProjectTag} from "../entity/ProjectTag";
+import {Media} from "../entity/Media";
 
 const ProjektService = require("../services/ProjektService");
 
@@ -55,7 +56,7 @@ module.exports.dobiProjekte = function (req: Request, res: Response, next: NextF
     );
 };
 
-module.exports.dobiTageProjekta = function(req: Request, res: Response, next: NextFunction) {
+module.exports.dobiTageProjekta = function (req: Request, res: Response, next: NextFunction) {
     const projectID = parseInt(req.url.split("/")[2]);
 
     const projektService = new ProjektService();
@@ -67,9 +68,9 @@ module.exports.dobiTageProjekta = function(req: Request, res: Response, next: Ne
             res.status(400).json({err: err});
         }
     );
-}
+};
 
-module.exports.shraniTageProjekta = function(req: Request, res: Response, next: NextFunction) {
+module.exports.shraniTageProjekta = function (req: Request, res: Response, next: NextFunction) {
 
     const projektService = new ProjektService();
 
@@ -78,9 +79,9 @@ module.exports.shraniTageProjekta = function(req: Request, res: Response, next: 
     }, (err) => {
         res.status(400).json({err: err});
     });
-}
+};
 
-module.exports.dobiKorenskeTage = function(req: Request, res: Response, next: NextFunction) {
+module.exports.dobiKorenskeTage = function (req: Request, res: Response, next: NextFunction) {
     const projektService = new ProjektService();
 
     projektService.dobiKorenskeTage().then((data: Tag[]) => {
@@ -88,9 +89,9 @@ module.exports.dobiKorenskeTage = function(req: Request, res: Response, next: Ne
     }, (err) => {
         res.status(400).json({err: err});
     });
-}
+};
 
-module.exports.shraniNovProjekt = function(req: Request, res: Response, next: NextFunction) {
+module.exports.shraniNovProjekt = function (req: Request, res: Response, next: NextFunction) {
     const projektService = new ProjektService();
 
     projektService.shraniNovProjekt(req.body.newProjName, req.body.newProjTags).then((message: string) => {
@@ -98,9 +99,9 @@ module.exports.shraniNovProjekt = function(req: Request, res: Response, next: Ne
     }, (err) => {
         res.status(400).json({err: err});
     });
-}
+};
 
-module.exports.izbrisiProjekt = function(req: Request, res: Response, next: NextFunction) {
+module.exports.izbrisiProjekt = function (req: Request, res: Response, next: NextFunction) {
     const projektService = new ProjektService();
 
     projektService.izbrisiProjekt(req.body.projId).then((message: string) => {
@@ -108,4 +109,16 @@ module.exports.izbrisiProjekt = function(req: Request, res: Response, next: Next
     }, (err) => {
         res.status(400).json({err: err});
     });
-}
+};
+
+module.exports.filtriraj = function (req: Request, res: Response, next: NextFunction) {
+    const projektService = new ProjektService();
+
+    projektService.filtrirajPodatke(req.body.tagi).then(
+        (medijiZaPrikaz: Media[]) => {
+            res.status(200).json(medijiZaPrikaz);
+        }, (err) => {
+            res.status(400).json({err: err});
+        }
+    );
+};

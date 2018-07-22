@@ -1,4 +1,5 @@
 import {User} from "../User";
+import {TagZInputValue} from "./tag-z-input-value";
 
 export class TagShrani {
     public user: User;
@@ -14,12 +15,3 @@ export class TagShrani {
     }
 }
 
-class TagZInputValue {
-    public tagId;
-    public inputValue;
-
-    constructor(tagId, inputValue) {
-        this.tagId = tagId;
-        this.inputValue = inputValue;
-    }
-}

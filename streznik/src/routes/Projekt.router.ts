@@ -41,4 +41,6 @@ router.post('/novProjekt', prijavljen, ProjektController.shraniNovProjekt);
 
 router.post('/del', prijavljen, ProjektController.izbrisiProjekt);
 
+router.post('/filter', prijavljen, ProjektController.filtriraj);
+
 module.exports = router;

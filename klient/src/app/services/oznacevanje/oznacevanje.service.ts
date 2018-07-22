@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {TagParent} from "../../models/entities/custom/tag-parent.entity";
 import {TagShrani} from "../../models/requests/tag-shrani";
 import {AuthService} from "../avtentikacija/auth.service";
+import {TagZInputValue} from "../../models/entities/custom/tag-z-input-value";
 
 @Injectable()
 export class OznacevanjeService {
@@ -41,7 +42,7 @@ export class OznacevanjeService {
         });
     }
 
-    private pretovriVOblikoZaPosiljat(tagi: TagParent[]): Promise<TagZInputValue[]> { // TagParent[] pretvori v seznam id-tagov
+    pretovriVOblikoZaPosiljat(tagi: TagParent[]): Promise<TagZInputValue[]> { // TagParent[] pretvori v seznam id-tagov
         return new Promise<TagZInputValue[]>(resolve => {
             const oznaceniTagi: TagZInputValue[] = [];
 
@@ -72,15 +73,5 @@ export class OznacevanjeService {
     nastaviPot(pot: String) {
         const url = "/slika/pot";
         return this.http.post(url, {pot: pot});
-    }
-}
-
-class TagZInputValue {
-    public tagId;
-    public inputValue;
-
-    constructor(tagId, inputValue) {
-        this.tagId = tagId;
-        this.inputValue = inputValue;
     }
 }
