@@ -18,7 +18,9 @@
       "body-parser": "^1.18.3",
       "jsonwebtoken": "^8.3.0",
       "bcrypt": "^2.0.1",
-      "express-jwt": "^5.3.1"
+      "express-jwt": "^5.3.1",
+      "find": "latest",
+      "exif": "latest"
    },
    "scripts": {
       "build": "tsc",
