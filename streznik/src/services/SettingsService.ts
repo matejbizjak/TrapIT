@@ -206,19 +206,25 @@ module.exports = class SettingsService {
         return new Promise<string>((resolve, reject) =>
             // check if exists
             this.mediaRepository.findOne(newMedia).then(
-                () => {
-                    resolve("exists");
-                }, () => {
-                    //try to save the new media
-                    this.mediaRepository.save(newMedia).then
-                    (() => {
-                            resolve("added");
-                            //this.print("addded picture with name: " + name);
-                        },
-                        (err) => {
-                            console.log(err);
-                            resolve("unable");
-                        });
+                (foundMedia: Media) => {
+                    //console.log(foundMedia);
+                    if(foundMedia == undefined) {
+                        //try to save the new media
+                        this.mediaRepository.save(newMedia).then
+                        (() => {
+                                resolve("added");
+                                //this.print("addded picture with name: " + name);
+                            },
+                            (err) => {
+                                console.log(err);
+                                resolve("unable");
+                            });
+                    } else {
+                        resolve("exists");
+                    }
+                }, (err) => {
+                    console.log(err);
+                    resolve("unable");
                 })
         );
     }
