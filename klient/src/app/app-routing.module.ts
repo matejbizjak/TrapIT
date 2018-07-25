@@ -9,14 +9,12 @@ import {ProjektComponent} from "./controllers/projekt/projekt.component";
 import {RVguard} from "./services/guards/role.guard";
 import {OznacevanjeComponent} from "./controllers/oznacevanje/oznacevanje.component";
 import {NastavitveComponent} from "./controllers/nastavitve/nastavitve.component";
-import {Projekt2Component} from "./controllers/projekt2/projekt2.component";
 
 const routes: Routes = [
     // routes
     {path: "", component: IndexComponent, canActivate: [PrijavaGuard], pathMatch: "full"},
     {path: "prijava", component: PrijavaComponent},
     {path: "projekt/:id", component: ProjektComponent, canActivate: [RVguard]},
-    {path: "projekt2/:id", component: Projekt2Component, canActivate: [RVguard]},
     {path: "oznacevanje/:id", component: OznacevanjeComponent, canActivate: [RVguard]},
     {path: "nastavitve", component: NastavitveComponent},
     // errors

@@ -1,67 +1,241 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit, TemplateRef} from "@angular/core";
 import {TranslateService} from "@ngx-translate/core";
 import {ProjektService} from "../../services/projekt/projekt.service";
-import {SharingService} from "../../services/sharing.service";
-import {ActivatedRoute, Router} from "@angular/router";
+import {Router} from "@angular/router";
+import {Tag} from "../../models/entities/tag.entity";
+import {Media} from "../../models/entities/media.entity";
+import {BsModalRef, BsModalService} from "ngx-bootstrap";
+import {TagParent} from "../../models/entities/custom/tag-parent.entity";
+import {OznacevanjeService} from "../../services/oznacevanje/oznacevanje.service";
+import {TagZInputValue} from "../../models/entities/custom/tag-z-input-value";
 
 @Component({
     selector: "app-projekt",
-    templateUrl: "./projekt.component.html"
+    templateUrl: "./projekt.component.html",
+    styleUrls: ["./projekt.component.css"]
 })
 export class ProjektComponent implements OnInit {
-    pot: string;
-    globina: number;
-    files: string[];
+    modalRef: BsModalRef;
+    projectId: number;
 
-    public projektID: number;
+    mozniTagi: TagParent[];
+    mozniTagiCopy: TagParent[];
+    mozniTagiSamoId: Set<number>;
 
-    constructor(private router: Router, private translate: TranslateService, private projektService: ProjektService,
-                private sharingService: SharingService, private activatedRoute: ActivatedRoute) {
+    izbranMedia: Media;
+    medijiSeznam: Media[];
+
+    // stupid
+    vstavljenih = 0;
+    bul = false;
+
+    constructor(private router: Router, private modalService: BsModalService, private translate: TranslateService,
+                private projektService: ProjektService, private oznacevanjeService: OznacevanjeService) {
     }
 
     ngOnInit(): void {
-        this.pot = "/";
-        this.globina = 0;
-        this.dobiDatoteke();
+        this.projectId = parseInt(this.router.url.split("/")[2], 10);
 
-        this.projektID = parseInt(this.router.url.split("/")[2], 10);
+        this.mozniTagiSamoId = new Set();
+        this.dobiMozneTage().then(() => {
+            console.log(this.mozniTagi);
+        });
+
+        this.izbranMedia = null;
+        this.medijiSeznam = [];
     }
 
-    dobiDatoteke() {
-        this.projektService.dobiDatoteke(this.pot).subscribe(
-            (files) => {
-                this.files = files["files"];
-            }, (err) => {
-                console.log(err);
+    dobiMozneTage(): Promise<any> {
+        return new Promise<any>((resolve, reject) => {
+            this.projektService.dobiMozneTage(this.projectId).subscribe(
+                (mozniTagi: Tag[]) => {
+                    this.pretvoriTageVLepObjekt(mozniTagi["mozniTagi"]).then(
+                        () => {
+                            this.mozniTagiCopy = [];
+                            Object.assign(this.mozniTagiCopy, JSON.parse(JSON.stringify(this.mozniTagi)));
+                            resolve();
+                        }
+                    );
+                }, (err) => {
+                    console.log(err);
+                    reject();
+                }
+            );
+        });
+    }
+
+    filtrirajPrikaz() {
+        this.oznacevanjeService.pretovriVOblikoZaPosiljat(this.mozniTagi).then(
+            (tagi: TagZInputValue[]) => {
+                this.projektService.filtrirajSlike(tagi).subscribe(
+                    (mediji: Media[]) => {
+                        this.medijiSeznam = mediji;
+                    }, (err) => {
+                    }
+                );
             }
         );
     }
 
-    izberiMapo(datoteka: string) {
-        this.sharingService.saveItem("potDoMapeSlik", this.pot + datoteka + "/");
-        this.router.navigate(["/oznacevanje/" + this.projektID]);
+    odpriOznacevanje(template: TemplateRef<any>, izbranMedia: Media) {
+        this.izbranMedia = izbranMedia;
+        this.modalRef = this.modalService.show(template);
     }
 
-    naprejVMapo(datoteka: string) {
-        if (this.globina < 2) {
-            this.pot += datoteka + "/";
-            this.dobiDatoteke();
-            this.globina++;
-        }
-    }
+    jeIzbralNivo(el, parentTag: TagParent) {
+        let izbranTag: TagParent;
 
-    potNazaj() {
-        if (this.pot !== "/") {
-            const split: string[] = this.pot.split("/");
-            const splitLen = split.length;
-            this.pot = "";
-            for (let i = 0; i < splitLen - 2; i++) {
-                this.pot += split[i];
-                this.pot += "/";
+        if (parentTag.checkbox) {
+            for (const childTag of parentTag.childTags) {
+                if (parentTag.checkboxValue && childTag.name === "true") {
+                    izbranTag = childTag;
+                } else if (parentTag.checkboxValue === false && childTag.name === "false") {
+                    izbranTag = childTag;
+                }
             }
-            this.globina--;
-            this.dobiDatoteke();
+        } else {
+            for (const childTag of parentTag.childTags) {
+                if (childTag.tagId === Number(el.target.value)) {
+                    izbranTag = childTag;
+                }
+            }
+        }
+
+        for (const mozniTagiKey of this.mozniTagi) {
+            if (mozniTagiKey === parentTag) {
+                mozniTagiKey.selectedChild = izbranTag;
+            } else {
+                for (const childTag of mozniTagiKey.childTags) {
+                    if (childTag === parentTag) {
+                        childTag.selectedChild = izbranTag;
+                    } else {
+                        for (const childTag1 of childTag.childTags) {
+                            if (childTag1 === parentTag) {
+                                childTag1.selectedChild = izbranTag;
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
+    dodajSeEnTag(tag: TagParent) {
+        for (let i = 0; i < this.mozniTagi.length; i++) {
+            if (this.mozniTagi[i] === tag) {
+                const copy: TagParent = new TagParent(null, null, null, null, null, null, null, null, null);
+                Object.assign(copy, JSON.parse(JSON.stringify(tag)));
+                copy.selectedChild = null;
+                this.mozniTagi.splice(i + 1, 0, copy);
+                return;
+            }
+        }
+    }
+
+    preveriCeLahkoDodaTag(tag: TagParent): boolean {
+        if (tag.checkbox || tag.input) {
+            return false;
+        }
+        return true;
+    }
+
+    preveriCeLahkoOdstraniTag(tag: TagParent): boolean {
+        let stTagovTeVrste = 0;
+        for (let i = 0; i < this.mozniTagi.length; i++) {
+            if (this.mozniTagi[i].tagId === tag.tagId) {
+                stTagovTeVrste++;
+            }
+        }
+        return stTagovTeVrste > 1;
+    }
+
+    odstraniTag(tag: TagParent) {
+        const index = this.mozniTagi.indexOf(tag);
+        if (index > -1) {
+            this.mozniTagi.splice(index, 1);
+        }
+    }
+
+    pretvoriTageVLepObjekt(tagi: Tag[]): Promise<any> {
+        return new Promise(resolve => {
+            const tagiCopy: Tag[] = JSON.parse(JSON.stringify(tagi));
+            this.mozniTagi = [];
+
+            tagi = JSON.parse(JSON.stringify(tagiCopy));
+            let stIzbrisanih = 0;
+            for (let i = 0; i < tagi.length; i++) {
+                if (tagi[i].parentTagId === null) {
+                    this.mozniTagi.push(new TagParent(tagi[i].tagId, tagi[i].name, [], tagi[i].input, tagi[i].checkbox,
+                        null, null, null, null));
+                    this.mozniTagiSamoId.add(tagi[i].tagId);
+                    this.vstavljenih++;
+                    tagiCopy.splice(i - stIzbrisanih, 1);
+                    this.bul = false;
+                    stIzbrisanih++;
+
+                } else {
+                    if (this.dodajStarsuCeObstaja(this.mozniTagi, tagi[i])) {
+                        tagiCopy.splice(i - stIzbrisanih, 1);
+                        this.bul = false;
+                        stIzbrisanih++;
+                    } else if (this.bul) {
+                        tagiCopy.splice(i - stIzbrisanih, 1);
+                        this.bul = false;
+                        stIzbrisanih++;
+                    }
+                }
+            }
+
+            resolve();
+        });
+    }
+
+    dodajStarsuCeObstaja(lepiTagi: TagParent[], tag: Tag): boolean {
+        if (lepiTagi === undefined) {
+            return false;
+        }
+        for (let i = 0; i < lepiTagi.length; i++) {
+            if (lepiTagi[i].tagId === tag.parentTagId.tagId) {
+                this.vstaviVMozneTage(lepiTagi[i], tag);
+                return true;
+            }
+            if (lepiTagi[i].childTags.length > 0) {
+                this.dodajStarsuCeObstaja(lepiTagi[i].childTags, tag);
+            }
+        }
+        return false;
+    }
+
+    vstaviVMozneTage(parent: TagParent, child: Tag) {
+        for (let i = 0; i < this.mozniTagi.length; i++) {
+            if (this.mozniTagi[i].tagId === parent.tagId) {
+                this.mozniTagi[i].childTags.push(new TagParent(child.tagId, child.name, [], child.input, child.checkbox,
+                    null, null, null, null));
+                this.mozniTagiSamoId.add(child.tagId);
+                this.bul = true;
+                this.vstavljenih++;
+                return;
+            }
+            for (let j = 0; j < this.mozniTagi[i].childTags.length; j++) {
+                if (this.mozniTagi[i].childTags[j].tagId === parent.tagId) {
+                    this.mozniTagi[i].childTags[j].childTags.push(new TagParent(child.tagId, child.name, [], child.input,
+                        child.checkbox, null, null, null, null));
+                    this.mozniTagiSamoId.add(child.tagId);
+                    this.bul = true;
+                    this.vstavljenih++;
+                    return;
+                }
+                for (let k = 0; k < this.mozniTagi[i].childTags[j].childTags.length; k++) {
+                    if (this.mozniTagi[i].childTags[j].childTags[k].tagId === parent.tagId) {
+                        this.mozniTagi[i].childTags[j].childTags[k].childTags.push(new TagParent(child.tagId, child.name, [],
+                            child.input, child.checkbox, null, null, null, null));
+                        this.mozniTagiSamoId.add(child.tagId);
+                        this.bul = true;
+                        this.vstavljenih++;
+                        return;
+                    }
+                }
+            }
+        }
+    }
 }

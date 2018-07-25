@@ -21,7 +21,6 @@ import {BsModalService, ModalModule, PaginationModule, PopoverModule} from "ngx-
 import {DodajanjeZnackeComponent} from "./controllers/dodajanje-znacke/dodajanje-znacke.component";
 import {TagListItemComponent} from "./controllers/tag-list-item/tag-list-item.component";
 import {UrejanjeZnackeComponent} from "./controllers/urejanje-znacke/urejanje-znacke.component";
-import {Projekt2Component} from "./controllers/projekt2/projekt2.component";
 import {AddFolderComponent} from "./controllers/nastavitve/add-folder/add-folder.component";
 
 // AoT requires an exported function for factories
@@ -37,7 +36,6 @@ export function HttpLoaderFactory(http: HttpClient) {
         IndexViewerSidebarComponent,
         PrijavaComponent,
         ProjektComponent,
-        Projekt2Component,
         OznacevanjeComponent,
         NastavitveComponent,
         DodajanjeZnackeComponent,

@@ -42,7 +42,7 @@ export class ChooseProjectComponent implements OnInit {
     }
 
     public goTo(projID: number) {
-        this.router.navigate(["/projekt2/" + projID]);
+        this.router.navigate(["/projekt/" + projID]);
     }
 
     ngOnInit(): void {
