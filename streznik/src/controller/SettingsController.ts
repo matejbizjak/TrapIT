@@ -43,9 +43,13 @@ module.exports.addFolderToDatabase = function (req: Request, res: Response, next
 
     settingsService.findAllMediaInFolder(folderPath).then((allFiles: string[]) => {
         if(allFiles.length) {
-            settingsService.importArrayOfPaths(allFiles);
-            res.status(200).json({files: allFiles,
-                                        serverReply: "Spodaj priakazane datoteke so bile shranjene v podatkovno bazo:"});
+            settingsService.importArrayOfPaths(allFiles).then((result)=> {
+                res.status(200).json({files: allFiles,
+                                            serverReply: "Spodaj priakazane datoteke so bile shranjene v podatkovno bazo:",
+                                            added: result.added,
+                                            exist: result.exist,
+                                            all: allFiles.length});
+            });
         } else {
             res.status(200).json({files: null,
                                         serverReply: "Mapa ne vsebuje slik ali videoposnetkov."});

@@ -44,9 +44,11 @@ module.exports = class SettingsService {
         });
     }
 
-    async importArrayOfPaths(files: string[] = []){
+    //TODO; doesn't check if the pictures are only JPEG/JPG/AVI
+    async importArrayOfPaths(files: string[] = []): Promise<Result> {
         var pathLib = require('path');
-        var added: number = 0;
+        var added: number[] = [];
+        var exist: number[] = [];
         var all: number = files.length;
 
 
@@ -55,20 +57,28 @@ module.exports = class SettingsService {
         var comment: string = "";
         var empty: boolean = false;
 
-        for (let file of files) {
+        for (var i = 0; i < files.length; i++) {
+            var file = await files[i];
             var data = await this.splitPath(file);
             var date = await this.getExifDate(file);
-            if(date == undefined) date = this.lastRegDate;
-            var siteId = (await this.getSiteId(data[data.length - 3 ]));
+            if (date == undefined) date = this.lastRegDate;
+            var siteId = (await this.getSiteId(data[data.length - 3]));
             var path = data.splice(0, data.length - 3).join(pathLib.sep) + pathLib.sep;
             var pathId = (await this.getPathId(path));
 
-            if(file.endsWith("AVI") || file.endsWith("avi")) image = false;
+            if (file.endsWith("AVI") || file.endsWith("avi")) image = false;
             else image = true;
-            var x = await this.insertMediaEntity(date, data[data.length - 1], image, comment, pathId, siteId);
-            if( x == true ) added ++;
+            var ifSuccess = await this.insertMediaEntity(date, data[data.length - 1], image, comment, pathId, siteId);
+            if (ifSuccess == "added") added.push(i);
+            else if(ifSuccess == "exists") exist.push(i);
         }
-        console.log("Slike uspešno dodane v bazo: " + added + "  od " + all);
+        this.print("V bazo so bile bile uvožene slike z naslednjimi rezultati. Od " + all + " jih je bilo že v bazi "+ exist.length +" in dodanih je bilo " + added.length);
+        return new Promise<Result>((resolve, reject) => {
+            var result = new Result();
+            result.added = added;
+            result.exist = exist;
+            resolve(result);
+        })
     }
 
     //get date only works for JPG JPEG
@@ -103,7 +113,7 @@ module.exports = class SettingsService {
             this.pathRepository.findOne({value: path}).then
             ((pathEntity: Path) => {
 
-                if(pathEntity){
+                if (pathEntity) {
                     resolve(pathEntity);
                 } else {
                     this.pathRepository.save({value: path}).then
@@ -136,7 +146,7 @@ module.exports = class SettingsService {
         return new Promise<Site>((resolve, reject) => {
             this.siteRepository.findOne({name: site}).then
             ((siteEntity: Site) => {
-                if(siteEntity){
+                if (siteEntity) {
                     resolve(siteEntity);
                 } else {
                     this.siteRepository.save({name: site}).then
@@ -164,32 +174,54 @@ module.exports = class SettingsService {
 
     //just splits data depending on the linux or windows server file separator
     async splitPath(path: string): Promise<string[]> {
-       return new Promise<string[]>((resolve, reject) => {
-           let data: string[] = [];
-           if (path.includes("\\")) {
-               data = path.split("\\");
-           } else {
-               data = path.split("/");
-           }
-           resolve(data);
-       })
+        return new Promise<string[]>((resolve, reject) => {
+            let data: string[] = [];
+            if (path.includes("\\")) {
+                data = path.split("\\");
+            } else {
+                data = path.split("/");
+            }
+            resolve(data);
+        })
     }
 
-    // create Media entitiy
-    async insertMediaEntity(date: string, name: string, image: boolean, comment = "", pathId: Path, siteId: Site): Promise<boolean> {
-        if(date == undefined) date = this.lastRegDate;
-        return new Promise<boolean>((resolve, reject) => {
-            //try to save the new media
-            this.mediaRepository.save({name: name, date: date, image: image, comment: comment, pathId: pathId, siteId: siteId, interesting: false, empty: false}).then
-            (()=>{
-                resolve(true);
-                //this.print("addded picture with name: " + name);
-            }).catch
-            ((err) => {
-                console.log(err);
-                resolve(false);
-            })
-        })
+    // insert media data inside the database
+    // if it's already saved returns => "exists"
+    // if it was saved returns => "saved"
+    // if it could not be saved => "unable"
+    async insertMediaEntity(date: string, name: string, image: boolean, comment = "", pathId: Path, siteId: Site): Promise<string> {
+        if (date == undefined) date = this.lastRegDate;
+        let newMedia = new Media();
+
+        // Create the entitiy
+        newMedia.date = date;
+        newMedia.name = name;
+        newMedia.image = image;
+        newMedia.comment = comment;
+        newMedia.pathId = pathId;
+        newMedia.siteId = siteId;
+        newMedia.interesting = false;
+        newMedia.empty = false;
+
+
+        return new Promise<string>((resolve, reject) =>
+            // check if exists
+            this.mediaRepository.findOne(newMedia).then(
+                () => {
+                    resolve("exists");
+                }, () => {
+                    //try to save the new media
+                    this.mediaRepository.save(newMedia).then
+                        (() => {
+                            resolve("added");
+                            //this.print("addded picture with name: " + name);
+                        },
+                        (err) => {
+                            console.log(err);
+                            resolve("unable");
+                        });
+                })
+        );
     }
 
     //delay testing
@@ -197,8 +229,15 @@ module.exports = class SettingsService {
         await new Promise(resolve => setTimeout(() => resolve(), ms)).then(() => console.log("fired"));
     }
 
+    //inside console logger
     print(string: string) {
         console.log("[SettingsService] " + string);
     }
 
+}
+
+
+class Result {
+    added: number[];
+    exist: number[];
 }
