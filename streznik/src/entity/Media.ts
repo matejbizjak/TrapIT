@@ -9,7 +9,7 @@ export class Media {
     mediaId: number;
 
     @Column()
-    date: Date;
+    date: string;
 
     @Column()
     name: string;

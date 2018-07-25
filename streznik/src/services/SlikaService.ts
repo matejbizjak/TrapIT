@@ -7,7 +7,7 @@ import {TagShrani} from "../entity/requests/tag-shrani";
 var globalVarService = require("../services/GlobalVarService");
 
 
-//TODO SEARCH BY IMAGE_PATH+IMAGE_NAME (this kind of search might result in problems)
+//TODO SEARCH BY media_id (this kind of search might result in problems)
 module.exports = class SlikaService {
     private mediaRepository = getRepository(Media);
     private mediaTagRepository = getRepository(MediaTag);
