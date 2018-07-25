@@ -19,6 +19,10 @@ import {OznacevanjeComponent} from "./controllers/oznacevanje/oznacevanje.compon
 import {NastavitveComponent} from "./controllers/nastavitve/nastavitve.component";
 import {ModalModule, BsModalService} from "ngx-bootstrap";
 import {PaginationModule} from "ngx-bootstrap";
+import {DodajanjeZnackeComponent} from "./controllers/dodajanje-znacke/dodajanje-znacke.component";
+import {TagListItemComponent} from "./controllers/tag-list-item/tag-list-item.component";
+import {PopoverModule} from "ngx-bootstrap";
+import {UrejanjeZnackeComponent} from "./controllers/urejanje-znacke/urejanje-znacke.component";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -34,7 +38,10 @@ export function HttpLoaderFactory(http: HttpClient) {
         PrijavaComponent,
         ProjektComponent,
         OznacevanjeComponent,
-        NastavitveComponent
+        NastavitveComponent,
+        DodajanjeZnackeComponent,
+        TagListItemComponent,
+        UrejanjeZnackeComponent
     ],
     imports: [
         BrowserModule,
@@ -45,6 +52,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         BootstrapModule,
         ModalModule.forRoot(),
         PaginationModule.forRoot(),
+        PopoverModule.forRoot(),
         TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,

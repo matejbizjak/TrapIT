@@ -171,4 +171,77 @@
             </div>
         </div>
     </div>
+    <div class="row mt-3">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    Značke
+                </div>
+                <div class="card-body">
+                    <div class="form-inline">
+                        <div class="input-group">
+                            <input type="text" class="form-control" style="float: right" [(ngModel)]="tagSearchTerm">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button" style="display: flex" (click)="searchTags()">
+                                    <i class="material-icons">
+                                        search
+                                    </i>
+                                </button>
+                            </div>
+                        </div>
+                        <div style="float: left">
+                            <button class="btn btn-outline-success ml-2" style="display: flex" type="button" (click)="novaZnacka(newTag)">
+                                <i class="material-icons">
+                                    add_circle_outline
+                                </i>
+                                <span> Dodaj</span>
+                            </button>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row mb-2">
+                        <div class="col-12">
+                            <div class="pageContainer">
+                                <pagination [totalItems]="totalTags" [itemsPerPage]="20" (pageChanged)="tagPageChanged($event)" previousText="&lsaquo;" nextText="&rsaquo;"></pagination>
+                            </div>
+                            <div class="card card-body">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div *ngFor="let tag of prikazaniTagi">
+                                            <button class="btn btn-outline-dark mb-2 mr-2" style="white-space: normal; float: left;" (click)="urediZnacko(tagSettings, tag)">{{tag.name}}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <ng-template #tagSettings>
+                            <div class="modal-header">
+                                <h4 class="modal-title pull-left">Nastavitve značke</h4>
+                                <button type="button" class="close pull-right" aria-label="Close" (click)="tagSettingsRef.hide(tagSettings)">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <app-urejanje-znacke [ref]="tagSettingsRef" [tag]="tagToEdit" (change)="dobiTage(); nastaviProjekt(izbranProjekt)" (close)="tagSettingsRef.hide(tagSettings)"></app-urejanje-znacke>
+                            </div>
+                        </ng-template>
+
+                        <ng-template #newTag>
+                            <div class="modal-header">
+                                <h4 class="modal-title pull-left">Nova značka</h4>
+                                <button type="button" class="close pull-right" aria-label="Close" (click)="newTagRef.hide(newTag)">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <app-dodajanje-znacke [ref]="newTagRef" (change)="dobiTage(); nastaviProjekt(izbranProjekt)"></app-dodajanje-znacke>
+                            </div>
+                        </ng-template>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

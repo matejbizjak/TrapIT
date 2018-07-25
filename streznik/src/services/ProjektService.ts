@@ -10,33 +10,46 @@ module.exports = class ProjektService {
     private tagRepository = getRepository(Tag);
     private projectTagRepository = getRepository(ProjectTag);
     private projectRepository = getRepository(Project);
-    private retArr: Tag[] = new Array;
 
     public dobiMozneTage(projectId: number): Promise<Tag[]> {
         return new Promise<Tag[]>((resolve, reject) => {
-            this.projectRepository.findOne(projectId).then((proj: Project) => {
-                this.projectTagRepository.find({relations: ["tagId", "tagId.parentTagId", "tagId.tags", "tagId.tags.parentTagId"], where: {projectId: proj, active: true}}).then((projTags: ProjectTag[]) => {
 
-                    let retArr: Tag[] = new Array;
-                    projTags.forEach(element => {
-                        retArr.push(element.tagId);
-                        element.tagId.tags.forEach(el => {
-                            retArr.push(el);
-                        });
+            this.tagRepository.find({relations: ["parentTagId", "projectTags", "projectTags.projectId"]}).then((tags: Tag[]) => {
+                let retArr: Tag[] = new Array;
+                tags.forEach(element => {
+                    let rootTag = this.findRoot(element, tags);
+
+                    rootTag.projectTags.forEach(projTg => {
+                        if (projTg.projectId.projectId === projectId &&
+                            projTg.active) {
+                            retArr.push(element);
+                        }
                     });
-
-                    console.log(retArr);
-
-                    resolve(retArr);
-                }, (err) => {
-                    console.log(err);
-                    reject(err);
                 });
+
+                // console.log(retArr);
+
+                resolve(retArr);
             }, (err) => {
                 console.log(err);
                 reject(err);
             });
         });
+    }
+
+    public findRoot(tag: Tag, tags: Tag[]) {
+
+        tags.forEach(el => {
+            if (el.tagId === tag.tagId) {
+                tag = el;
+            }
+        });
+
+        if (tag.parentTagId == null) {
+            return tag;
+        } else {
+            return this.findRoot(tag.parentTagId, tags);
+        }
     }
 
     public dobiProjekte(): Promise<Project[]> {
