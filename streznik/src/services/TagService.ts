@@ -1,4 +1,4 @@
-import {getRepository, Connection, getConnection} from "typeorm";
+import {getRepository} from "typeorm";
 import {Tag} from "../entity/Tag";
 import {TagWChild} from "../entity/TagWChild";
 import {Project} from "../entity/Project";
@@ -22,13 +22,38 @@ module.exports = class TagService {
                         .insert()
                         .into(Tag)
                         .values([
-                            {name: tag.tag.name, parentTagId: parentId, input: tag.tag.input, checkbox: tag.tag.checkbox}
+                            {
+                                name: tag.tag.name,
+                                parentTagId: parentId,
+                                input: tag.tag.input,
+                                checkbox: tag.tag.checkbox
+                            }
                         ])
                         .execute().then(() => {
                         this.tagRepository.findOne({where: {name: tag.tag.name}}).then(tag1 => {
                             if (tag.tag.checkbox) {
-                                this.saveNewTag({tag: {tagId: null, name: "true", checkbox: false, input: false, parentTagId: null, tags: null, projectTags: null}, children: null}, tag1).then(() => {
-                                    this.saveNewTag({tag: {tagId: null, name: "false", checkbox: false, input: false, parentTagId: null, tags: null, projectTags: null}, children: null}, tag1).then(() => {
+                                this.saveNewTag({
+                                    tag: {
+                                        tagId: null,
+                                        name: "true",
+                                        checkbox: false,
+                                        input: false,
+                                        parentTagId: null,
+                                        tags: null,
+                                        projectTags: null
+                                    }, children: null
+                                }, tag1).then(() => {
+                                    this.saveNewTag({
+                                        tag: {
+                                            tagId: null,
+                                            name: "false",
+                                            checkbox: false,
+                                            input: false,
+                                            parentTagId: null,
+                                            tags: null,
+                                            projectTags: null
+                                        }, children: null
+                                    }, tag1).then(() => {
                                         resolve();
                                     }, (err) => {
                                         console.log(err);
@@ -179,11 +204,19 @@ module.exports = class TagService {
             if (tag.tag.tagId) {
                 this.tagRepository.createQueryBuilder()
                     .update(Tag)
-                    .set({name: tag.tag.name, input: tag.tag.input, checkbox: tag.tag.checkbox, parentTagId: tag.tag.parentTagId})
+                    .set({
+                        name: tag.tag.name,
+                        input: tag.tag.input,
+                        checkbox: tag.tag.checkbox,
+                        parentTagId: tag.tag.parentTagId
+                    })
                     .where("tagId = :id", {id: tag.tag.tagId})
-                .execute().then(() => {
-                    this.tagRepository.find({where: {parentTagId: tag.tag}, relations: ["parentTagId"]}).then((exChild: Tag[]) => {
-                        this.tagRepository.find({relations: ["parentTagId"]}).then(all =>{
+                    .execute().then(() => {
+                    this.tagRepository.find({
+                        where: {parentTagId: tag.tag},
+                        relations: ["parentTagId"]
+                    }).then((exChild: Tag[]) => {
+                        this.tagRepository.find({relations: ["parentTagId"]}).then(all => {
                             let toBeDeleted: TagWChild[] = new Array;
                             exChild.forEach(ex => {
                                 // If existing child is not in array of new children, we have to delete it
@@ -228,10 +261,21 @@ module.exports = class TagService {
                     this.tagRepository.createQueryBuilder()
                         .insert()
                         .into(Tag)
-                        .values({tagId: tag.tag.tagId, name: tag.tag.name, input: tag.tag.input, checkbox: tag.tag.checkbox, parentTagId: tag.tag.parentTagId})
+                        .values({
+                            tagId: tag.tag.tagId,
+                            name: tag.tag.name,
+                            input: tag.tag.input,
+                            checkbox: tag.tag.checkbox,
+                            parentTagId: tag.tag.parentTagId
+                        })
                         .execute().then(() => {
                         if (tag.tag.checkbox) {
-                            this.tagRepository.findOne({where: {name: tag.tag.name, parentTagId: tag.tag.parentTagId}}).then((tag1: Tag ) => {
+                            this.tagRepository.findOne({
+                                where: {
+                                    name: tag.tag.name,
+                                    parentTagId: tag.tag.parentTagId
+                                }
+                            }).then((tag1: Tag) => {
                                 this.tagRepository.createQueryBuilder()
                                     .insert()
                                     .into(Tag)

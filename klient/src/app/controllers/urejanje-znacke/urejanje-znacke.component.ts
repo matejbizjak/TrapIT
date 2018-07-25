@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, TemplateRef, Output, EventEmitter} from "@angular/core";
+import {Component, EventEmitter, Input, OnInit, Output, TemplateRef} from "@angular/core";
 import {Tag} from "../../models/entities/tag.entity";
 import {ZnackaService} from "../../services/znacka/znacka.service";
 import {TagWChild} from "../dodajanje-znacke/dodajanje-znacke.component";
@@ -10,9 +10,9 @@ export interface TagWChild {
 }
 
 @Component({
-  selector: "app-urejanje-znacke",
-  templateUrl: "./urejanje-znacke.component.html",
-  styleUrls: ["./urejanje-znacke.component.css"],
+    selector: "app-urejanje-znacke",
+    templateUrl: "./urejanje-znacke.component.html",
+    styleUrls: ["./urejanje-znacke.component.css"],
     providers: [ZnackaService]
 })
 
@@ -34,7 +34,8 @@ export class UrejanjeZnackeComponent implements OnInit {
 
     deleteRef: BsModalRef;
 
-    constructor(private znackaService: ZnackaService, private modalService: BsModalService) { }
+    constructor(private znackaService: ZnackaService, private modalService: BsModalService) {
+    }
 
     ngOnInit() {
         this.znackaService.getChildren(this.tag).subscribe((tWc: TagWChild) => {
@@ -48,9 +49,9 @@ export class UrejanjeZnackeComponent implements OnInit {
     }
 
     public deepCopy(tag: TagWChild) {
-        let tg: Tag = {tagId: null, name: null, input: false, checkbox: false, parentTagId: null};
+        const tg: Tag = {tagId: null, name: null, input: false, checkbox: false, parentTagId: null};
         Object.assign(tg, tag.tag);
-        let arr: TagWChild[] = new Array;
+        const arr: TagWChild[] = new Array;
         tag.children.forEach(child => {
             arr.push(this.deepCopy(child));
         });

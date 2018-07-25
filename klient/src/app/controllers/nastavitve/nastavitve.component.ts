@@ -1,8 +1,8 @@
-import {Component, OnInit, TemplateRef, ErrorHandler} from "@angular/core";
-import {ProjektService, Projekt, ProjektTag} from "../../services/projekt/projekt.service";
+import {Component, ErrorHandler, OnInit, TemplateRef} from "@angular/core";
+import {Projekt, ProjektService, ProjektTag} from "../../services/projekt/projekt.service";
 import {OznacevanjeService} from "../../services/oznacevanje/oznacevanje.service";
-import {BsModalService, BsModalRef} from "ngx-bootstrap";
-import {PaginationModule, PageChangedEvent} from "ngx-bootstrap/pagination";
+import {BsModalRef, BsModalService} from "ngx-bootstrap";
+import {PageChangedEvent} from "ngx-bootstrap/pagination";
 import {Tag} from "../../models/entities/tag.entity";
 
 @Component({
@@ -136,7 +136,7 @@ export class NastavitveComponent implements OnInit, ErrorHandler {
     }
 
     public izbrisiProjekt() {
-        this.projectService.izbrisiProjekt(this.izbranProjekt.projectId).subscribe((data: {message}) => {
+        this.projectService.izbrisiProjekt(this.izbranProjekt.projectId).subscribe((data: { message }) => {
             if (data.message === "Success") {
                 this.clearAlerts();
                 this.projectDeleteSuccess = true;
@@ -167,7 +167,7 @@ export class NastavitveComponent implements OnInit, ErrorHandler {
 
     public shraniNovProjekt() {
         if (this.novProjektIme !== "" && this.novProjektIme) {
-            this.projectService.shraniNovProjekt(this.novProjektIme, this.novProjektTags).subscribe((data: {message}) => {
+            this.projectService.shraniNovProjekt(this.novProjektIme, this.novProjektTags).subscribe((data: { message }) => {
                 if (data.message === "Success") {
                     this.clearAlerts();
                     this.projectCreateSuccess = true;
@@ -183,15 +183,15 @@ export class NastavitveComponent implements OnInit, ErrorHandler {
     }
 
     public SortByProjectName(x, y) {
-        return ((x.name === y.name) ? 0 : ((x.name > y.name) ? 1 : -1 ));
+        return ((x.name === y.name) ? 0 : ((x.name > y.name) ? 1 : -1));
     }
 
     public SortByTagName1(x, y) {
-        return ((x.tagId.name === y.tagId.name) ? 0 : ((x.tagId.name > y.tagId.name) ? 1 : -1 ));
+        return ((x.tagId.name === y.tagId.name) ? 0 : ((x.tagId.name > y.tagId.name) ? 1 : -1));
     }
 
     public SortByTagName2(x, y) {
-        return ((x.name === y.name) ? 0 : ((x.name > y.name) ? 1 : -1 ));
+        return ((x.name === y.name) ? 0 : ((x.name > y.name) ? 1 : -1));
     }
 
     public handleError(error: any) {

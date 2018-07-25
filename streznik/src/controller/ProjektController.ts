@@ -13,7 +13,7 @@ const GlobalVarService = require("../services/GlobalVarService");
 // const basePath = "E:/TrapIT/";  // TODO
 // const basePath = "D:/";
 
-var globalVarService = new GlobalVarService();
+let globalVarService = new GlobalVarService();
 
 module.exports.dobiDir = function (req: Request, res: Response, next: NextFunction) {
     fs.readdir(globalVarService.getBasePath() + req.body.pot, (err, files) => {

@@ -1,6 +1,6 @@
 import {Component, OnInit} from "@angular/core";
 import {Projekt, ProjektService} from "../../../services/projekt/projekt.service";
-import {PaginationModule, PageChangedEvent} from "ngx-bootstrap/pagination";
+import {PageChangedEvent} from "ngx-bootstrap/pagination";
 
 @Component({
     selector: "app-index-reviewer-component",
@@ -29,8 +29,8 @@ export class IndexReviewerComponent implements OnInit {
         });
     }
 
-    public SortByProjectName(x,y) {
-        return ((x.name === y.name) ? 0 : ((x.name > y.name) ? 1 : -1 ));
+    public SortByProjectName(x, y) {
+        return ((x.name === y.name) ? 0 : ((x.name > y.name) ? 1 : -1));
     }
 
     public pageChanged(event: PageChangedEvent) {

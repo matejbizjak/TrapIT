@@ -1,49 +1,57 @@
 <div class="card card-body" style="overflow: auto">
-  <div class="row">
-    <div class="col-12">
-      <button class="btn btn-outline-danger ml-1" style="float: right" (click)="ref.hide()">Prekliči</button>
-      <button class="btn btn-outline-success ml-1" style="float: right" (click)="saveChanges(deleteConfirmation)">Shrani</button>
-      <button class="btn btn-outline-warning" style="float: right" (click)="resetTag()">Ponsatavi</button>
-      <div *ngIf="saveSuccess">
-        <div class="alert alert-success" style="float: left">Spremembe uspešno shranjene</div>
-      </div>
-      <div *ngIf="saveError">
-        <div class="alert alert-danger" style="float: left">Napaka</div>
-      </div>
-    </div>
-  </div>
-  <hr>
-  <div *ngIf="copy.length > 0">
-    <tag-list-item [children]="copy"></tag-list-item>
-  </div>
-
-  <ng-template #deleteConfirmation>
-    <div class="modal-header">
-      <h4 class="modal-title pull-left">Ali ste prepričani?</h4>
-      <button type="button" class="close pull-right" aria-label="Close" (click)="deleteRef.hide(deleteConfirmation)">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <div *ngIf="!deleteSuccess">
-        <div class="row">
-          <div class="col-12">
-            <div class="alert-warning card card-body mb-2">
-              POZOR! Vsaka značka, ki jo odstranite, bo trajno izbrisana iz podatkovne baze SKUPAJ Z NJENIMI PODZNAČKAMI. Značko izbrišite le, če ste prepričani, da jo več ne potrebujete.
+    <div class="row">
+        <div class="col-12">
+            <button class="btn btn-outline-danger ml-1" style="float: right" (click)="ref.hide()">Prekliči</button>
+            <button class="btn btn-outline-success ml-1" style="float: right" (click)="saveChanges(deleteConfirmation)">
+                Shrani
+            </button>
+            <button class="btn btn-outline-warning" style="float: right" (click)="resetTag()">Ponsatavi</button>
+            <div *ngIf="saveSuccess">
+                <div class="alert alert-success" style="float: left">Spremembe uspešno shranjene</div>
             </div>
-          </div>
+            <div *ngIf="saveError">
+                <div class="alert alert-danger" style="float: left">Napaka</div>
+            </div>
         </div>
-        <button class="btn btn-outline-danger" style="float: right" (click)="deleteRef.hide(deleteConfirmation)">Ne</button>
-        <button class="btn btn-outline-success mr-2" style="float: right" (click)="deleteTag()">Da</button>
-      </div>
-      <div *ngIf="deleteSuccess">
-        <div class="alert alert-success" style="float: left">Značka izbrisana</div>
-        <button class="btn btn-outline-success mr-2" style="float: right" (click)="deleteRef.hide(deleteConfirmation); close.emit()">V redu</button>
-      </div>
-      <div *ngIf="deleteError">
-        <div class="alert alert-danger" style="float: left">Napaka</div>
-      </div>
     </div>
-  </ng-template>
+    <hr>
+    <div *ngIf="copy.length > 0">
+        <tag-list-item [children]="copy"></tag-list-item>
+    </div>
+
+    <ng-template #deleteConfirmation>
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Ali ste prepričani?</h4>
+            <button type="button" class="close pull-right" aria-label="Close"
+                    (click)="deleteRef.hide(deleteConfirmation)">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div *ngIf="!deleteSuccess">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="alert-warning card card-body mb-2">
+                            POZOR! Vsaka značka, ki jo odstranite, bo trajno izbrisana iz podatkovne baze SKUPAJ Z
+                            NJENIMI PODZNAČKAMI. Značko izbrišite le, če ste prepričani, da jo več ne potrebujete.
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-outline-danger" style="float: right"
+                        (click)="deleteRef.hide(deleteConfirmation)">Ne
+                </button>
+                <button class="btn btn-outline-success mr-2" style="float: right" (click)="deleteTag()">Da</button>
+            </div>
+            <div *ngIf="deleteSuccess">
+                <div class="alert alert-success" style="float: left">Značka izbrisana</div>
+                <button class="btn btn-outline-success mr-2" style="float: right"
+                        (click)="deleteRef.hide(deleteConfirmation); close.emit()">V redu
+                </button>
+            </div>
+            <div *ngIf="deleteError">
+                <div class="alert alert-danger" style="float: left">Napaka</div>
+            </div>
+        </div>
+    </ng-template>
 
 </div>

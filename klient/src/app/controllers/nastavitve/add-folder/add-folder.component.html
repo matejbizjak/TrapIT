@@ -1,44 +1,53 @@
 <div class="card mt-3">
     <div class="card-header">
-        <span class="float-left"> Dodajanje nove mape </span> <div *ngIf="loading == 0" class="loader float-left ml-3"></div>
+        <span class="float-left"> Dodajanje nove mape </span>
+        <div *ngIf="loading == 0" class="loader float-left ml-3"></div>
     </div>
     <div class="card-body">
         <!-- functional part -->
         <!-- current basePath name-->
-        <div>Trenutna pot do slik: <span id="basePath">{{basePath}}</span> <button class="btn btn-outline-dark ml-2" (click)="getBasePath()">Osveži</button> </div>
+        <div>Trenutna pot do slik: <span id="basePath">{{basePath}}</span>
+            <button class="btn btn-outline-dark ml-2" (click)="getBasePath()">Osveži</button>
+        </div>
 
         <!-- what is the new folders name -->
         <hr>
         <div>Navodila za dodajanje nove mape slik v bazo:</div>
         <ul>
             <li>Struktura poti naj bo: (DISK:\leto\ime_krmišča\ime_krmišča_datum-slik\slike...)</li>
-            <li>Nove slike se lahko dodajajo le v posamične nove mape, ki ne vsebujejo že obstoječe in registrirane slike znotraj baze!</li>
+            <li>Nove slike se lahko dodajajo le v posamične nove mape, ki ne vsebujejo že obstoječe in registrirane
+                slike znotraj baze!
+            </li>
             <li>Nova mapa lahko vsebuje tudi še več map s slikami.</li>
             <li>Naložite novo mapo z novimi slikami na strežnik in si zapomnite pot do nove mape!</li>
-            <li>Spodaj vpišite ime mape in nato sledite nadaljnim navodilom: </li>
+            <li>Spodaj vpišite ime mape in nato sledite nadaljnim navodilom:</li>
         </ul>
-        <input #inputFolderHTML class="form-control mt-3" placeholder="ime mape (npr. nova_mapa)" type="text" (keyup.enter)="getAvaliableFolders(inputFolderHTML.value)">
+        <input #inputFolderHTML class="form-control mt-3" placeholder="ime mape (npr. nova_mapa)" type="text"
+               (keyup.enter)="getAvaliableFolders(inputFolderHTML.value)">
 
         <!-- warning form / instruction div-->
         <div *ngIf="serverReply" class="card card-body mt-3">
-            <div>Odgovor strežnika: </div>
+            <div>Odgovor strežnika:</div>
             <div id="server-reply" class="md-3">{{serverReply}}</div>
 
             <!-- clickable selection of buttons -->
-            <div *ngIf = "folders">
+            <div *ngIf="folders">
                 <hr>
                 <div *ngFor="let folder of folders; let i = index">
-                    {{i + 1}}:<button class="btn btn-outline-dark mb-2 mr-2 p-1 ml-2" (click)="addFolderToDataBase(folder)">{{folder}}</button>
+                    {{i + 1}}:
+                    <button class="btn btn-outline-dark mb-2 mr-2 p-1 ml-2" (click)="addFolderToDataBase(folder)">
+                        {{folder}}
+                    </button>
                 </div>
             </div>
 
             <!-- files scrollable  -->
-            <div *ngIf = "files">
+            <div *ngIf="files">
                 <hr>
-                <div class="files" >
+                <div class="files">
                     <div style="font-style: italic">{{inputFolder}}</div>
                     <hr>
-                    <div  *ngFor="let file of files">
+                    <div *ngFor="let file of files">
                         <span class="mr-3">{{file}}</span>
                     </div>
                 </div>

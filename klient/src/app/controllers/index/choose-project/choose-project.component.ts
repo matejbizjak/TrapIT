@@ -4,9 +4,9 @@ import {Projekt, ProjektService} from "../../../services/projekt/projekt.service
 import {PageChangedEvent} from "ngx-bootstrap/pagination";
 
 @Component({
-  selector: "app-index-choose-project",
-  templateUrl: "./choose-project.component.html",
-  styleUrls: ["./choose-project.component.css"]
+    selector: "app-index-choose-project",
+    templateUrl: "./choose-project.component.html",
+    styleUrls: ["./choose-project.component.css"]
 })
 export class ChooseProjectComponent implements OnInit {
 
@@ -31,8 +31,8 @@ export class ChooseProjectComponent implements OnInit {
         });
     }
 
-    public SortByProjectName(x,y) {
-        return ((x.name === y.name) ? 0 : ((x.name > y.name) ? 1 : -1 ));
+    public SortByProjectName(x, y) {
+        return ((x.name === y.name) ? 0 : ((x.name > y.name) ? 1 : -1));
     }
 
     public pageChanged(event: PageChangedEvent) {

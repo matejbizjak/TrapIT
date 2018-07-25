@@ -1,25 +1,25 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from "@angular/core/testing";
 
-import { UrejanjeZnackeComponent } from './urejanje-znacke.component';
+import {UrejanjeZnackeComponent} from "./urejanje-znacke.component";
 
-describe('UrejanjeZnackeComponent', () => {
-  let component: UrejanjeZnackeComponent;
-  let fixture: ComponentFixture<UrejanjeZnackeComponent>;
+describe("UrejanjeZnackeComponent", () => {
+    let component: UrejanjeZnackeComponent;
+    let fixture: ComponentFixture<UrejanjeZnackeComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ UrejanjeZnackeComponent ]
-    })
-    .compileComponents();
-  }));
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            declarations: [UrejanjeZnackeComponent]
+        })
+            .compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(UrejanjeZnackeComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(UrejanjeZnackeComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it("should create", () => {
+        expect(component).toBeTruthy();
+    });
 });

@@ -1,6 +1,5 @@
-import * as fs from "fs";
 import * as find from "find";
-import {getConnection, getRepository} from "typeorm";
+import {getRepository} from "typeorm";
 import {Media} from "../entity/Media";
 import {Path} from "../entity/Path";
 import {Site} from "../entity/Site";
@@ -70,9 +69,9 @@ module.exports = class SettingsService {
             else image = true;
             var ifSuccess = await this.insertMediaEntity(date, data[data.length - 1], image, comment, pathId, siteId);
             if (ifSuccess == "added") added.push(i);
-            else if(ifSuccess == "exists") exist.push(i);
+            else if (ifSuccess == "exists") exist.push(i);
         }
-        this.print("V bazo so bile bile uvožene slike z naslednjimi rezultati. Od " + all + " jih je bilo že v bazi "+ exist.length +" in dodanih je bilo " + added.length);
+        this.print("V bazo so bile bile uvožene slike z naslednjimi rezultati. Od " + all + " jih je bilo že v bazi " + exist.length + " in dodanih je bilo " + added.length);
         return new Promise<Result>((resolve, reject) => {
             var result = new Result();
             result.added = added;
@@ -212,7 +211,7 @@ module.exports = class SettingsService {
                 }, () => {
                     //try to save the new media
                     this.mediaRepository.save(newMedia).then
-                        (() => {
+                    (() => {
                             resolve("added");
                             //this.print("addded picture with name: " + name);
                         },

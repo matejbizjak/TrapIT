@@ -62,7 +62,7 @@ export class AddFolderComponent implements OnInit {
         }
 
         const warning = "Slike, ki so v mapi \"" + path + "\" bodo uvožene v bazo pod krmiščom \"" + data[data.length - 2] + "\". " +
-                        "Če ste preverili pravilnost podatkov, potem pristisnite OK.";
+            "Če ste preverili pravilnost podatkov, potem pristisnite OK.";
 
         if (confirm(warning)) {
             this.loadingToggle();

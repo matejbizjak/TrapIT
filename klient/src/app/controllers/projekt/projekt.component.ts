@@ -1,6 +1,6 @@
 import {Component, OnInit} from "@angular/core";
 import {TranslateService} from "@ngx-translate/core";
-import {ProjektService, Projekt} from "../../services/projekt/projekt.service";
+import {ProjektService} from "../../services/projekt/projekt.service";
 import {SharingService} from "../../services/sharing.service";
 import {ActivatedRoute, Router} from "@angular/router";
 

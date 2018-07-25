@@ -12,7 +12,7 @@ import {HttpClient} from "@angular/common/http";
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 import {PaginationModule} from "ngx-bootstrap";
-import { ChooseProjectComponent } from './choose-project/choose-project.component';
+import {ChooseProjectComponent} from "./choose-project/choose-project.component";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {

@@ -17,7 +17,7 @@ const options = {
     }
 };
 
-var globalVarService = new GlobalVarService();
+let globalVarService = new GlobalVarService();
 
 module.exports.dobiSliko = function (req: Request, res: Response, next: NextFunction) {
     let pot = req.params.pot.replace(/\|/g, "/");

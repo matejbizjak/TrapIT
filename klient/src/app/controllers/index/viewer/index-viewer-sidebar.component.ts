@@ -3,12 +3,12 @@ import {Component, OnInit} from "@angular/core";
 @Component({
     selector: "app-index-viewer-sidebar",
     template: `
-    <hr/>
+        <hr/>
 
-    <li class="nav-item">
-        <a class="nav-link" [routerLink]="['/projekt']">Projekt</a>
-    </li>
-  `
+        <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/projekt']">Projekt</a>
+        </li>
+    `
 })
 export class IndexViewerSidebarComponent implements OnInit {
 

@@ -6,7 +6,7 @@ import {Tag} from "../../models/entities/tag.entity";
 @Injectable()
 export class ZnackaService {
 
-    constructor (private http: HttpClient) {
+    constructor(private http: HttpClient) {
 
     }
 
