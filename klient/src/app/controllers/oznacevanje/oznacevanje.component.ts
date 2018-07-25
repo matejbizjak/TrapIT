@@ -46,6 +46,7 @@ export class OznacevanjeComponent implements OnInit {
 
         this.mozniTagiSamoId = new Set();
         this.dobiMozneTage().then(() => {
+            console.log(this.mozniTagi);
                 this.dobiVseSlike().then(() => {
                     this.nastaviPoDoSlike();
                     this.dobiTage();

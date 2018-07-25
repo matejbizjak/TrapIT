@@ -1,0 +1,40 @@
+<div *ngFor="let child of children">
+  <ul>
+    <li class="mt-2">
+      <div class="row">
+        <div class="col-12">
+          <div class="card card-body" style="padding: 5px; background-color: #e9e7ee; width: 300px">
+            <div class="form-inline align-middle" style="display: inline-block; white-space: nowrap">
+              <input class="form-control-sm" type="text" [(ngModel)]="child.tag.name">
+              <button class="btn btn-outline-success btn-sm ml-1" (click)="addToTag(child)">
+                <i class="material-icons" style="display: flex">
+                  add_circle_outline
+                </i>
+              </button>
+              <button class="btn btn-outline-danger btn-sm ml-1" (click)="removeTag(child)">
+                <i class="material-icons" style="display: flex">
+                  remove_circle_outline
+                </i>
+              </button>
+              <div class="form-check" style="float: left">
+                <input class="form-check-input" type="checkbox" id="check1" [(ngModel)]="child.tag.checkbox" (change)="child.tag.input = false" checked>
+                <label class="form-check-label" for="check1">
+                  Da/Ne
+                </label>
+              </div>
+              <div class="form-check ml-2" style="float: left">
+                <input class="form-check-input" type="checkbox" id="check2" [(ngModel)]="child.tag.input" (change)="child.tag.checkbox = false">
+                <label class="form-check-label" for="check2">
+                  Vrednosti
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="!child.tag.checkbox">
+        <tag-list-item *ngIf="child.children" [children]="child.children"></tag-list-item>
+      </div>
+    </li>
+  </ul>
+</div>

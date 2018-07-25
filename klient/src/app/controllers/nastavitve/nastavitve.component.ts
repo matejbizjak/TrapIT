@@ -4,10 +4,6 @@ import {OznacevanjeService} from "../../services/oznacevanje/oznacevanje.service
 import {BsModalService, BsModalRef} from "ngx-bootstrap";
 import {PaginationModule, PageChangedEvent} from "ngx-bootstrap/pagination";
 import {Tag} from "../../models/entities/tag.entity";
-import {ApiService} from "../../services/api/api.service";
-
-import {ActivatedRoute} from "@angular/router";
-import {AddFolderComponent} from "./add-folder/add-folder.component";
 
 @Component({
     selector: "app-nastavitve",
@@ -16,7 +12,6 @@ import {AddFolderComponent} from "./add-folder/add-folder.component";
 })
 export class NastavitveComponent implements OnInit, ErrorHandler {
 
-    public serverBasePath: string;
     public potDoSlik: string;
     public projekti: Projekt[];
     public prikazaniProjekti: Projekt[];
@@ -27,9 +22,15 @@ export class NastavitveComponent implements OnInit, ErrorHandler {
     public projektTags: ProjektTag[];
     public korenskiTagi: Tag[];
     public searchTerm: string;
+    public tagSearchTerm = "";
+    public iskaniTagi: Tag[];
+    public prikazaniTagi: Tag[];
+    public totalTags: number;
 
     novProjektRef: BsModalRef;
     odstraniProjektRef: BsModalRef;
+    tagSettingsRef: BsModalRef;
+    newTagRef: BsModalRef;
 
     public novProjektIme: string;
     public novProjektTags: ProjektTag[] = [];
@@ -44,20 +45,21 @@ export class NastavitveComponent implements OnInit, ErrorHandler {
     public potEmpty = false;
 
     public noResults = true;
+    public noTagResults = true;
+
+    public tagToEdit: Tag = null;
 
     constructor(private projectService: ProjektService, private oznacevanjeService: OznacevanjeService,
-                private modalService: BsModalService, private apiService: ApiService) {
+                private modalService: BsModalService) {
 
     }
 
     public setDir() {
         this.clearAlerts();
-
         if (this.potDoSlik) {
             this.projectService.nastaviPot(this.potDoSlik).subscribe((res) => {
                 if (res["message"] === "Success") {
                     this.potSuccess1 = true;
-                    this.getBasePath();
                 }
             });
             this.oznacevanjeService.nastaviPot(this.potDoSlik).subscribe((res) => {
@@ -68,12 +70,6 @@ export class NastavitveComponent implements OnInit, ErrorHandler {
         } else {
             this.potEmpty = true;
         }
-    }
-
-    getBasePath(){
-        this.apiService.apiCall("/settings/basePath").subscribe((data: {basePath}) => {
-            this.serverBasePath = data.basePath;
-        });
     }
 
     dobiProjekte(): Promise<any> {
@@ -97,14 +93,16 @@ export class NastavitveComponent implements OnInit, ErrorHandler {
     }
 
     public nastaviProjekt(proj: Projekt) {
-        this.izbranProjekt = proj;
-        this.projektName = proj.name;
-        this.searchTerm = proj.name;
+        if (proj) {
+            this.izbranProjekt = proj;
+            this.projektName = proj.name;
+            this.searchTerm = proj.name;
 
-        this.projectService.dobiTageProjekta(proj.projectId).subscribe((data: ProjektTag[]) => {
-            this.projektTags = data;
-            this.projektTags.sort(this.SortByTagName);
-        });
+            this.projectService.dobiTageProjekta(proj.projectId).subscribe((data: ProjektTag[]) => {
+                this.projektTags = data;
+                this.projektTags.sort(this.SortByTagName1);
+            });
+        }
     }
 
     public nastaviTage() {
@@ -124,6 +122,17 @@ export class NastavitveComponent implements OnInit, ErrorHandler {
             });
 
         });
+    }
+
+    public urediZnacko(template: TemplateRef<any>, tag: Tag) {
+        this.clearAlerts();
+        this.tagSettingsRef = this.modalService.show(template, Object.assign({class: "modal-lg"}));
+        this.tagToEdit = tag;
+    }
+
+    public novaZnacka(template: TemplateRef<any>) {
+        this.clearAlerts();
+        this.newTagRef = this.modalService.show(template, Object.assign({class: "modal-lg"}));
     }
 
     public izbrisiProjekt() {
@@ -177,8 +186,12 @@ export class NastavitveComponent implements OnInit, ErrorHandler {
         return ((x.name === y.name) ? 0 : ((x.name > y.name) ? 1 : -1 ));
     }
 
-    public SortByTagName(x, y) {
+    public SortByTagName1(x, y) {
         return ((x.tagId.name === y.tagId.name) ? 0 : ((x.tagId.name > y.tagId.name) ? 1 : -1 ));
+    }
+
+    public SortByTagName2(x, y) {
+        return ((x.name === y.name) ? 0 : ((x.name > y.name) ? 1 : -1 ));
     }
 
     public handleError(error: any) {
@@ -215,15 +228,57 @@ export class NastavitveComponent implements OnInit, ErrorHandler {
         }
     }
 
+    public searchTags() {
+        this.iskaniTagi = new Array;
+
+        this.korenskiTagi.forEach((element) => {
+            if (element.name.indexOf(this.tagSearchTerm) >= 0) {
+                this.iskaniTagi.push(element);
+            }
+        });
+
+        this.prikazaniTagi = this.iskaniTagi;
+        this.totalTags = this.iskaniTagi.length;
+
+        if (this.iskaniTagi.length === 0) {
+            this.noTagResults = true;
+        }
+    }
+
     public pageChanged(event: PageChangedEvent) {
         const startItem = (event.page - 1) * event.itemsPerPage;
         const endItem = event.page * event.itemsPerPage;
         this.prikazaniProjekti = this.iskaniProjekti.slice(startItem, endItem);
     }
 
+    public tagPageChanged(event: PageChangedEvent) {
+        const startItem = (event.page - 1) * event.itemsPerPage;
+        const endItem = event.page * event.itemsPerPage;
+        this.prikazaniTagi = this.iskaniTagi.slice(startItem, endItem);
+    }
+
+    dobiTage(): Promise<any> {
+        return new Promise<any>((resolve, reject) => {
+            this.projectService.dobiKorenskeTage().subscribe(
+                (data: Tag[]) => {
+                    this.korenskiTagi = data;
+                    this.korenskiTagi.sort(this.SortByTagName2);
+
+                    this.prikazaniTagi = this.korenskiTagi.slice(0, 20);
+                    this.iskaniTagi = this.korenskiTagi;
+                    this.totalTags = this.korenskiTagi.length;
+                    resolve();
+                }, (err) => {
+                    console.log(err);
+                    reject();
+                }
+            );
+        });
+    }
+
     ngOnInit() {
         this.projekti = new Array;
         this.dobiProjekte();
-        this.getBasePath();
+        this.dobiTage();
     }
 }
