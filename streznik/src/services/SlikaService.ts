@@ -3,20 +3,13 @@ import {Media} from "../entity/Media";
 import {MediaTag} from "../entity/MediaTag";
 import {TagShrani} from "../entity/requests/tag-shrani";
 
-//basePath gatherer
-var globalVarService = require("../services/GlobalVarService");
-
-
-//TODO SEARCH BY media_id (this kind of search might result in problems)
 module.exports = class SlikaService {
     private mediaRepository = getRepository(Media);
     private mediaTagRepository = getRepository(MediaTag);
 
-    public async dobiMediaId(potDoSlike: string): Promise<Media> {
-        const potSplit: string[] = potDoSlike.split("/");
-        const potZaIskanje = potSplit[3] + "/" + potSplit[4];
+    public async dobiMedia(mediaId: number): Promise<Media> {
         const media = await this.mediaRepository.findOne({
-            where: {name: potZaIskanje},
+            where: {mediaId: mediaId},
             relations: ["siteId", "pathId"]
         });
         return new Promise<Media>(resolve => {
@@ -24,8 +17,8 @@ module.exports = class SlikaService {
         });
     }
 
-    public async shraniTage(podatki: TagShrani): Promise<any> { // TODO not any
-        const media: Media = await this.dobiMediaId(podatki.potDoSlike);
+    public async shraniTage(podatki: TagShrani): Promise<any> {
+        const media: Media = podatki.media;
 
         await getConnection().createQueryBuilder().delete().from(MediaTag)
             .where("tag_id IN (:...idji)", {idji: podatki.idVsehTagovVProjektu})

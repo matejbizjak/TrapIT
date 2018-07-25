@@ -23,9 +23,9 @@ const prijavljen = jwt({
 // tako bi zavaroval api, da mora biti user prijavljen in mora biti reviewer
 // router.post('/login', prijavljen, security.jeReviewer, AuthController.login);
 
-router.get('/slika/:pot', SlikaController.dobiSliko);
+router.get('/slika/:mediaId', SlikaController.dobiSliko);
 router.post('/tagi/', SlikaController.shraniTage);
-router.get('/tagi/:pot', SlikaController.dobiTage);
+router.get('/tagi/:mediaId', SlikaController.dobiTage);
 
 router.post('/pot', SlikaController.nastaviPot);
 

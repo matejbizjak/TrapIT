@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit, TemplateRef} from "@angular/core";
 import {TranslateService} from "@ngx-translate/core";
 import {ProjektService} from "../../services/projekt/projekt.service";
 import {Router} from "@angular/router";
@@ -7,26 +7,30 @@ import {TagParent} from "../../models/entities/custom/tag-parent.entity";
 import {OznacevanjeService} from "../../services/oznacevanje/oznacevanje.service";
 import {TagZInputValue} from "../../models/entities/custom/tag-z-input-value";
 import {Media} from "../../models/entities/media.entity";
+import {BsModalRef, BsModalService} from "ngx-bootstrap";
 
 @Component({
     selector: "app-projekt",
-    templateUrl: "./projekt2.component.html"
+    templateUrl: "./projekt2.component.html",
+    styleUrls: ["./projekt2.component.css"]
 })
 export class Projekt2Component implements OnInit {
+    modalRef: BsModalRef;
     projectId: number;
 
     mozniTagi: TagParent[];
     mozniTagiCopy: TagParent[];
     mozniTagiSamoId: Set<number>;
 
+    izbranMedia: Media;
     medijiSeznam: Media[];
 
     // stupid
     vstavljenih = 0;
     bul = false;
 
-    constructor(private router: Router, private translate: TranslateService, private projektService: ProjektService,
-                private oznacevanjeService: OznacevanjeService) {
+    constructor(private router: Router, private modalService: BsModalService, private translate: TranslateService,
+                private projektService: ProjektService, private oznacevanjeService: OznacevanjeService) {
     }
 
     ngOnInit(): void {
@@ -37,6 +41,7 @@ export class Projekt2Component implements OnInit {
             console.log(this.mozniTagi);
         });
 
+        this.izbranMedia = null;
         this.medijiSeznam = [];
     }
 
@@ -70,6 +75,11 @@ export class Projekt2Component implements OnInit {
                 );
             }
         );
+    }
+
+    odpriOznacevanje(template: TemplateRef<any>, izbranMedia: Media) {
+        this.izbranMedia = izbranMedia;
+        this.modalRef = this.modalService.show(template);
     }
 
     jeIzbralNivo(el, parentTag: TagParent) {

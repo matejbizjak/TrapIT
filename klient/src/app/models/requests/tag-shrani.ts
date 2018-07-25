@@ -1,14 +1,15 @@
 import {User} from "../entities/user.entity";
+import {Media} from "../entities/media.entity";
 
 export class TagShrani {
     public user: User;
-    public potDoSlike: string;
+    public media: Media;
     public oznaceniTagi: TagZInputValue[];
     public idVsehTagovVProjektu: number[];
 
-    constructor(user: User, potDoSlike: string, oznaceniTagi: TagZInputValue[], idVsehTagovVProjektu: number[]) {
+    constructor(user: User, media: Media, oznaceniTagi: TagZInputValue[], idVsehTagovVProjektu: number[]) {
         this.user = user;
-        this.potDoSlike = potDoSlike;
+        this.media = media;
         this.oznaceniTagi = oznaceniTagi;
         this.idVsehTagovVProjektu = idVsehTagovVProjektu;
     }

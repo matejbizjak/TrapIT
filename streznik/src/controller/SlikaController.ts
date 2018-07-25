@@ -20,19 +20,24 @@ const options = {
 let globalVarService = new GlobalVarService();
 
 module.exports.dobiSliko = function (req: Request, res: Response, next: NextFunction) {
-    let pot = req.params.pot.replace(/\|/g, "/");
+    const slikaService = new SlikaService();
 
-    res.sendFile(globalVarService.getBasePath() + pot, options, (err) => {
-        if (err) {
-            console.log(err);
+    slikaService.dobiMedia(req.params.mediaId).then(
+        (media: Media) => {
+            res.sendFile(globalVarService.getBasePath() + "/" + media.name, options, (err) => {
+                if (err) {
+                    res.status(400).json();
+                }
+            });
+        }, (err) => {
+            res.status(400).json();
         }
-    });
+    );
 };
 
 module.exports.shraniTage = function (req: Request, res: Response, next: NextFunction) {
     const slikaService = new SlikaService();
-    const podatki: TagShrani = req.body.podatki;
-    podatki.potDoSlike = podatki.potDoSlike.replace(/\|/g, "/");
+
     slikaService.shraniTage(req.body.podatki).then(
         () => {
             res.status(200).json();
@@ -44,23 +49,18 @@ module.exports.shraniTage = function (req: Request, res: Response, next: NextFun
 
 module.exports.dobiTage = function (req: Request, res: Response, next: NextFunction) {
     const slikaService = new SlikaService();
-    const potDoSlike: string = req.params.pot.replace(/\|/g, "/");
-    slikaService.dobiMediaId(potDoSlike).then(
+
+    slikaService.dobiMedia(req.params.mediaId).then(
         (media: Media) => {
-            if (media !== undefined) {
-                slikaService.dobiTage(media.mediaId).then(
-                    (tagi: MediaTag[]) => {
-                        res.status(200).json({tagi: tagi});
-                    }, (err) => {
-                        res.status(400).json({err: err});
-                    }
-                )
-            }
-            else {
-                res.status(400).json({err: "Podatkov o sliki ni v bazi"});
-            }
+            slikaService.dobiTage(media.mediaId).then(
+                (tagi: MediaTag[]) => {
+                    res.status(200).json({tagi: tagi});
+                }, (err) => {
+                    res.status(400).json({err: err});
+                }
+            )
         }, (err) => {
-            res.status(400).json({err: err});
+            res.status(400).json();
         }
     );
 };

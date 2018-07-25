@@ -1,4 +1,4 @@
-import {Component, ElementRef, Inject, OnInit, Renderer2, ViewEncapsulation} from "@angular/core";
+import {Component, Input, OnInit} from "@angular/core";
 import {TranslateService} from "@ngx-translate/core";
 import {SharingService} from "../../services/sharing.service";
 import {ProjektService} from "../../services/projekt/projekt.service";
@@ -7,20 +7,19 @@ import {Router} from "@angular/router";
 import {Tag} from "../../models/entities/tag.entity";
 import {TagParent} from "../../models/entities/custom/tag-parent.entity";
 import {MediaTag} from "../../models/entities/media-tag.entity";
-import {DOCUMENT} from "@angular/common";
+import {Media} from "../../models/entities/media.entity";
 
 @Component({
     selector: "app-oznacevanje",
-    templateUrl: "./oznacevanje.component.html",
-    encapsulation: ViewEncapsulation.None
+    templateUrl: "./oznacevanje.component.html"
 })
 export class OznacevanjeComponent implements OnInit {
-    potDoMapeSlik: string;
-    vseSlike: string[];
-    stVsehSlikVMapi: number;
-    zapStSlike: number;
-    potDoSlike: string;
-    projectId: number; // TODO dovoli samo tage, ki so definirani za ta projekt
+    @Input() izbranMedia: Media;
+    @Input() filtriraniMedia: Media[];
+    @Input() projectId: number;
+
+    pozicijaVSeznamu: number;
+
     mozniTagi: TagParent[];
     mozniTagiCopy: TagParent[];
     mozniTagiSamoId: Set<number>;
@@ -30,50 +29,25 @@ export class OznacevanjeComponent implements OnInit {
     bul = false;
 
     constructor(private translate: TranslateService, private sharingService: SharingService, private projektService: ProjektService,
-                private oznacevanjeService: OznacevanjeService, private router: Router, private elementRef: ElementRef,
-                private renderer: Renderer2, @Inject(DOCUMENT) private document) {
+                private oznacevanjeService: OznacevanjeService, private router: Router) {
     }
 
     ngOnInit(): void {
-        this.potDoMapeSlik = this.sharingService.getItem("potDoMapeSlik");
-        if (this.potDoMapeSlik === null) {
-            this.router.navigate(["/projekt"]);
-        }
-
-        this.zapStSlike = 0;
-
-        this.projectId = parseInt(this.router.url.split("/")[2], 10);
+        this.nastaviPozicijoGledanegaMedie();
 
         this.mozniTagiSamoId = new Set();
         this.dobiMozneTage().then(() => {
-            console.log(this.mozniTagi);
-                this.dobiVseSlike().then(() => {
-                    this.nastaviPoDoSlike();
-                    this.dobiTage();
-                }, (err) => {
-                    console.log(err);
-                });
+            this.dobiTage();
             }
         );
     }
 
-    dobiVseSlike(): Promise<any> { // dobi imena vseh slik v tej mapi
-        return new Promise<any>((resolve, reject) => {
-            this.projektService.dobiDatoteke(this.potDoMapeSlik).subscribe(
-                (slike) => {
-                    this.vseSlike = slike["files"];
-                    this.stVsehSlikVMapi = this.vseSlike.length;
-                    resolve();
-                }, (err) => {
-                    reject(err);
-                }
-            );
-        });
-    }
-
-    nastaviPoDoSlike() {
-        this.potDoSlike = this.potDoMapeSlik + this.vseSlike[this.zapStSlike];
-        this.potDoSlike = this.potDoSlike.replace(/\//g, "|");
+    nastaviPozicijoGledanegaMedie() {
+        for (let i = 0; i < this.filtriraniMedia.length; i++) {
+            if (this.izbranMedia.mediaId === this.filtriraniMedia[i].mediaId) {
+                this.pozicijaVSeznamu = i;
+            }
+        }
     }
 
     dobiMozneTage(): Promise<any> {
@@ -95,30 +69,8 @@ export class OznacevanjeComponent implements OnInit {
         });
     }
 
-    prejsnjaSlika() {
-        this.shraniVnose();
-        if (this.zapStSlike !== 0) {
-            this.zapStSlike--;
-            this.nastaviPoDoSlike();
-            this.dobiTage();
-            this.mozniTagi = new Array();
-            Object.assign(this.mozniTagi, JSON.parse(JSON.stringify(this.mozniTagiCopy)));
-        }
-    }
-
-    naslednjaSlika() {
-        this.shraniVnose();
-        if (this.zapStSlike !== this.stVsehSlikVMapi - 1) {
-            this.zapStSlike++;
-            this.nastaviPoDoSlike();
-            this.dobiTage();
-            this.mozniTagi = new Array();
-            Object.assign(this.mozniTagi, JSON.parse(JSON.stringify(this.mozniTagiCopy)));
-        }
-    }
-
     dobiTage() {
-        this.oznacevanjeService.dobiTage(this.potDoSlike).subscribe(
+        this.oznacevanjeService.dobiTage(this.izbranMedia.mediaId).subscribe(
             (tagi: MediaTag[]) => {
                 this.napolniZeZnaneTage(tagi["tagi"]);
             }, (err) => {
@@ -201,6 +153,38 @@ export class OznacevanjeComponent implements OnInit {
         }
     }
 
+    prejsnjaSlika() {
+        this.shraniVnose();
+        if (this.pozicijaVSeznamu !== 0) {
+            this.pozicijaVSeznamu--;
+            this.izbranMedia = this.filtriraniMedia[this.pozicijaVSeznamu];
+            this.dobiTage();
+            this.mozniTagi = new Array();
+            Object.assign(this.mozniTagi, JSON.parse(JSON.stringify(this.mozniTagiCopy)));
+        }
+    }
+
+    naslednjaSlika() {
+        this.shraniVnose();
+        if (this.pozicijaVSeznamu !== this.filtriraniMedia.length - 1) {
+            this.pozicijaVSeznamu++;
+            this.izbranMedia = this.filtriraniMedia[this.pozicijaVSeznamu];
+            this.dobiTage();
+            this.mozniTagi = new Array();
+            Object.assign(this.mozniTagi, JSON.parse(JSON.stringify(this.mozniTagiCopy)));
+        }
+    }
+
+    shraniVnose() {
+        this.oznacevanjeService.shraniIzpolnjeneTage(this.izbranMedia, this.mozniTagi, this.mozniTagiSamoId).then(
+            () => {
+
+            }, (err) => {
+                console.log(err);
+            }
+        );
+    }
+
     jeIzbralNivo(el, parentTag: TagParent) {
         let izbranTag: TagParent;
 
@@ -239,10 +223,6 @@ export class OznacevanjeComponent implements OnInit {
         }
     }
 
-    zapisiSteviloZivali(el, parentTag: TagParent) {
-        parentTag.inputValue = Number(el.target.value);
-    }
-
     dodajSeEnTag(tag: TagParent) {
         for (let i = 0; i < this.mozniTagi.length; i++) {
             if (this.mozniTagi[i] === tag) {
@@ -277,16 +257,6 @@ export class OznacevanjeComponent implements OnInit {
         if (index > -1) {
             this.mozniTagi.splice(index, 1);
         }
-    }
-
-    shraniVnose() {
-        this.oznacevanjeService.shraniIzpolnjeneTage(this.potDoSlike, this.mozniTagi, this.mozniTagiSamoId).then(
-            () => {
-
-            }, (err) => {
-                console.log(err);
-            }
-        );
     }
 
     pretvoriTageVLepObjekt(tagi: Tag[]): Promise<any> {
@@ -372,9 +342,7 @@ export class OznacevanjeComponent implements OnInit {
         }
     }
 
-
-    // zelo bolj optimalno ampak nisem pršu do končne rešitve
-
+    // zelo bolj optimalno ampak nisem prisel do koncne resitve
 //     pretvoriTageVLepObjekt(tagi: Tag[]) {
 //         let tagiCopy: Tag[] = JSON.parse(JSON.stringify(tagi));
 //         let lepiTagi: TagParent[] = [];

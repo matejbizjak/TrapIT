@@ -175,6 +175,7 @@ module.exports = class ProjektService {
                 order: {mediaId: "ASC"}
             }).then(
                 (mediaTags: MediaTag[]) => {
+                    console.log(mediaTags);
                     this.izlusciMediaIdje(mediaTags, filtriArr).then((medijiZaPrikaz: Media[]) => {
                             resolve(medijiZaPrikaz);
                         }
@@ -193,18 +194,28 @@ module.exports = class ProjektService {
             console.log(filtri);
 
             let prejsnjiMedia: Media = null;
+            let dodalBool = false;
 
             for (let mediaTag of mediaTags) {
                 if (prejsnjiMedia === null || mediaTag.mediaId.mediaId > prejsnjiMedia.mediaId) {
                     filtri = JSON.parse(JSON.stringify(filtriBackup));
                     prejsnjiMedia = mediaTag.mediaId;
+                    dodalBool = false;
                 }
+
+                if (mediaTag.mediaId.mediaId === prejsnjiMedia.mediaId && dodalBool) {
+                    filtri = JSON.parse(JSON.stringify(filtriBackup));
+                    prejsnjiMedia = mediaTag.mediaId;
+                    continue;
+                }
+
                 const index = filtri.findIndex(tagId => tagId === mediaTag.tagId.tagId);
                 if (index > -1) {
                     filtri.splice(index, 1);
                 }
                 if (filtri.length === 0) {
                     medijiZaPrikaz.push(mediaTag.mediaId);
+                    dodalBool = true;
                 }
             }
             resolve(medijiZaPrikaz);
