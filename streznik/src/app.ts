@@ -8,6 +8,7 @@ const projektRouter = require('./routes/Projekt.router');
 const slikaRouter = require('./routes/Slika.router');
 const tagRouter = require('./routes/Tag.router');
 const settingsRouter = require('./routes/Settings.router');
+const userRouter = require('./routes/User.router');
 
 createConnection().then(async connection => {
 
@@ -29,6 +30,7 @@ createConnection().then(async connection => {
     app.use('/api/projekt', projektRouter);
     app.use('/api/slika', slikaRouter);
     app.use('/api/tag', tagRouter);
+    app.use('/api/user', userRouter);
 
     // TODO only admin can use next routes
     app.use('/api/settings', settingsRouter);
