@@ -22,6 +22,7 @@ import {DodajanjeZnackeComponent} from "./controllers/dodajanje-znacke/dodajanje
 import {TagListItemComponent} from "./controllers/tag-list-item/tag-list-item.component";
 import {UrejanjeZnackeComponent} from "./controllers/urejanje-znacke/urejanje-znacke.component";
 import {AddFolderComponent} from "./controllers/nastavitve/add-folder/add-folder.component";
+import {UporabnikiComponent} from "./controllers/uporabniki/uporabniki.component";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -41,7 +42,8 @@ export function HttpLoaderFactory(http: HttpClient) {
         DodajanjeZnackeComponent,
         TagListItemComponent,
         UrejanjeZnackeComponent,
-        AddFolderComponent
+        AddFolderComponent,
+        UporabnikiComponent
     ],
     imports: [
         BrowserModule,

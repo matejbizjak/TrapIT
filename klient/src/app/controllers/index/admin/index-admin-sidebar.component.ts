@@ -13,6 +13,11 @@ import {Component, OnInit} from "@angular/core";
         <li class="nav-item">
             <a class="nav-link" [routerLink]="['/nastavitve']">Nastavitve</a>
         </li>
+
+        <hr/>
+        <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/uporabniki']">Uporabniki</a>
+        </li>
     `
 })
 export class IndexAdminSidebarComponent implements OnInit {
