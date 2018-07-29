@@ -23,6 +23,33 @@ import {TagListItemComponent} from "./controllers/tag-list-item/tag-list-item.co
 import {UrejanjeZnackeComponent} from "./controllers/urejanje-znacke/urejanje-znacke.component";
 import {AddFolderComponent} from "./controllers/nastavitve/add-folder/add-folder.component";
 import {UporabnikiComponent} from "./controllers/uporabniki/uporabniki.component";
+import {ImageViewerModule} from "ngx-image-viewer";
+
+const imageViewerSettings = {
+    btnClass: "default", // The CSS class(es) that will apply to the buttons
+    zoomFactor: 0.25, // The amount that the scale will be increased by
+    containerBackgroundColor: "#ccc", // The color to use for the background. This can provided in hex, or rgb(a).
+    wheelZoom: true, // If true, the mouse wheel can be used to zoom in
+    allowFullscreen: false, // If true, the fullscreen button will be shown, allowing the user to entr fullscreen mode
+    allowKeyboardNavigation: false, // If true, the left / right arrow keys can be used for navigation
+    btnIcons: { // The icon classes that will apply to the buttons. By default, font-awesome is used.
+        zoomIn: "fa fa-plus",
+        zoomOut: "fa fa-minus",
+        rotateClockwise: "fa fa-repeat",
+        rotateCounterClockwise: "fa fa-undo",
+        next: "fa fa-arrow-right",
+        prev: "fa fa-arrow-left",
+        fullscreen: "fa fa-arrows-alt",
+    },
+    btnShow: {
+        zoomIn: true,
+        zoomOut: true,
+        rotateClockwise: false,
+        rotateCounterClockwise: false,
+        next: false,
+        prev: false
+    }
+};
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -55,6 +82,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         ModalModule.forRoot(),
         PaginationModule.forRoot(),
         PopoverModule.forRoot(),
+        ImageViewerModule.forRoot(imageViewerSettings),
         TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,

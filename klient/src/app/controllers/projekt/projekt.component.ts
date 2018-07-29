@@ -93,7 +93,7 @@ export class ProjektComponent implements OnInit {
 
     odpriOznacevanje(template: TemplateRef<any>, izbranMedia: Media) {
         this.izbranMedia = izbranMedia;
-        this.modalRef = this.modalService.show(template);
+        this.modalRef = this.modalService.show(template, {class: "modal-lg"});
     }
 
     jeIzbralNivo(el, parentTag: TagParent) {

@@ -23,6 +23,8 @@ export class OznacevanjeComponent implements OnInit {
     mozniTagiCopy: TagParent[];
     mozniTagiSamoId: Set<number>;
 
+    potDoSlike: string[] = [];
+
     // stupid
     vstavljenih = 0;
     bul = false;
@@ -33,6 +35,8 @@ export class OznacevanjeComponent implements OnInit {
 
     ngOnInit(): void {
         this.nastaviPozicijoGledanegaMedie();
+
+        this.potDoSlike.push("http://localhost:3000/api/slika/slika/" + this.izbranMedia.mediaId);
 
         this.mozniTagiSamoId = new Set();
         this.dobiMozneTage().then(() => {
@@ -159,6 +163,7 @@ export class OznacevanjeComponent implements OnInit {
         if (this.pozicijaVSeznamu !== 0) {
             this.pozicijaVSeznamu--;
             this.izbranMedia = this.filtriraniMedia[this.pozicijaVSeznamu];
+            this.potDoSlike[0] = "http://localhost:3000/api/slika/slika/" + this.izbranMedia.mediaId;
             this.dobiTage();
             this.mozniTagi = new Array();
             Object.assign(this.mozniTagi, JSON.parse(JSON.stringify(this.mozniTagiCopy)));
@@ -170,6 +175,7 @@ export class OznacevanjeComponent implements OnInit {
         if (this.pozicijaVSeznamu !== this.filtriraniMedia.length - 1) {
             this.pozicijaVSeznamu++;
             this.izbranMedia = this.filtriraniMedia[this.pozicijaVSeznamu];
+            this.potDoSlike[0] = "http://localhost:3000/api/slika/slika/" + this.izbranMedia.mediaId;
             this.dobiTage();
             this.mozniTagi = new Array();
             Object.assign(this.mozniTagi, JSON.parse(JSON.stringify(this.mozniTagiCopy)));
