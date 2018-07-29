@@ -64,10 +64,11 @@ module.exports = class SettingsService {
             var siteId = (await this.getSiteId(data[data.length - 3]));
             var path = data.splice(0, data.length - 3).join(pathLib.sep) + pathLib.sep;
             var pathId = (await this.getPathId(path));
+            var name = await data[data.length - 2] + pathLib.sep + data[data.length - 1];
 
             if (file.endsWith("AVI") || file.endsWith("avi")) image = false;
             else image = true;
-            var ifSuccess = await this.insertMediaEntity(date, data[data.length - 1], image, comment, pathId, siteId);
+            var ifSuccess = await this.insertMediaEntity(date, name, image, comment, pathId, siteId);
             if (ifSuccess == "added") added.push(i);
             else if (ifSuccess == "exists") exist.push(i);
         }

@@ -24,7 +24,7 @@ module.exports.dobiSliko = function (req: Request, res: Response, next: NextFunc
 
     slikaService.dobiMedia(req.params.mediaId).then(
         (media: Media) => {
-            res.sendFile(globalVarService.getBasePath() + "/" + media.name, options, (err) => {
+            res.sendFile(media.pathId.value + media.name, options, (err) => {
                 if (err) {
                     res.status(400).json();
                 }
