@@ -2,6 +2,7 @@ import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {Tag} from "../../models/entities/tag.entity";
 import {TagZInputValue} from "../../models/entities/custom/tag-z-input-value";
+import {TagParent} from "../../models/entities/custom/tag-parent.entity";
 
 export interface Projekt {
     projectId: number;
@@ -71,5 +72,49 @@ export class ProjektService {
     filtrirajSlike(izbraniTagi: TagZInputValue[]) {
         const url = "/projekt/filter";
         return this.http.post(url, {tagi: izbraniTagi});
+    }
+
+    pretovriVOblikoZaPosiljatFiltriranje(tagi: TagParent[]): Promise<TagZInputValue[]> { // TagParent[] pretvori v seznam id-tagov
+        return new Promise<TagZInputValue[]>(resolve => {
+            const oznaceniTagi: TagZInputValue[] = [];
+
+            for (const tag of tagi) {
+                if (tag.input && tag.inputValue !== null) {
+                    oznaceniTagi.push(new TagZInputValue(tag.tagId, tag.inputValue));
+                } else if (tag.selectedChild) {
+                    if (tag.checkbox && tag.selectedChild && tag.selectedChild.name === "false") { // ker zelimo, da ce je false iscemo
+                        // tiste ki imajo false ali tiste brez te znacke
+                        continue;
+                    }
+                    oznaceniTagi.push(new TagZInputValue(tag.tagId, null));
+                    // do tu shranjen 1. nivo
+
+                    if (tag.selectedChild.name === "false") { // ker zelimo, da ce je false iscemo tiste ki imajo false ali tiste
+                        // brez te znacke
+                        continue;
+                    }
+                    oznaceniTagi.push(new TagZInputValue(tag.selectedChild.tagId, tag.selectedChild.inputValue));
+
+                    if (tag.selectedChild.selectedChild) {
+                        if (tag.selectedChild.selectedChild.name === "false") { // ker zelimo, da ce je false iscemo tiste ki imajo false
+                            // ali tiste brez te znacke
+                            continue;
+                        }
+                        oznaceniTagi.push(new TagZInputValue(tag.selectedChild.selectedChild.tagId,
+                            tag.selectedChild.selectedChild.inputValue));
+
+                        if (tag.selectedChild.selectedChild.selectedChild) {
+                            if (tag.selectedChild.selectedChild.selectedChild.name === "false") { // ker zelimo, da ce je false iscemo
+                                // tiste ki imajo false ali tiste brez te znacke
+                                continue;
+                            }
+                            oznaceniTagi.push(new TagZInputValue(tag.selectedChild.selectedChild.selectedChild.tagId,
+                                tag.selectedChild.selectedChild.selectedChild.inputValue));
+                        }
+                    }
+                }
+            }
+            resolve(oznaceniTagi);
+        });
     }
 }

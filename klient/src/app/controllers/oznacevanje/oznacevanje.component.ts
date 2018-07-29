@@ -3,7 +3,6 @@ import {TranslateService} from "@ngx-translate/core";
 import {SharingService} from "../../services/sharing.service";
 import {ProjektService} from "../../services/projekt/projekt.service";
 import {OznacevanjeService} from "../../services/oznacevanje/oznacevanje.service";
-import {Router} from "@angular/router";
 import {Tag} from "../../models/entities/tag.entity";
 import {TagParent} from "../../models/entities/custom/tag-parent.entity";
 import {MediaTag} from "../../models/entities/media-tag.entity";
@@ -29,7 +28,7 @@ export class OznacevanjeComponent implements OnInit {
     bul = false;
 
     constructor(private translate: TranslateService, private sharingService: SharingService, private projektService: ProjektService,
-                private oznacevanjeService: OznacevanjeService, private router: Router) {
+                private oznacevanjeService: OznacevanjeService) {
     }
 
     ngOnInit(): void {
@@ -37,6 +36,7 @@ export class OznacevanjeComponent implements OnInit {
 
         this.mozniTagiSamoId = new Set();
         this.dobiMozneTage().then(() => {
+            this.nastaviCheckboxeNaFalse();
             this.dobiTage();
             }
         );
@@ -46,6 +46,7 @@ export class OznacevanjeComponent implements OnInit {
         for (let i = 0; i < this.filtriraniMedia.length; i++) {
             if (this.izbranMedia.mediaId === this.filtriraniMedia[i].mediaId) {
                 this.pozicijaVSeznamu = i;
+                return;
             }
         }
     }
@@ -338,6 +339,20 @@ export class OznacevanjeComponent implements OnInit {
                         return;
                     }
                 }
+            }
+        }
+    }
+
+    nastaviCheckboxeNaFalse() {
+        for (const tag1 of this.mozniTagi) {
+            if (tag1.checkbox) {
+                let falseChild: TagParent;
+                for (const childTag of tag1.childTags) {
+                    if (childTag.name === "false") {
+                        falseChild = childTag;
+                    }
+                }
+                tag1.selectedChild = falseChild;
             }
         }
     }

@@ -175,7 +175,6 @@ module.exports = class ProjektService {
                 order: {mediaId: "ASC"}
             }).then(
                 (mediaTags: MediaTag[]) => {
-                    console.log(mediaTags);
                     this.izlusciMediaIdje(mediaTags, filtriArr).then((medijiZaPrikaz: Media[]) => {
                             resolve(medijiZaPrikaz);
                         }
@@ -191,7 +190,6 @@ module.exports = class ProjektService {
         return new Promise<Media[]>((resolve, reject) => {
             const filtriBackup: number[] = JSON.parse(JSON.stringify(filtri));
             const medijiZaPrikaz: Media[] = [];
-            console.log(filtri);
 
             let prejsnjiMedia: Media = null;
             let dodalBool = false;

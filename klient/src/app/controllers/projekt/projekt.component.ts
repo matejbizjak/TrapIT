@@ -6,7 +6,6 @@ import {Tag} from "../../models/entities/tag.entity";
 import {Media} from "../../models/entities/media.entity";
 import {BsModalRef, BsModalService} from "ngx-bootstrap";
 import {TagParent} from "../../models/entities/custom/tag-parent.entity";
-import {OznacevanjeService} from "../../services/oznacevanje/oznacevanje.service";
 import {TagZInputValue} from "../../models/entities/custom/tag-z-input-value";
 
 @Component({
@@ -30,7 +29,7 @@ export class ProjektComponent implements OnInit {
     bul = false;
 
     constructor(private router: Router, private modalService: BsModalService, private translate: TranslateService,
-                private projektService: ProjektService, private oznacevanjeService: OznacevanjeService) {
+                private projektService: ProjektService) {
     }
 
     ngOnInit(): void {
@@ -38,7 +37,7 @@ export class ProjektComponent implements OnInit {
 
         this.mozniTagiSamoId = new Set();
         this.dobiMozneTage().then(() => {
-            console.log(this.mozniTagi);
+            // this.nastaviCheckboxeNaFalse();
         });
 
         this.izbranMedia = null;
@@ -64,9 +63,24 @@ export class ProjektComponent implements OnInit {
         });
     }
 
+    // nastaviCheckboxeNaFalse() {
+    //     for (const tag1 of this.mozniTagi) {
+    //         if (tag1.checkbox) {
+    //             let falseChild: TagParent;
+    //             for (const childTag of tag1.childTags) {
+    //                 if (childTag.name === "false") {
+    //                     falseChild = childTag;
+    //                 }
+    //             }
+    //             tag1.selectedChild = falseChild;
+    //         }
+    //     }
+    // }
+
     filtrirajPrikaz() {
-        this.oznacevanjeService.pretovriVOblikoZaPosiljat(this.mozniTagi).then(
+        this.projektService.pretovriVOblikoZaPosiljatFiltriranje(this.mozniTagi).then(
             (tagi: TagZInputValue[]) => {
+                console.log(tagi);
                 this.projektService.filtrirajSlike(tagi).subscribe(
                     (mediji: Media[]) => {
                         this.medijiSeznam = mediji;
