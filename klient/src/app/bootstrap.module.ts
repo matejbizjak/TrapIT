@@ -1,25 +1,18 @@
 import {NgModule} from "@angular/core";
 import {CommonModule} from "@angular/common";
-import {AlertModule, BsDropdownModule, ModalModule, TimepickerModule, TooltipModule, TypeaheadModule} from "ngx-bootstrap";
+import {BsDropdownModule, ModalModule, PaginationModule} from "ngx-bootstrap";
 
 @NgModule({
     imports: [
         CommonModule,
-        TooltipModule.forRoot(),
-        TypeaheadModule.forRoot(),
-        AlertModule.forRoot(),
+        BsDropdownModule.forRoot(),
         ModalModule.forRoot(),
-        TimepickerModule.forRoot(),
-        BsDropdownModule.forRoot()
-
+        PaginationModule.forRoot()
     ],
     exports: [
-        TooltipModule,
-        TypeaheadModule,
+        BsDropdownModule,
         ModalModule,
-        TimepickerModule,
-        AlertModule,
-        BsDropdownModule
+        PaginationModule
     ]
 })
 export class BootstrapModule {

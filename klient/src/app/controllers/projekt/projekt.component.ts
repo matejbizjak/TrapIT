@@ -28,6 +28,9 @@ export class ProjektComponent implements OnInit {
 
     // filtracija
     filtriranjeNastavitve: FiltriranjeNastavitve;
+    stVsehZadetkov: number;
+
+    loading = false;
 
     // stupid
     vstavljenih = 0;
@@ -84,18 +87,40 @@ export class ProjektComponent implements OnInit {
     //     }
     // }
 
-    filtrirajPrikaz() {
+    filtrirajPrikaz(resetSort) {
+        this.loading = true;
+        if (resetSort) {
+            this.filtriranjeNastavitve.filtrirajPo = "mediaId";
+            this.filtriranjeNastavitve.filtrirajAsc = true;
+        }
         this.projektService.pretovriVOblikoZaPosiljatFiltriranje(this.mozniTagi).then(
             (tagi: TagZInputValue[]) => {
                 this.projektService.filtrirajSlike(tagi, this.filtriranjeNastavitve).subscribe(
                     (sfiltriraniPodatki: SfiltriraniPodatki) => {
-                        console.log(sfiltriraniPodatki.stVsehMedijev);
                         this.medijiSeznam = sfiltriraniPodatki.mediji;
+                        this.stVsehZadetkov = sfiltriraniPodatki.stVsehMedijev;
+                        this.loading = false;
                     }, (err) => {
                     }
                 );
             }
         );
+    }
+
+    sortClick(e) {
+        const clickedName = e.target.attributes.value.value;
+        if (this.filtriranjeNastavitve.filtrirajPo === clickedName) {
+            this.filtriranjeNastavitve.filtrirajAsc = !this.filtriranjeNastavitve.filtrirajAsc;
+        } else {
+            this.filtriranjeNastavitve.filtrirajPo = clickedName;
+            this.filtriranjeNastavitve.filtrirajAsc = true;
+        }
+        this.filtrirajPrikaz(false);
+    }
+
+    paginationClick(p) {
+        this.filtriranjeNastavitve.stStrani = p.page;
+        this.filtrirajPrikaz(false);
     }
 
     odpriOznacevanje(template: TemplateRef<any>, izbranMedia: Media) {

@@ -68,17 +68,57 @@
     </form>
 </div>
 
-<button class="btn btn-success" (click)="filtrirajPrikaz()">Filtriraj</button>
+<button class="btn btn-success" (click)="filtrirajPrikaz(true)">Filtriraj</button>
 
-<table class="table table-sm" id="seznamSlik">
+<div *ngIf="loading === true">Nalagam...</div>
+
+<table class="table table-sm" id="seznamSlik" *ngIf="medijiSeznam.length > 0">
     <thead>
     <tr>
-        <th>ID</th>
-        <th>site</th>
-        <th>datum</th>
-        <th>tip</th>
-        <th>prazna</th>
-        <th>zanimiva</th>
+        <th value="mediaId" (click)="sortClick($event)" style="cursor: pointer">ID
+            <i value="mediaId"
+               *ngIf="filtriranjeNastavitve.filtrirajPo === 'mediaId' && filtriranjeNastavitve.filtrirajAsc"
+               class="fa fa-sort-up"></i>
+            <i value="mediaId"
+               *ngIf="filtriranjeNastavitve.filtrirajPo === 'mediaId' && !filtriranjeNastavitve.filtrirajAsc"
+               class="fa fa-sort-down"></i>
+        </th>
+        <th value="siteId" (click)="sortClick($event)">site
+            <i value="siteId"
+               *ngIf="filtriranjeNastavitve.filtrirajPo === 'siteId' && filtriranjeNastavitve.filtrirajAsc"
+               class="fa fa-sort-up"></i>
+            <i value="siteId"
+               *ngIf="filtriranjeNastavitve.filtrirajPo === 'siteId' && !filtriranjeNastavitve.filtrirajAsc"
+               class="fa fa-sort-down"></i>
+        </th>
+        <th value="date" (click)="sortClick($event)">datum
+            <i value="date" *ngIf="filtriranjeNastavitve.filtrirajPo === 'date' && filtriranjeNastavitve.filtrirajAsc"
+               class="fa fa-sort-up"></i>
+            <i value="date" *ngIf="filtriranjeNastavitve.filtrirajPo === 'date' && !filtriranjeNastavitve.filtrirajAsc"
+               class="fa fa-sort-down"></i>
+        </th>
+        <th value="image" (click)="sortClick($event)">tip
+            <i value="image" *ngIf="filtriranjeNastavitve.filtrirajPo === 'image' && filtriranjeNastavitve.filtrirajAsc"
+               class="fa fa-sort-up"></i>
+            <i value="image"
+               *ngIf="filtriranjeNastavitve.filtrirajPo === 'image' && !filtriranjeNastavitve.filtrirajAsc"
+               class="fa fa-sort-down"></i>
+        </th>
+        <th value="empty" (click)="sortClick($event)">prazna
+            <i value="empty" *ngIf="filtriranjeNastavitve.filtrirajPo === 'empty' && filtriranjeNastavitve.filtrirajAsc"
+               class="fa fa-sort-up"></i>
+            <i value="empty"
+               *ngIf="filtriranjeNastavitve.filtrirajPo === 'empty' && !filtriranjeNastavitve.filtrirajAsc"
+               class="fa fa-sort-down"></i>
+        </th>
+        <th value="interesting" (click)="sortClick($event)">zanimiva
+            <i value="interesting"
+               *ngIf="filtriranjeNastavitve.filtrirajPo === 'interesting' && filtriranjeNastavitve.filtrirajAsc"
+               class="fa fa-sort-up"></i>
+            <i value="interesting"
+               *ngIf="filtriranjeNastavitve.filtrirajPo === 'interesting' && !filtriranjeNastavitve.filtrirajAsc"
+               class="fa fa-sort-down"></i>
+        </th>
     </tr>
     </thead>
     <tbody>
@@ -92,6 +132,14 @@
     </tr>
     </tbody>
 </table>
+
+<div class="row" *ngIf="medijiSeznam.length > 0">
+    <div class="col-xs-12 col-12">
+        <pagination [totalItems]="stVsehZadetkov" [itemsPerPage]="filtriranjeNastavitve.stNaStran"
+                    previousText="Nazaj" nextText="Naprej"
+                    [(ngModel)]="filtriranjeNastavitve.stStrani" (pageChanged)="paginationClick($event)"></pagination>
+    </div>
+</div>
 
 <!--Modal za oznacevanje-->
 <ng-template #modalOznacevanje>

@@ -171,27 +171,43 @@ module.exports = class ProjektService {
                 filtriArr.push(filtriKey.tagId);
             }
 
-            this.mediaTagRepository.find({
-                where: {tagId: In(filtriArr)},
-                relations: ["tagId", "mediaId", "mediaId.siteId"],
-                order: {mediaId: "ASC"}
-            }).then(
-                (mediaTags: MediaTag[]) => {
-                    this.izlusciMediaIdje(mediaTags, filtriArr, nastavitve).then((sfiltriraniPodatki: SfiltriraniPodatki) => {
-                        resolve(sfiltriraniPodatki);
-                        }
-                    );
-                }, (err) => {
-                    reject();
-                }
-            );
+            if (filtriArr.length === 0) { // select all
+                this.mediaTagRepository.find({
+                    relations: ["tagId", "mediaId", "mediaId.siteId"],
+                    order: {mediaId: "ASC"}
+                }).then(
+                    (mediaTags: MediaTag[]) => {
+                        this.izlusciMediaIdje(mediaTags, filtriArr, nastavitve).then((sfiltriraniPodatki: SfiltriraniPodatki) => {
+                                resolve(sfiltriraniPodatki);
+                            }
+                        );
+                    }, (err) => {
+                        reject();
+                    }
+                );
+            } else { // select where filtri
+                this.mediaTagRepository.find({
+                    where: {tagId: In(filtriArr)},
+                    relations: ["tagId", "mediaId", "mediaId.siteId"],
+                    order: {mediaId: "ASC"}
+                }).then(
+                    (mediaTags: MediaTag[]) => {
+                        this.izlusciMediaIdje(mediaTags, filtriArr, nastavitve).then((sfiltriraniPodatki: SfiltriraniPodatki) => {
+                                resolve(sfiltriraniPodatki);
+                            }
+                        );
+                    }, (err) => {
+                        reject();
+                    }
+                );
+            }
         });
     }
 
     private izlusciMediaIdje(mediaTags: MediaTag[], filtri: number[], nastavitve: FiltriranjeNastavitve): Promise<SfiltriraniPodatki> {
         return new Promise<SfiltriraniPodatki>((resolve, reject) => {
             const filtriBackup: number[] = JSON.parse(JSON.stringify(filtri));
-            const medijiZaPrikaz: Media[] = [];
+            let medijiZaPrikaz: Media[] = [];
 
             let prejsnjiMedia: Media = null;
             let dodalBool = false;
@@ -233,7 +249,7 @@ module.exports = class ProjektService {
 
             // omeji (limit)
             const zacetek = (nastavitve.stStrani - 1) * nastavitve.stNaStran;
-            medijiZaPrikaz.slice(zacetek, zacetek * nastavitve.stNaStran);
+            medijiZaPrikaz = medijiZaPrikaz.slice(zacetek, zacetek + nastavitve.stNaStran);
 
             resolve(new SfiltriraniPodatki(medijiZaPrikaz, stVsehRezultatov));
         });

@@ -1,6 +1,6 @@
 export class FiltriranjeNastavitve {
     public stNaStran: number;
-    public stStrani: number;
+    public stStrani: number; // current page number
     public filtrirajPo: string;
     public filtrirajAsc: boolean; // ascending or descending order
 
