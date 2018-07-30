@@ -2,7 +2,7 @@ import {BrowserModule} from "@angular/platform-browser";
 import {NgModule} from "@angular/core";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {OgrodjeComponent} from "./ogrodje/ogrodje.component";
-import {AppRoutingModule} from ".//app-routing.module";
+import {AppRoutingModule} from "./app-routing.module";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {PrijavaComponent} from "./controllers/prijava/prijava.component";
 import {BootstrapModule} from "./bootstrap.module";

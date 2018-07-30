@@ -4,7 +4,7 @@ import {SharingService} from "../../services/sharing.service";
 import {ProjektService} from "../../services/projekt/projekt.service";
 import {OznacevanjeService} from "../../services/oznacevanje/oznacevanje.service";
 import {Tag} from "../../models/entities/tag.entity";
-import {TagParent} from "../../models/entities/custom/tag-parent.entity";
+import {TagParent} from "../../models/entities/custom/tag-parent";
 import {MediaTag} from "../../models/entities/media-tag.entity";
 import {Media} from "../../models/entities/media.entity";
 

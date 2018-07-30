@@ -3,7 +3,7 @@ import * as fs from "fs";
 import {Tag} from "../entity/Tag";
 import {Project} from "../entity/Project";
 import {ProjectTag} from "../entity/ProjectTag";
-import {Media} from "../entity/Media";
+import {SfiltriraniPodatki} from "../entity/responses/sfiltrirani-podatki";
 
 const ProjektService = require("../services/ProjektService");
 
@@ -114,9 +114,9 @@ module.exports.izbrisiProjekt = function (req: Request, res: Response, next: Nex
 module.exports.filtriraj = function (req: Request, res: Response, next: NextFunction) {
     const projektService = new ProjektService();
 
-    projektService.filtrirajPodatke(req.body.tagi).then(
-        (medijiZaPrikaz: Media[]) => {
-            res.status(200).json(medijiZaPrikaz);
+    projektService.filtrirajPodatke(req.body.tagi, req.body.nastavitve).then(
+        (sfiltriraniPodatki: SfiltriraniPodatki) => {
+            res.status(200).json(sfiltriraniPodatki);
         }, (err) => {
             res.status(400).json({err: err});
         }

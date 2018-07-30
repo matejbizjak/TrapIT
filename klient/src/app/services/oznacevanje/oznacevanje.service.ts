@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
-import {TagParent} from "../../models/entities/custom/tag-parent.entity";
+import {TagParent} from "../../models/entities/custom/tag-parent";
 import {TagShrani} from "../../models/requests/tag-shrani";
 import {AuthService} from "../avtentikacija/auth.service";
 import {TagZInputValue} from "../../models/entities/custom/tag-z-input-value";

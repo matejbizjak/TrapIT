@@ -5,8 +5,10 @@ import {Router} from "@angular/router";
 import {Tag} from "../../models/entities/tag.entity";
 import {Media} from "../../models/entities/media.entity";
 import {BsModalRef, BsModalService} from "ngx-bootstrap";
-import {TagParent} from "../../models/entities/custom/tag-parent.entity";
+import {TagParent} from "../../models/entities/custom/tag-parent";
 import {TagZInputValue} from "../../models/entities/custom/tag-z-input-value";
+import {FiltriranjeNastavitve} from "../../models/entities/custom/filtriranje-nastavitve";
+import {SfiltriraniPodatki} from "../../models/responses/sfiltrirani-podatki";
 
 @Component({
     selector: "app-projekt",
@@ -24,6 +26,9 @@ export class ProjektComponent implements OnInit {
     izbranMedia: Media;
     medijiSeznam: Media[];
 
+    // filtracija
+    filtriranjeNastavitve: FiltriranjeNastavitve;
+
     // stupid
     vstavljenih = 0;
     bul = false;
@@ -34,6 +39,8 @@ export class ProjektComponent implements OnInit {
 
     ngOnInit(): void {
         this.projectId = parseInt(this.router.url.split("/")[2], 10);
+
+        this.filtriranjeNastavitve = new FiltriranjeNastavitve(25, 1, "mediaId", true);
 
         this.mozniTagiSamoId = new Set();
         this.dobiMozneTage().then(() => {
@@ -80,10 +87,10 @@ export class ProjektComponent implements OnInit {
     filtrirajPrikaz() {
         this.projektService.pretovriVOblikoZaPosiljatFiltriranje(this.mozniTagi).then(
             (tagi: TagZInputValue[]) => {
-                console.log(tagi);
-                this.projektService.filtrirajSlike(tagi).subscribe(
-                    (mediji: Media[]) => {
-                        this.medijiSeznam = mediji;
+                this.projektService.filtrirajSlike(tagi, this.filtriranjeNastavitve).subscribe(
+                    (sfiltriraniPodatki: SfiltriraniPodatki) => {
+                        console.log(sfiltriraniPodatki.stVsehMedijev);
+                        this.medijiSeznam = sfiltriraniPodatki.mediji;
                     }, (err) => {
                     }
                 );

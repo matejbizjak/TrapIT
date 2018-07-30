@@ -5,6 +5,8 @@ import {ProjectTag} from "../entity/ProjectTag";
 import {MediaTag} from "../entity/MediaTag";
 import {TagZInputValue} from "../entity/requests/tag-z-input-value";
 import {Media} from "../entity/Media";
+import {FiltriranjeNastavitve} from "../entity/requests/filtriranje-nastavitve";
+import {SfiltriraniPodatki} from "../entity/responses/sfiltrirani-podatki";
 
 module.exports = class ProjektService {
     private tagRepository = getRepository(Tag);
@@ -161,7 +163,7 @@ module.exports = class ProjektService {
         });
     }
 
-    public filtrirajPodatke(filtri: TagZInputValue[]): Promise<Media[]> {
+    public filtrirajPodatke(filtri: TagZInputValue[], nastavitve: FiltriranjeNastavitve): Promise<SfiltriraniPodatki> {
         return new Promise((resolve, reject) => {
 
             const filtriArr: number[] = [];
@@ -175,8 +177,8 @@ module.exports = class ProjektService {
                 order: {mediaId: "ASC"}
             }).then(
                 (mediaTags: MediaTag[]) => {
-                    this.izlusciMediaIdje(mediaTags, filtriArr).then((medijiZaPrikaz: Media[]) => {
-                            resolve(medijiZaPrikaz);
+                    this.izlusciMediaIdje(mediaTags, filtriArr, nastavitve).then((sfiltriraniPodatki: SfiltriraniPodatki) => {
+                        resolve(sfiltriraniPodatki);
                         }
                     );
                 }, (err) => {
@@ -186,8 +188,8 @@ module.exports = class ProjektService {
         });
     }
 
-    private izlusciMediaIdje(mediaTags: MediaTag[], filtri: number[]): Promise<Media[]> {
-        return new Promise<Media[]>((resolve, reject) => {
+    private izlusciMediaIdje(mediaTags: MediaTag[], filtri: number[], nastavitve: FiltriranjeNastavitve): Promise<SfiltriraniPodatki> {
+        return new Promise<SfiltriraniPodatki>((resolve, reject) => {
             const filtriBackup: number[] = JSON.parse(JSON.stringify(filtri));
             const medijiZaPrikaz: Media[] = [];
 
@@ -216,7 +218,24 @@ module.exports = class ProjektService {
                     dodalBool = true;
                 }
             }
-            resolve(medijiZaPrikaz);
+
+            // sortiraj
+            medijiZaPrikaz.sort(function (a, b) {
+                return a[nastavitve.filtrirajPo] - b[nastavitve.filtrirajPo];
+            });
+
+            if (nastavitve.filtrirajAsc === false) {
+                medijiZaPrikaz.reverse();
+            }
+
+            // st vseh rezultatov brez upostevanja limita
+            const stVsehRezultatov = medijiZaPrikaz.length;
+
+            // omeji (limit)
+            const zacetek = (nastavitve.stStrani - 1) * nastavitve.stNaStran;
+            medijiZaPrikaz.slice(zacetek, zacetek * nastavitve.stNaStran);
+
+            resolve(new SfiltriraniPodatki(medijiZaPrikaz, stVsehRezultatov));
         });
     }
 };
