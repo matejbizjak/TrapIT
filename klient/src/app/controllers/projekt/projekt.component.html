@@ -68,7 +68,7 @@
     </form>
 </div>
 
-<button class="btn btn-success" (click)="filtrirajPrikaz(true)">Filtriraj</button>
+<button class="btn btn-success" (click)="filtrirajPrikaz(true)">Išči</button>
 
 <div *ngIf="loading === true">Nalagam...</div>
 
@@ -135,8 +135,9 @@
 
 <div class="row" *ngIf="medijiSeznam.length > 0">
     <div class="col-xs-12 col-12">
-        <pagination [totalItems]="stVsehZadetkov" [itemsPerPage]="filtriranjeNastavitve.stNaStran"
-                    previousText="Nazaj" nextText="Naprej"
+        <pagination [totalItems]="stVsehZadetkov" [itemsPerPage]="filtriranjeNastavitve.stNaStran" [maxSize]="10"
+                    [disabled]="loading" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;"
+                    lastText="&raquo;"
                     [(ngModel)]="filtriranjeNastavitve.stStrani" (pageChanged)="paginationClick($event)"></pagination>
     </div>
 </div>

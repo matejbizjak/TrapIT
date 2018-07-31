@@ -92,6 +92,7 @@ export class ProjektComponent implements OnInit {
         if (resetSort) {
             this.filtriranjeNastavitve.filtrirajPo = "mediaId";
             this.filtriranjeNastavitve.filtrirajAsc = true;
+            this.filtriranjeNastavitve.stStrani = 1;
         }
         this.projektService.pretovriVOblikoZaPosiljatFiltriranje(this.mozniTagi).then(
             (tagi: TagZInputValue[]) => {
