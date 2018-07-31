@@ -7,6 +7,7 @@ import {Tag} from "../../models/entities/tag.entity";
 import {TagParent} from "../../models/entities/custom/tag-parent";
 import {MediaTag} from "../../models/entities/media-tag.entity";
 import {Media} from "../../models/entities/media.entity";
+import {MediaData} from "../../models/entities/custom/media-data";
 
 @Component({
     selector: "app-oznacevanje",
@@ -19,6 +20,7 @@ export class OznacevanjeComponent implements OnInit {
 
     pozicijaVSeznamu: number;
 
+    mediaData: MediaData;
     mozniTagi: TagParent[];
     mozniTagiCopy: TagParent[];
     mozniTagiSamoId: Set<number>;
@@ -38,6 +40,7 @@ export class OznacevanjeComponent implements OnInit {
 
         this.potDoSlike.push("http://localhost:3000/api/slika/slika/" + this.izbranMedia.mediaId);
 
+        this.mediaData = new MediaData();
         this.mozniTagiSamoId = new Set();
         this.dobiMozneTage().then(() => {
             this.nastaviCheckboxeNaFalse();
@@ -183,7 +186,7 @@ export class OznacevanjeComponent implements OnInit {
     }
 
     shraniVnose() {
-        this.oznacevanjeService.shraniIzpolnjeneTage(this.izbranMedia, this.mozniTagi, this.mozniTagiSamoId).then(
+        this.oznacevanjeService.shraniIzpolnjeneTage(this.izbranMedia, this.mozniTagi, this.mozniTagiSamoId, this.mediaData).then(
             () => {
 
             }, (err) => {

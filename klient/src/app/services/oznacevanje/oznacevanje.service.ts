@@ -5,6 +5,7 @@ import {TagShrani} from "../../models/requests/tag-shrani";
 import {AuthService} from "../avtentikacija/auth.service";
 import {TagZInputValue} from "../../models/entities/custom/tag-z-input-value";
 import {Media} from "../../models/entities/media.entity";
+import {MediaData} from "../../models/entities/custom/media-data";
 
 @Injectable()
 export class OznacevanjeService {
@@ -17,11 +18,12 @@ export class OznacevanjeService {
         return this.http.get(url);
     }
 
-    shraniIzpolnjeneTage(izbranMedia: Media, tagi: TagParent[], tagiZaProjektId: Set<number>): Promise<any> {
+    shraniIzpolnjeneTage(izbranMedia: Media, tagi: TagParent[], tagiZaProjektId: Set<number>, mediaData: MediaData): Promise<any> {
         return new Promise((resolve, reject) => {
             this.pretovriVOblikoZaPosiljat(tagi).then(
                 (oznaceniTagi: TagZInputValue[]) => {
-                    const podatki = new TagShrani(this.auth.trenutniUporabnik(), izbranMedia, oznaceniTagi, Array.from(tagiZaProjektId));
+                    const podatki = new TagShrani(this.auth.trenutniUporabnik(), izbranMedia, oznaceniTagi, Array.from(tagiZaProjektId),
+                        mediaData);
                     const url = "/slika/tagi/";
                     this.http.post(url, {podatki: podatki}).subscribe((res) => {
                         resolve(res);

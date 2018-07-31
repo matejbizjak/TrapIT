@@ -20,6 +20,10 @@ module.exports = class SlikaService {
     public async shraniTage(podatki: TagShrani): Promise<any> {
         const media: Media = podatki.media;
 
+        // this.mediaRepository.update(podatki.mediaData) TODO
+
+        // TODO ne brisat tagov če so že not
+
         await getConnection().createQueryBuilder().delete().from(MediaTag)
             .where("tag_id IN (:...idji)", {idji: podatki.idVsehTagovVProjektu})
             .andWhere("media_id = :mediaId", {mediaId: media.mediaId})

@@ -10,8 +10,29 @@
     </div>
 </div>
 
-<div>
+<div class="container">
     <form id="tagi">
+        <!--media-->
+        media značke
+        <div class="form-group">
+            <div>
+                <input class="form-check-input" type="checkbox" id="empty" [(ngModel)]="mediaData.empty"
+                       [ngModelOptions]="{standalone: true}">
+                <label class="form-check-label" for="empty">Prazna</label>
+            </div>
+            <div>
+                <input class="form-check-input" type="checkbox" id="interesting" [(ngModel)]="mediaData.interesting"
+                       [ngModelOptions]="{standalone: true}">
+                <label class="form-check-label" for="interesting">Zanimiva</label>
+            </div>
+            <div>
+                <label class="form-check-label" for="comment">Komentar</label>
+                <textarea class="form-control" id="comment" [(ngModel)]="mediaData.comment"
+                          [ngModelOptions]="{standalone: true}"></textarea>
+            </div>
+        </div>
+        <!--tag-->
+        tag značke
         <div class="form-group" *ngFor="let tag of mozniTagi">
             <img *ngIf="preveriCeLahkoDodaTag(tag)" src="../../../assets/images/plus.png" width="8px" height="8px"
                  style="cursor: pointer"
