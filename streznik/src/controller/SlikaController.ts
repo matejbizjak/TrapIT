@@ -2,6 +2,8 @@ import {NextFunction, Request, Response} from "express";
 import {Media} from "../entity/Media";
 import {MediaTag} from "../entity/MediaTag";
 import {TagShrani} from "../entity/requests/tag-shrani";
+import {ZnaniTagiZaMedia} from "../entity/responses/znani-tagi-za-media";
+import {MediaData} from "../entity/requests/media-data";
 
 const SlikaService = require("../services/SlikaService");
 const GlobalVarService = require("../services/GlobalVarService");
@@ -54,7 +56,7 @@ module.exports.dobiTage = function (req: Request, res: Response, next: NextFunct
         (media: Media) => {
             slikaService.dobiTage(media.mediaId).then(
                 (tagi: MediaTag[]) => {
-                    res.status(200).json({tagi: tagi});
+                    res.status(200).json(new ZnaniTagiZaMedia(tagi, new MediaData(media.empty, media.interesting, media.comment)));
                 }, (err) => {
                     res.status(400).json({err: err});
                 }

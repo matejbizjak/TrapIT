@@ -8,6 +8,7 @@ import {TagParent} from "../../models/entities/custom/tag-parent";
 import {MediaTag} from "../../models/entities/media-tag.entity";
 import {Media} from "../../models/entities/media.entity";
 import {MediaData} from "../../models/entities/custom/media-data";
+import {ZnaniTagiZaMedia} from "../../models/responses/znani-tagi-za-media";
 
 @Component({
     selector: "app-oznacevanje",
@@ -79,27 +80,33 @@ export class OznacevanjeComponent implements OnInit {
 
     dobiTage() {
         this.oznacevanjeService.dobiTage(this.izbranMedia.mediaId).subscribe(
-            (tagi: MediaTag[]) => {
-                this.napolniZeZnaneTage(tagi["tagi"]);
+            (tagi: ZnaniTagiZaMedia) => {
+                this.napolniZeZnaneTage(tagi);
             }, (err) => {
                 console.log(err.error);
             }
         );
     }
 
-    napolniZeZnaneTage(tagi: MediaTag[]) {
+    napolniZeZnaneTage(tagi: ZnaniTagiZaMedia) {
+        // media tabela
+        this.mediaData.empty = tagi.mediaTagi.empty;
+        this.mediaData.interesting = tagi.mediaTagi.interesting;
+        this.mediaData.comment = tagi.mediaTagi.comment;
+
+        // tag tabela
         const stNaPrvemNivoju = {};
 
         for (const tag of this.mozniTagi) {
             stNaPrvemNivoju[Number(tag.tagId)] = 0;
         }
 
-        for (let i = 0; i < tagi.length; i++) {
+        for (let i = 0; i < tagi.tagTagi.length; i++) {
             if (stNaPrvemNivoju.hasOwnProperty(Number(tagi[i].tagId.tagId))) {
                 stNaPrvemNivoju[Number(tagi[i].tagId.tagId)]++;
 
                 if (!tagi[i].inputValue) {
-                    tagi.splice(i, 1);
+                    tagi.tagTagi.splice(i, 1);
                     i--;
                 }
             }
@@ -117,7 +124,7 @@ export class OznacevanjeComponent implements OnInit {
         }
         // konec dodajanja praznih na prvem nivoju
 
-        for (const tag of tagi) {
+        for (const tag of tagi.tagTagi) {
             this.najdiInNastaviIzbranega(tag);
         }
     }

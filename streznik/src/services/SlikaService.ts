@@ -20,7 +20,17 @@ module.exports = class SlikaService {
     public async shraniTage(podatki: TagShrani): Promise<any> {
         const media: Media = podatki.media;
 
-        // this.mediaRepository.update(podatki.mediaData) TODO
+        if (!podatki.mediaData.empty) {
+            podatki.mediaData.empty = false;
+        }
+        if (!podatki.mediaData.interesting) {
+            podatki.mediaData.interesting = false;
+        }
+
+        await getConnection().createQueryBuilder().update(Media).set({
+            empty: podatki.mediaData.empty,
+            interesting: podatki.mediaData.interesting, comment: podatki.mediaData.comment
+        }).where("mediaId = :id", {id: podatki.media.mediaId}).execute();
 
         // TODO ne brisat tagov če so že not
 
