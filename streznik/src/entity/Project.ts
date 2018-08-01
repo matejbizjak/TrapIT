@@ -1,5 +1,6 @@
 import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import {ProjectTag} from "./ProjectTag";
+import {Media} from "./Media";
 
 @Entity()
 export class Project {
@@ -12,4 +13,7 @@ export class Project {
 
     @OneToMany(type => ProjectTag, projectTag => projectTag.projectId)
     projectTags: ProjectTag[];
+
+    @OneToMany(type => Media, media => media.mediaId)
+    medias: Media[];
 }
