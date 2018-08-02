@@ -18,11 +18,11 @@ const prijavljen = jwt({
 //TODO sctrictly under Admin permissions
 
 //returns current set BasePath
-router.get('/basePath', prijavljen, security.jeAdmin, SettingsController.getBasePath);
+router.get('/basePath', SettingsController.getBasePath);
 //returns all avalible folders with the name
-router.get('/folder/:name', prijavljen, security.jeAdmin, SettingsController.getAvailableFolders);
+router.get('/folder/:name', SettingsController.getAvailableFolders);
 //adds folder with path to SQL database
-router.get('/folder/add/:path', prijavljen, security.jeAdmin, SettingsController.addFolderToDatabase);
+router.get('/folder/add/:path', SettingsController.addFolderToDatabase);
 
 
 module.exports = router;
