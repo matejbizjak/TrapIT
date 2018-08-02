@@ -41,7 +41,7 @@ export class Media {
     @JoinColumn({name: "last_user_id"})
     lastUserId: User;
 
-    @Column()
+    @Column({name: "last_date"})
     lastDate: Date;
 
     @OneToMany(type => MediaTag, mediaTag => mediaTag.mediaTagId)
