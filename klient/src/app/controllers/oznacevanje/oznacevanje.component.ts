@@ -100,12 +100,11 @@ export class OznacevanjeComponent implements OnInit {
         for (const tag of this.mozniTagi) {
             stNaPrvemNivoju[Number(tag.tagId)] = 0;
         }
-
         for (let i = 0; i < tagi.tagTagi.length; i++) {
-            if (stNaPrvemNivoju.hasOwnProperty(Number(tagi[i].tagId.tagId))) {
-                stNaPrvemNivoju[Number(tagi[i].tagId.tagId)]++;
+            if (stNaPrvemNivoju.hasOwnProperty(Number(tagi.tagTagi[i].tagId.tagId))) {
+                stNaPrvemNivoju[Number(tagi.tagTagi[i].tagId.tagId)]++;
 
-                if (!tagi[i].inputValue) {
+                if (!tagi.tagTagi[i].inputValue) {
                     tagi.tagTagi.splice(i, 1);
                     i--;
                 }
