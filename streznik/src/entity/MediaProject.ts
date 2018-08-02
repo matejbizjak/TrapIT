@@ -15,5 +15,4 @@ export class MediaProject {
     @ManyToOne(type => Project)
     @JoinColumn({name: "project_id"})
     projectId: Project;
-
 }

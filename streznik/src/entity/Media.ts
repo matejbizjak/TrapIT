@@ -1,9 +1,9 @@
 import {Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import {Site} from "./Site";
 import {Path} from "./Path";
-import {Tag} from "./Tag";
-import {Project} from "./Project";
 import {User} from "./User";
+import {MediaTag} from "./MediaTag";
+import {MediaProject} from "./MediaProject";
 
 @Entity()
 export class Media {
@@ -42,12 +42,11 @@ export class Media {
     lastUserId: User;
 
     @Column()
-    lastDate: string;
+    lastDate: Date;
 
-    @OneToMany(type => Tag, tag => tag.parentTagId)
-    tags: Tag[];
+    @OneToMany(type => MediaTag, mediaTag => mediaTag.mediaTagId)
+    mediaTags: MediaTag[];
 
-    //tole od spodaj nisem prepričan ali je prav... (hočem array vseh projektov, ki so povezani prek MediaProject tabele, podobno kot tags odzgoraj)
-    @OneToMany(type => Project, project => project.projectId)
-    projects: Project[];
+    @OneToMany(type => MediaProject, mediaProject => mediaProject.mediaProjectId)
+    mediaProjects: MediaProject[];
 }

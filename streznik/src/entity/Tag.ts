@@ -1,5 +1,6 @@
 import {Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import {ProjectTag} from "./ProjectTag";
+import {MediaTag} from "./MediaTag";
 
 @Entity()
 export class Tag {
@@ -25,4 +26,7 @@ export class Tag {
 
     @OneToMany(type => ProjectTag, projectTag => projectTag.tagId)
     projectTags: ProjectTag[];
+
+    @OneToMany(type => MediaTag, mediaTag => mediaTag.mediaTagId)
+    mediaTags: MediaTag[];
 }

@@ -1,7 +1,7 @@
 import {User} from "../User";
 import {TagZInputValue} from "./tag-z-input-value";
 import {Media} from "../Media";
-import {MediaData} from "./media-data";
+import {MediaData} from "../custom/media-data";
 
 export class TagShrani {
     public user: User;

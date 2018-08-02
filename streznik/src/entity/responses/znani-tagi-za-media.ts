@@ -1,4 +1,4 @@
-import {MediaData} from "../requests/media-data";
+import {MediaData} from "../custom/media-data";
 import {MediaTag} from "../MediaTag";
 
 export class ZnaniTagiZaMedia {

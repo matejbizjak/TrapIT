@@ -1,5 +1,6 @@
 import {Site} from "./site.entity";
 import {Path} from "./path.entity";
+import {User} from "./user.entity";
 
 export class Media {
     public mediaId: number;
@@ -11,4 +12,6 @@ export class Media {
     public comment: string;
     public siteId: Site;
     public pathId: Path;
+    public lastUserId: User;
+    public lastDate: Date;
 }

@@ -3,7 +3,7 @@ import {Media} from "../entity/Media";
 import {MediaTag} from "../entity/MediaTag";
 import {TagShrani} from "../entity/requests/tag-shrani";
 import {ZnaniTagiZaMedia} from "../entity/responses/znani-tagi-za-media";
-import {MediaData} from "../entity/requests/media-data";
+import {MediaData} from "../entity/custom/media-data";
 
 const SlikaService = require("../services/SlikaService");
 const GlobalVarService = require("../services/GlobalVarService");

@@ -1,6 +1,6 @@
 import {getRepository} from "typeorm";
 import {Tag} from "../entity/Tag";
-import {TagWChild} from "../entity/TagWChild";
+import {TagWChild} from "../entity/custom/TagWChild";
 import {Project} from "../entity/Project";
 import {ProjectTag} from "../entity/ProjectTag";
 import {MediaTag} from "../entity/MediaTag";
@@ -40,7 +40,8 @@ module.exports = class TagService {
                                         input: false,
                                         parentTagId: null,
                                         tags: null,
-                                        projectTags: null
+                                        projectTags: null,
+                                        mediaTags: null
                                     }, children: null
                                 }, tag1).then(() => {
                                     this.saveNewTag({
@@ -51,7 +52,8 @@ module.exports = class TagService {
                                             input: false,
                                             parentTagId: null,
                                             tags: null,
-                                            projectTags: null
+                                            projectTags: null,
+                                            mediaTags: null
                                         }, children: null
                                     }, tag1).then(() => {
                                         resolve();
