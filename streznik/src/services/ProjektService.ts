@@ -13,6 +13,7 @@ module.exports = class ProjektService {
     private projectTagRepository = getRepository(ProjectTag);
     private projectRepository = getRepository(Project);
     private mediaTagRepository = getRepository(MediaTag);
+    private mediaRepository = getRepository(Media);
 
     public dobiMozneTage(projectId: number): Promise<Tag[]> {
         return new Promise<Tag[]>((resolve, reject) => {
@@ -163,8 +164,18 @@ module.exports = class ProjektService {
         });
     }
 
-    public filtrirajPodatke(filtri: TagZInputValue[], nastavitve: FiltriranjeNastavitve): Promise<SfiltriraniPodatki> {
+    public filtrirajPodatke(filtri: TagZInputValue[], nastavitve: FiltriranjeNastavitve, mediaId?: number): Promise<SfiltriraniPodatki> {
         return new Promise((resolve, reject) => {
+
+            if(mediaId){
+                this.mediaRepository.findOne({where: {mediaId: mediaId}, relations: ["siteId"]}).then
+                ((foundMedia: Media) => {
+                    resolve(new SfiltriraniPodatki([foundMedia], 1));
+                }, (err) => {
+                    console.log(err);
+                    reject();
+                })
+            }
 
             const filtriArr: number[] = [];
             for (const filtriKey of filtri) {

@@ -1,4 +1,11 @@
 <div>
+    <!-- search by static values of media table-->
+    <div id = "mediaId">
+        Media ID
+        <input [(ngModel)]="specificMediaId" #mediaIdInputHTML class="form-control form-control-sm mt-1" type="number">
+    </div>
+
+    <!-- search by tag values -->
     <form id="tagi">
         <div class="form-group" *ngFor="let tag of mozniTagi">
             <img *ngIf="preveriCeLahkoDodaTag(tag)" src="../../../assets/images/plus.png" width="8px" height="8px"
@@ -68,9 +75,10 @@
     </form>
 </div>
 
-<button class="btn btn-success" (click)="filtrirajPrikaz(true)">Išči</button>
-
-<div *ngIf="loading === true">Nalagam...</div>
+<div>
+    <button class="btn btn-success float-left" (click)="filtrirajPrikaz(true)">Išči</button>
+    <div *ngIf="loading === true" class="loader float-left ml-3 mt-1"></div>
+</div>
 
 <table class="table table-sm" id="seznamSlik" *ngIf="medijiSeznam.length > 0">
     <thead>
@@ -152,6 +160,6 @@
     </div>
     <div class="modal-body">
         <app-oznacevanje [izbranMedia]="izbranMedia" [filtriraniMedia]="medijiSeznam"
-                         [projectId]="projectId"></app-oznacevanje>
+                         [projectId]="projectId" [projectComponent]="this"></app-oznacevanje>
     </div>
 </ng-template>

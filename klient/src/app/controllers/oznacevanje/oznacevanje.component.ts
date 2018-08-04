@@ -9,6 +9,7 @@ import {MediaTag} from "../../models/entities/media-tag.entity";
 import {Media} from "../../models/entities/media.entity";
 import {MediaData} from "../../models/entities/custom/media-data";
 import {ZnaniTagiZaMedia} from "../../models/responses/znani-tagi-za-media";
+import {ProjektComponent} from "../projekt/projekt.component";
 
 @Component({
     selector: "app-oznacevanje",
@@ -18,6 +19,7 @@ export class OznacevanjeComponent implements OnInit {
     @Input() izbranMedia: Media;
     @Input() filtriraniMedia: Media[];
     @Input() projectId: number;
+    @Input() projectComponent: ProjektComponent;
 
     pozicijaVSeznamu: number;
 

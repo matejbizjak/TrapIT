@@ -70,9 +70,9 @@ export class ProjektService {
         return this.http.post(url, {projId});
     }
 
-    filtrirajSlike(izbraniTagi: TagZInputValue[], nastavitve: FiltriranjeNastavitve) {
+    filtrirajSlike(izbraniTagi: TagZInputValue[], nastavitve: FiltriranjeNastavitve, mediaId: number = null) {
         const url = "/projekt/filter";
-        return this.http.post(url, {tagi: izbraniTagi, nastavitve: nastavitve});
+        return this.http.post(url, {tagi: izbraniTagi, nastavitve: nastavitve, mediaId: mediaId});
     }
 
     pretovriVOblikoZaPosiljatFiltriranje(tagi: TagParent[]): Promise<TagZInputValue[]> { // TagParent[] pretvori v seznam id-tagov

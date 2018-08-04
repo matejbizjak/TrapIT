@@ -29,6 +29,7 @@ export class ProjektComponent implements OnInit {
     // filtracija
     filtriranjeNastavitve: FiltriranjeNastavitve;
     stVsehZadetkov: number;
+    specificMediaId: number = null;
 
     loading = false;
 
@@ -96,11 +97,13 @@ export class ProjektComponent implements OnInit {
         }
         this.projektService.pretovriVOblikoZaPosiljatFiltriranje(this.mozniTagi).then(
             (tagi: TagZInputValue[]) => {
-                this.projektService.filtrirajSlike(tagi, this.filtriranjeNastavitve).subscribe(
+                this.projektService.filtrirajSlike(tagi, this.filtriranjeNastavitve, this.specificMediaId).subscribe(
                     (sfiltriraniPodatki: SfiltriraniPodatki) => {
+                        console.log(sfiltriraniPodatki);
                         this.medijiSeznam = sfiltriraniPodatki.mediji;
                         this.stVsehZadetkov = sfiltriraniPodatki.stVsehMedijev;
                         this.loading = false;
+                        this.specificMediaId = null;
                     }, (err) => {
                     }
                 );
@@ -186,6 +189,10 @@ export class ProjektComponent implements OnInit {
         return true;
     }
 
+    deluje() {
+        console.log("deluje");
+    }
+
     preveriCeLahkoOdstraniTag(tag: TagParent): boolean {
         let stTagovTeVrste = 0;
         for (let i = 0; i < this.mozniTagi.length; i++) {
@@ -253,7 +260,7 @@ export class ProjektComponent implements OnInit {
         return false;
     }
 
-    vstaviVMozneTage(parent: TagParent, child: Tag) {
+    public vstaviVMozneTage(parent: TagParent, child: Tag) {
         for (let i = 0; i < this.mozniTagi.length; i++) {
             if (this.mozniTagi[i].tagId === parent.tagId) {
                 this.mozniTagi[i].childTags.push(new TagParent(child.tagId, child.name, [], child.input, child.checkbox,
