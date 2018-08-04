@@ -1,0 +1,36 @@
+<div class="card mt-3">
+  <div class="card-header">
+    <span class="float-left"> Nastavitve poti do slik znotraj podatkovne baze</span>
+    <div *ngIf="loading == 0" class="loader float-left ml-3"></div>
+  </div>
+  <div class="card-body">
+
+
+    <!-- functional part -->
+    <div *ngIf="paths">
+      {{serverReply}}
+      <table class="table table-bordered table-hover table-sm">
+        <thead class="thead-dark">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Path <button class="btn btn-outline-dark float-right p-1" (click)="getAllPaths()">Osveži</button></th>
+        </tr>
+        </thead>
+
+        <tbody *ngFor="let path of paths">
+        <tr style="cursor: pointer" (click)="selectPath(path)">
+          <td>
+            {{1}}
+          </td>
+          <td>
+            {{path}}
+        </tr>
+        </tbody>
+      </table>
+      <!-- edit form -->
+      <input *ngIf="selected" #editPathHTML class="form-control mt-3" placeholder="{{selectedPath}}" type="text"
+             (keyup.enter)="selectPath(editPathHTML.value)">
+    </div>
+    <!-- functional part end -->
+  </div>
+</div>

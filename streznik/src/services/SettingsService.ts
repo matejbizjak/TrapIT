@@ -30,6 +30,8 @@ module.exports = class SettingsService {
         });
     }
 
+
+
     //finds all files in path directory and all its subdirectories
     public async findAllMediaInFolder(path: string): Promise<string[]> {
         var fileNames: string[];
@@ -136,6 +138,22 @@ module.exports = class SettingsService {
                 }
             }, (err) => {
                 console.log(err);
+                reject();
+            });
+        });
+    }
+
+    public async getAllPaths(): Promise<string[]> {
+        let allPaths: string[] = [];
+        return new Promise<string[]>((resolve, reject) => {
+            this.pathRepository.find().then
+            ((paths: Path[]) => {
+                paths.forEach((path: Path) => {
+                    allPaths.push(path.value);
+                });
+                resolve(allPaths);
+            }, (err) => {
+                console.log(err)
                 reject();
             });
         });

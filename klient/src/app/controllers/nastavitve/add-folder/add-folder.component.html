@@ -33,24 +33,47 @@
             <!-- clickable selection of buttons -->
             <div *ngIf="folders">
                 <hr>
-                <div *ngFor="let folder of folders; let i = index">
-                    {{i + 1}}:
-                    <button class="btn btn-outline-dark mb-2 mr-2 p-1 ml-2" (click)="addFolderToDataBase(folder)">
-                        {{folder}}
-                    </button>
-                </div>
+                    <table class="table table-bordered table-hover table-sm">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Folder</th>
+                        </tr>
+                        </thead>
+
+                        <tbody *ngFor="let folder of folders; let i = index">
+                        <tr style="cursor: pointer" (click)="addFolderToDataBase(folder)">
+                            <td>
+                                {{i + 1}}
+                            </td>
+                            <td>
+                                {{folder}}
+                        </tr>
+                        </tbody>
+                    </table>
             </div>
 
             <!-- files scrollable  -->
-            <div *ngIf="files">
+            <div *ngIf="files" class="files">
                 <hr>
-                <div class="files">
-                    <div style="font-style: italic">{{inputFolder}}</div>
-                    <hr>
-                    <div *ngFor="let file of files">
-                        <span class="mr-3">{{file}}</span>
-                    </div>
-                </div>
+                <div style="font-style: italic">{{inputFolder}}</div>
+                <table class="table table-bordered table-hover table-sm">
+                    <thead class="thead-dark ">
+                    <tr class="theader">
+                        <th scope="col">#</th>
+                        <th scope="col">Files</th>
+                    </tr>
+                    </thead>
+                    <tbody *ngFor="let file of files; let i = index">
+                    <tr>
+                        <td>
+                            {{i + 1}}
+                        </td>
+                        <td>
+                            {{file}}
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
         <!-- functional part end -->

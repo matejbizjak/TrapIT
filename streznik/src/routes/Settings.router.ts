@@ -23,6 +23,8 @@ router.get('/basePath', SettingsController.getBasePath);
 router.get('/folder/:name', SettingsController.getAvailableFolders);
 //adds folder with path to SQL database
 router.get('/folder/add/:path', SettingsController.addFolderToDatabase);
+//get paths
+router.get('/paths', SettingsController.getAllPaths);
 
 
 module.exports = router;

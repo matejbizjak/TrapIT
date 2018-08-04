@@ -24,6 +24,7 @@ import {UrejanjeZnackeComponent} from "./controllers/urejanje-znacke/urejanje-zn
 import {AddFolderComponent} from "./controllers/nastavitve/add-folder/add-folder.component";
 import {UporabnikiComponent} from "./controllers/uporabniki/uporabniki.component";
 import {ImageViewerModule} from "ngx-image-viewer";
+import { PathSettingsComponent } from './controllers/nastavitve/path-settings/path-settings.component';
 
 const imageViewerSettings = {
     btnClass: "default", // The CSS class(es) that will apply to the buttons
@@ -70,7 +71,8 @@ export function HttpLoaderFactory(http: HttpClient) {
         TagListItemComponent,
         UrejanjeZnackeComponent,
         AddFolderComponent,
-        UporabnikiComponent
+        UporabnikiComponent,
+        PathSettingsComponent
     ],
     imports: [
         BrowserModule,

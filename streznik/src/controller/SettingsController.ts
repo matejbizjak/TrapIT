@@ -40,6 +40,23 @@ module.exports.getAvailableFolders = function (req: Request, res: Response, next
         });
 };
 
+module.exports.getAllPaths = function (req: Request, res: Response, next: NextFunction) {
+    let settingsService = new SettingsService();
+
+    settingsService.getAllPaths().then
+    ((paths: string[]) => {
+        res.status(200).json({
+            paths: paths,
+            serverReply: "Katero pot želite spremeniti?"
+        })
+    }, () => {
+        res.status(200).json({
+            paths: null,
+            serverReply: "Prišlo je do napake na strežniku."
+        })
+    })
+};
+
 //api: folders/add/:path -> saves new pictures data to database media table and retrieves added picture information
 module.exports.addFolderToDatabase = function (req: Request, res: Response, next: NextFunction) {
     const folderPath = req.params.path;
