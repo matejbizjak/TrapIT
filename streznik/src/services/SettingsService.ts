@@ -30,7 +30,21 @@ module.exports = class SettingsService {
         });
     }
 
+    public async updatePathInDatabase(pathId: number, value: string): Promise<string> {
+        let targetPath = await this.pathRepository.findOne({where: {pathId: pathId}});
+        targetPath.value = value;
+        return new Promise<string> ((resolve, reject) => {
+            this.pathRepository.save(targetPath).then
+            ((res) => {
+                resolve("succsess");
+            }, (err) => {
+                console.log(err);
+                reject();
+            })
+        });
+    }
 
+    //this.print("Updated path with pathId: " + updatedPath.pathId + " to " + updatedPath.value);
 
     //finds all files in path directory and all its subdirectories
     public async findAllMediaInFolder(path: string): Promise<string[]> {
@@ -143,13 +157,13 @@ module.exports = class SettingsService {
         });
     }
 
-    public async getAllPaths(): Promise<string[]> {
-        let allPaths: string[] = [];
-        return new Promise<string[]>((resolve, reject) => {
+    public async getAllPaths(): Promise<Path[]> {
+        let allPaths: Path[] = [];
+        return new Promise<Path[]>((resolve, reject) => {
             this.pathRepository.find().then
             ((paths: Path[]) => {
                 paths.forEach((path: Path) => {
-                    allPaths.push(path.value);
+                    allPaths.push(path);
                 });
                 resolve(allPaths);
             }, (err) => {

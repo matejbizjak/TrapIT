@@ -25,6 +25,8 @@ router.get('/folder/:name', SettingsController.getAvailableFolders);
 router.get('/folder/add/:path', SettingsController.addFolderToDatabase);
 //get paths
 router.get('/paths', SettingsController.getAllPaths);
+//update path
+router.get('/update/path/:pathId/:value', SettingsController.updatePathInDatabase);
 
 
 module.exports = router;

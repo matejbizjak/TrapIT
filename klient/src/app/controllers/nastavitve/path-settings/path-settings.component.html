@@ -8,8 +8,11 @@
 
     <!-- functional part -->
     <div *ngIf="paths">
-      {{serverReply}}
-      <table class="table table-bordered table-hover table-sm">
+      <div *ngIf="serverReply" class="card card-body mt-3">
+        <div>Odgovor strežnika:</div>
+        <div id="server-reply" class="md-3">{{serverReply}}</div>
+      </div>
+      <table class="table table-bordered table-hover table-sm mt-3">
         <thead class="thead-dark">
         <tr>
           <th scope="col">#</th>
@@ -20,16 +23,25 @@
         <tbody *ngFor="let path of paths">
         <tr style="cursor: pointer" (click)="selectPath(path)">
           <td>
-            {{1}}
+            {{path.pathId}}
           </td>
           <td>
-            {{path}}
+            {{path.value}}
         </tr>
         </tbody>
       </table>
       <!-- edit form -->
-      <input *ngIf="selected" #editPathHTML class="form-control mt-3" placeholder="{{selectedPath}}" type="text"
-             (keyup.enter)="selectPath(editPathHTML.value)">
+      <div *ngIf="selected">
+        <div class="input-group">
+          <input #editPathHTML type="text" class="form-control" aria-label="potDoSlik"
+                 aria-describedby="basic-addon2" [(ngModel)]="selectedPath.value" (keyup.enter)="updatePath(selectedPath)">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button" (click)="updatePath(selectedPath)">Nastavi
+            </button>
+          </div>
+        </div>
+      </div>
+
     </div>
     <!-- functional part end -->
   </div>

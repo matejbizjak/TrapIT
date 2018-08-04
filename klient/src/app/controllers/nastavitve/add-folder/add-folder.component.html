@@ -22,8 +22,15 @@
             <li>Naložite novo mapo z novimi slikami na strežnik in si zapomnite pot do nove mape!</li>
             <li>Spodaj vpišite ime mape in nato sledite nadaljnim navodilom:</li>
         </ul>
-        <input #inputFolderHTML class="form-control mt-3" placeholder="ime mape (npr. nova_mapa)" type="text"
-               (keyup.enter)="getAvaliableFolders(inputFolderHTML.value)">
+
+        <div class="input-group">
+            <input #inputFolderHTML type="text" placeholder="ime mape (npr. nova_mapa)" class="form-control" aria-label="potDoSlik"
+                   aria-describedby="basic-addon2" (keyup.enter)="getAvaliableFolders(inputFolderHTML.value)">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button" (click)="getAvaliableFolders(inputFolderHTML.value)">OK
+                </button>
+            </div>
+        </div>
 
         <!-- warning form / instruction div-->
         <div *ngIf="serverReply" class="card card-body mt-3">
@@ -33,47 +40,57 @@
             <!-- clickable selection of buttons -->
             <div *ngIf="folders">
                 <hr>
-                    <table class="table table-bordered table-hover table-sm">
-                        <thead class="thead-dark">
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Folder</th>
-                        </tr>
-                        </thead>
 
-                        <tbody *ngFor="let folder of folders; let i = index">
-                        <tr style="cursor: pointer" (click)="addFolderToDataBase(folder)">
-                            <td>
-                                {{i + 1}}
-                            </td>
-                            <td>
-                                {{folder}}
-                        </tr>
-                        </tbody>
-                    </table>
-            </div>
-
-            <!-- files scrollable  -->
-            <div *ngIf="files" class="files">
-                <hr>
-                <div style="font-style: italic">{{inputFolder}}</div>
                 <table class="table table-bordered table-hover table-sm">
-                    <thead class="thead-dark ">
-                    <tr class="theader">
+                    <thead class="thead-dark">
+                    <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Files</th>
+                        <th scope="col">Folder</th>
                     </tr>
                     </thead>
-                    <tbody *ngFor="let file of files; let i = index">
-                    <tr>
+
+                    <tbody *ngFor="let folder of folders; let i = index">
+                    <tr style="cursor: pointer" (click)="addFolderToDataBase(folder)">
                         <td>
                             {{i + 1}}
                         </td>
                         <td>
-                            {{file}}
+                            {{folder}}
+                        </td>
                     </tr>
                     </tbody>
                 </table>
+            </div>
+
+            <!-- files scrollable  -->
+            <div *ngIf="files">
+                <hr>
+                <ul>Legenda barv:
+                    <li>Zelena - datoteka uspešno dodana v bazo</li>
+                    <li>Rumena - datoteka je že v bazo bila uvožena</li>
+                    <li>Rdeča - datoteka se v bazo ni uspešno uvozila</li>
+                </ul>
+                <hr>
+                <div class="files">
+                    <table class="table table-bordered table-hover table-sm">
+                        <thead class="thead-dark ">
+                        <tr class="theader">
+                            <th scope="col">#</th>
+                            <th scope="col">Files</th>
+                        </tr>
+                        </thead>
+                        <tbody *ngFor="let file of files; let i = index">
+                        <tr [class.green]="checkIfAdded(i) == 1" [class.yellow]="checkIfAdded(i) == 0"
+                            [class.red]="checkIfAdded(i) == -1">
+                            <td>
+                                {{i + 1}}
+                            </td>
+                            <td>
+                                {{file}}
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
         <!-- functional part end -->

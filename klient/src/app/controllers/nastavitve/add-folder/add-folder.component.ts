@@ -16,6 +16,9 @@ export class AddFolderComponent implements OnInit {
     inputFolder: string;
     folders: string[];
     files: string[];
+    // visualization
+    added: number[];
+    exist: number[];
 
     constructor(private apiService: ApiService) {
     }
@@ -67,13 +70,21 @@ export class AddFolderComponent implements OnInit {
         if (confirm(warning)) {
             this.loadingToggle();
             this.inputFolder = path;
-            this.apiService.apiCall("/settings/folder/add/" + encodeURIComponent(path) + "").subscribe((data: { serverReply, files }) => {
+            this.apiService.apiCall("/settings/folder/add/" + encodeURIComponent(path) + "").subscribe((data: { serverReply, files, added, exist }) => {
                 this.loadingToggle();
                 this.folders = null;
                 this.serverReply = data.serverReply;
                 this.files = data.files;
+                this.added = data.added;
+                this.exist = data.exist;
             });
         }
+    }
+
+    checkIfAdded(i: number){
+        if(this.exist.includes(i)) return 0;
+        else if(this.added.includes(i)) return 1;
+        else return -1;
     }
 
     loadingToggle() {

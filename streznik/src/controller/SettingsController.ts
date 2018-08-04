@@ -1,4 +1,5 @@
 import {NextFunction, Request, Response} from "express";
+import {Path} from "../entity/Path";
 
 const GlobalVarService = require("../services/GlobalVarService");
 const SettingsService = require("../services/SettingsService");
@@ -44,7 +45,7 @@ module.exports.getAllPaths = function (req: Request, res: Response, next: NextFu
     let settingsService = new SettingsService();
 
     settingsService.getAllPaths().then
-    ((paths: string[]) => {
+    ((paths: Path[]) => {
         res.status(200).json({
             paths: paths,
             serverReply: "Katero pot želite spremeniti?"
@@ -57,13 +58,29 @@ module.exports.getAllPaths = function (req: Request, res: Response, next: NextFu
     })
 };
 
+module.exports.updatePathInDatabase = function (req: Request, res: Response, next: NextFunction) {
+    let settingsService = new SettingsService();
+
+    settingsService.updatePathInDatabase(req.params.pathId, req.params.value).then
+    ( () => {
+        res.status(200).json({
+            serverReply: "Uspešno posodobljena pot."
+        });
+    }, () => {
+        res.status(400).json({
+            serverReply: "Prišlo je do napake na strežniku. Osvežite stran in poskusite ponovno."
+        })
+    })
+}
+
 //api: folders/add/:path -> saves new pictures data to database media table and retrieves added picture information
 module.exports.addFolderToDatabase = function (req: Request, res: Response, next: NextFunction) {
     const folderPath = req.params.path;
     let settingsService = new SettingsService();
     print("got request to add folder with path: " + folderPath);
 
-    settingsService.findAllMediaInFolder(folderPath).then((allFiles: string[]) => {
+    settingsService.findAllMediaInFolder(folderPath).then
+    ((allFiles: string[]) => {
         if (allFiles.length) {
             settingsService.importArrayOfPaths(allFiles).then((result) => {
                 res.status(200).json({

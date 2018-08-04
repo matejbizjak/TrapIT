@@ -22,6 +22,18 @@
     top: 0px;
 }
 
+.green {
+    background-color: #79ff61;
+}
+
+.yellow {
+    background-color: #ecff79;
+}
+
+.red {
+    background-color: red;
+}
+
 @-webkit-keyframes spin {
     0% {
         -webkit-transform: rotate(0deg);
