@@ -170,7 +170,7 @@ module.exports = class ProjektService {
         return new Promise((resolve, reject) => {
 
             if(mediaId){
-                this.mediaRepository.findOne({where: {mediaId: mediaId}, relations: ["siteId"]}).then
+                this.mediaRepository.findOne({where: {mediaId: mediaId}, relations: ["siteId", "mediaProjects", "mediaProjects.projectId"]}).then
                 ((foundMedia: Media) => {
                     resolve(new SfiltriraniPodatki([foundMedia], 1));
                 }, (err) => {
@@ -186,7 +186,7 @@ module.exports = class ProjektService {
 
             if (filtriArr.length === 0) { // select all
                 this.mediaTagRepository.find({
-                    relations: ["tagId", "mediaId", "mediaId.siteId"],
+                    relations: ["tagId", "mediaId", "mediaId.siteId", "mediaId.mediaProjects", "mediaId.mediaProjects.projectId"],
                     order: {mediaId: "ASC"}
                 }).then(
                     (mediaTags: MediaTag[]) => {
@@ -195,10 +195,11 @@ module.exports = class ProjektService {
                             }
                         );
                     }, (err) => {
+                        console.log(err);
                         reject();
                     }
                 );
-            } else { // select where filtri
+            } else { // select where filtrisdan
                 this.mediaTagRepository.find({
                     where: {tagId: In(filtriArr)},
                     relations: ["tagId", "mediaId", "mediaId.siteId"],
@@ -210,6 +211,7 @@ module.exports = class ProjektService {
                             }
                         );
                     }, (err) => {
+                        console.log(err);
                         reject();
                     }
                 );
