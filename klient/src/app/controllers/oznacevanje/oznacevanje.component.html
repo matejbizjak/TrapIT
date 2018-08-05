@@ -18,6 +18,7 @@
             media značke
             <hr>
             <div>Media_id: {{izbranMedia.mediaId}}</div>
+            <div>Pregledano pod projektom: {{this.projectComponent.alreadySeen(this.izbranMedia.mediaProjects)}}</div>
             <div>
                 <input class="form-check-input" type="checkbox" id="empty" [(ngModel)]="mediaData.empty"
                        [ngModelOptions]="{standalone: true}">

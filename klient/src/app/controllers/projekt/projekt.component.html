@@ -75,7 +75,7 @@
     </form>
 </div>
 
-<div style="width: auto">
+<div style="width: auto" >
     <button class="btn btn-success float-left" (click)="filtrirajPrikaz(true)">Išči</button>
     <div class="ml-1 float-left">Število medij na stran: <input [(ngModel)]="mediaPerPage" type="number" style="width: 4em"></div>
     <div *ngIf="stVsehZadetkov" class="ml-1 float-left">Število vseh medijev: {{stVsehZadetkov}}</div>
@@ -129,6 +129,8 @@
                *ngIf="filtriranjeNastavitve.filtrirajPo === 'interesting' && !filtriranjeNastavitve.filtrirajAsc"
                class="fa fa-sort-down"></i>
         </th>
+        <th value="viewed" >viewed
+        </th>
     </tr>
     </thead>
     <tbody>
@@ -139,6 +141,13 @@
         <td>{{medij.image ? "slika" : "video"}}</td>
         <td>{{medij.empty}}</td>
         <td>{{medij.interesting}}</td>
+        <td>
+            <span>{{alreadySeen(medij.mediaProjects)}}</span>
+            <span *ngFor="let project of medij.mediaProjects; let x = index">
+                <span *ngIf="x != 0">,</span>
+                {{project.projectId.name}}
+            </span>
+        </td>
     </tr>
     </tbody>
 </table>

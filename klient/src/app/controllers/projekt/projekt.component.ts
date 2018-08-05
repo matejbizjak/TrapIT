@@ -9,6 +9,7 @@ import {TagParent} from "../../models/entities/custom/tag-parent";
 import {TagZInputValue} from "../../models/entities/custom/tag-z-input-value";
 import {FiltriranjeNastavitve} from "../../models/entities/custom/filtriranje-nastavitve";
 import {SfiltriraniPodatki} from "../../models/responses/sfiltrirani-podatki";
+import {MediaProject} from "../../models/entities/media-project.entity";
 
 @Component({
     selector: "app-projekt",
@@ -73,6 +74,16 @@ export class ProjektComponent implements OnInit {
                 }
             );
         });
+    }
+
+    // returns a check mark if it was already seen :,D
+    alreadySeen(mediaProjects: MediaProject[] = []) {
+        for (const mediaProject of mediaProjects) {
+            if (mediaProject.projectId.projectId === this.projectId) {
+                return "✅";
+            }
+        }
+        return "❌";
     }
 
     // nastaviCheckboxeNaFalse() {
