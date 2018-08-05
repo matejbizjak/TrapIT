@@ -75,8 +75,10 @@
     </form>
 </div>
 
-<div>
+<div style="width: auto">
     <button class="btn btn-success float-left" (click)="filtrirajPrikaz(true)">Išči</button>
+    <div class="ml-1 float-left">Število medij na stran: <input [(ngModel)]="mediaPerPage" type="number" style="width: 4em"></div>
+    <div *ngIf="stVsehZadetkov" class="ml-1 float-left">Število vseh medijev: {{stVsehZadetkov}}</div>
     <div *ngIf="loading === true" class="loader float-left ml-3 mt-1"></div>
 </div>
 

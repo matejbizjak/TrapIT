@@ -30,6 +30,7 @@ export class ProjektComponent implements OnInit {
     filtriranjeNastavitve: FiltriranjeNastavitve;
     stVsehZadetkov: number;
     specificMediaId: number = null;
+    mediaPerPage: number = 25;
 
     loading = false;
 
@@ -44,7 +45,7 @@ export class ProjektComponent implements OnInit {
     ngOnInit(): void {
         this.projectId = parseInt(this.router.url.split("/")[2], 10);
 
-        this.filtriranjeNastavitve = new FiltriranjeNastavitve(25, 1, "mediaId", true);
+        this.filtriranjeNastavitve = new FiltriranjeNastavitve(this.mediaPerPage, 1, "mediaId", true);
 
         this.mozniTagiSamoId = new Set();
         this.dobiMozneTage().then(() => {
@@ -90,6 +91,7 @@ export class ProjektComponent implements OnInit {
 
     filtrirajPrikaz(resetSort) {
         this.loading = true;
+        this.filtriranjeNastavitve.stNaStran = this.mediaPerPage;
         if (resetSort) {
             this.filtriranjeNastavitve.filtrirajPo = "mediaId";
             this.filtriranjeNastavitve.filtrirajAsc = true;
