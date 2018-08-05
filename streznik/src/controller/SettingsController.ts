@@ -7,7 +7,7 @@ const SettingsService = require("../services/SettingsService");
 
 //api: basePath -> returns basePath
 module.exports.getBasePath = function (req: Request, res: Response, next: NextFunction) {
-    print("basePath requested and sent to client");
+    // print("basePath requested and sent to client");
     let globalVarService = new GlobalVarService();
     res.status(200).json({basePath: globalVarService.getBasePath()});
 };
