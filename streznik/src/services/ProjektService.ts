@@ -202,7 +202,7 @@ module.exports = class ProjektService {
             } else { // select where filtrisdan
                 this.mediaTagRepository.find({
                     where: {tagId: In(filtriArr)},
-                    relations: ["tagId", "mediaId", "mediaId.siteId"],
+                    relations: ["tagId", "mediaId", "mediaId.siteId", "mediaId.mediaProjects", "mediaId.mediaProjects.projectId"],
                     order: {mediaId: "ASC"}
                 }).then(
                     (mediaTags: MediaTag[]) => {
