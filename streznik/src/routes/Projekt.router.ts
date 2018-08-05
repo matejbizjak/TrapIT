@@ -43,4 +43,7 @@ router.post('/del', prijavljen, ProjektController.izbrisiProjekt);
 
 router.post('/filter', prijavljen, ProjektController.filtriraj);
 
+//only reviewer :TODO
+router.get('/mediaProject/save/:mediaId/:projectId',  ProjektController.saveMediaProject);
+
 module.exports = router;

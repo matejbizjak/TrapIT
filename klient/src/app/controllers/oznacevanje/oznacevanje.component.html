@@ -13,8 +13,11 @@
 <div class="container">
     <form id="tagi">
         <!--media-->
-        media značke
-        <div class="card card-body mt-3">
+
+        <div class="card card-body mt-3 static-media">
+            media značke
+            <hr>
+            <div>Media_id: {{izbranMedia.mediaId}}</div>
             <div>
                 <input class="form-check-input" type="checkbox" id="empty" [(ngModel)]="mediaData.empty"
                        [ngModelOptions]="{standalone: true}">
@@ -32,7 +35,9 @@
             </div>
         </div>
         <!--tag-->
+        <div class="card card-body mt-3 tag-content">
         tag značke
+        <hr>
         <div class="form-group" *ngFor="let tag of mozniTagi">
             <img *ngIf="preveriCeLahkoDodaTag(tag)" src="../../../assets/images/plus.png" width="8px" height="8px"
                  style="cursor: pointer"
@@ -116,6 +121,7 @@
                 <input class="form-control form-control-sm" type="number" [(ngModel)]="tag.inputValue"
                        [ngModelOptions]="{standalone: true}">
             </div>
+        </div>
         </div>
     </form>
 </div>

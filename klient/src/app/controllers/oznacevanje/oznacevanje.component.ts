@@ -13,7 +13,8 @@ import {ProjektComponent} from "../projekt/projekt.component";
 
 @Component({
     selector: "app-oznacevanje",
-    templateUrl: "./oznacevanje.component.html"
+    templateUrl: "./oznacevanje.component.html",
+    styleUrls: ["./oznacevanje.component.css"]
 })
 export class OznacevanjeComponent implements OnInit {
     @Input() izbranMedia: Media;
@@ -194,6 +195,7 @@ export class OznacevanjeComponent implements OnInit {
     }
 
     shraniVnose() {
+        this.oznacevanjeService.saveMediaProject(this.izbranMedia.mediaId, this.projectId);
         this.oznacevanjeService.shraniIzpolnjeneTage(this.izbranMedia, this.mozniTagi, this.mozniTagiSamoId, this.mediaData).then(
             () => {
 

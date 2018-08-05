@@ -122,3 +122,14 @@ module.exports.filtriraj = function (req: Request, res: Response, next: NextFunc
         }
     );
 };
+
+module.exports.saveMediaProject = function (req: Request, res: Response, next: NextFunction) {
+    const projectService = new ProjektService();
+
+    projectService.saveMediaProject(req.params.mediaId, req.params.projectId).then
+    ( (message: string) => {
+        res.status(200).json(message);
+    }, (err) => {
+        res.status(400).json({err: err});
+    })
+}

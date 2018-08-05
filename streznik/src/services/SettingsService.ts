@@ -128,7 +128,6 @@ module.exports = class SettingsService {
         return new Promise<Path>((resolve, reject) => {
             this.pathRepository.findOne({value: path}).then
             ((pathEntity: Path) => {
-
                 if (pathEntity) {
                     resolve(pathEntity);
                 } else {

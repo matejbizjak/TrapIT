@@ -7,6 +7,7 @@ import {TagZInputValue} from "../entity/requests/tag-z-input-value";
 import {Media} from "../entity/Media";
 import {FiltriranjeNastavitve} from "../entity/requests/filtriranje-nastavitve";
 import {SfiltriraniPodatki} from "../entity/responses/sfiltrirani-podatki";
+import {MediaProject} from "../entity/MediaProject";
 
 module.exports = class ProjektService {
     private tagRepository = getRepository(Tag);
@@ -14,6 +15,7 @@ module.exports = class ProjektService {
     private projectRepository = getRepository(Project);
     private mediaTagRepository = getRepository(MediaTag);
     private mediaRepository = getRepository(Media);
+    private mediaProjectRepository = getRepository(MediaProject);
 
     public dobiMozneTage(projectId: number): Promise<Tag[]> {
         return new Promise<Tag[]>((resolve, reject) => {
@@ -265,4 +267,39 @@ module.exports = class ProjektService {
             resolve(new SfiltriraniPodatki(medijiZaPrikaz, stVsehRezultatov));
         });
     }
+
+    //saves new connection to the database, else
+    public  saveMediaProject(mediaId: number, projectId: number): Promise<string>{
+        return new Promise<string> ((resolve, reject) => {
+            this.mediaRepository.findOneOrFail({where: {mediaId: mediaId}}).then
+            ((media: Media)=>{
+                this.projectRepository.findOneOrFail({where: {projectId: projectId}}).then
+                ((project: Project)=>{
+                    //both media  and path is found
+                    let mediaProject = new MediaProject();
+                    mediaProject.mediaId = media;
+                    mediaProject.projectId = project;
+
+                    this.mediaProjectRepository.findOneOrFail( {where: {projectId: project, mediaId: media}}).then
+                    ((mediaProject: MediaProject)=>{
+                        resolve("Media already inspected under this project");
+                    },()=>{
+                        //new connection to be made
+                        this.mediaProjectRepository.save(mediaProject).then
+                        (()=>{
+                            resolve("New mediaProject connection saved to the database");
+                        }, (err)=>{
+                            console.log(err);
+                            reject("Unable to save to the database");
+                        });
+                    });
+                }, () => {
+                    reject("Path not found in the database");
+                });
+            }, ()=>{
+                reject("Media not found in the database");
+            })
+        });
+    }
+
 };

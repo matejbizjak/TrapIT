@@ -6,11 +6,12 @@ import {AuthService} from "../avtentikacija/auth.service";
 import {TagZInputValue} from "../../models/entities/custom/tag-z-input-value";
 import {Media} from "../../models/entities/media.entity";
 import {MediaData} from "../../models/entities/custom/media-data";
+import {ApiService} from "../api/api.service";
 
 @Injectable()
 export class OznacevanjeService {
 
-    constructor(private http: HttpClient, private auth: AuthService) {
+    constructor(private http: HttpClient, private auth: AuthService, private apiService: ApiService) {
     }
 
     dobiTage(mediaId: number) {
@@ -60,6 +61,12 @@ export class OznacevanjeService {
                 }
             }
             resolve(oznaceniTagi);
+        });
+    }
+
+    saveMediaProject(mediaId: number, projectId: number) {
+        this.apiService.apiCall("/projekt/mediaProject/save/" + mediaId + "/" + projectId).subscribe((msg) => {
+            return (msg);
         });
     }
 
