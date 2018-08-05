@@ -44,9 +44,9 @@ export class Media {
     @Column({name: "last_date"})
     lastDate: Date;
 
-    @OneToMany(type => MediaTag, mediaTag => mediaTag.mediaTagId)
+    @OneToMany(type => MediaTag, mediaTag => mediaTag.mediaId)
     mediaTags: MediaTag[];
 
-    @OneToMany(type => MediaProject, mediaProject => mediaProject.mediaProjectId)
+    @OneToMany(type => MediaProject, mediaProject => mediaProject.mediaId)
     mediaProjects: MediaProject[];
 }

@@ -14,6 +14,6 @@ export class Project {
     @OneToMany(type => ProjectTag, projectTag => projectTag.projectId)
     projectTags: ProjectTag[];
 
-    @OneToMany(type => MediaProject, mediaProjekct => mediaProjekct.mediaProjectId)
+    @OneToMany(type => MediaProject, mediaProjekct => mediaProjekct.projectId)
     mediaProjects: MediaProject[];
 }
