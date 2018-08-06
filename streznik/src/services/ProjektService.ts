@@ -149,8 +149,13 @@ module.exports = class ProjektService {
         return new Promise((resolve, reject) => {
             this.projectRepository.findOne(projId).then((proj: Project) => {
                 this.projectTagRepository.delete({projectId: proj}).then(() => {
-                    this.projectRepository.delete({projectId: projId}).then(() => {
-                        resolve("Success");
+                    this.mediaProjectRepository.delete({projectId:proj}).then(() => {
+                        this.projectRepository.delete({projectId: projId}).then(() => {
+                            resolve("Success");
+                        }, (err) => {
+                            console.log(err);
+                            reject();
+                        });
                     }, (err) => {
                         console.log(err);
                         reject();
