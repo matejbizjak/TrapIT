@@ -14,7 +14,7 @@ const prijavljen = jwt({
     userProperty: "payload"
 });
 
-router.get('/slika/:mediaId', prijavljen, SlikaController.dobiSliko);
+router.get('/slika/:mediaId', SlikaController.dobiSliko);
 router.post('/tagi/', prijavljen, SlikaController.shraniTage);
 router.get('/tagi/:mediaId', prijavljen, SlikaController.dobiTage);
 
