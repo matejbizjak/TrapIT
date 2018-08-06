@@ -170,17 +170,18 @@ module.exports = class ProjektService {
         return new Promise((resolve, reject) => {
 
             //if there is a specific media id search, get that one
-            if(mediaId){
+            if (mediaId) {
                 this.mediaRepository.findOne(
-                    {where: {mediaId: mediaId},
+                    {
+                        where: {mediaId: mediaId},
                         relations: ["siteId", "mediaProjects", "mediaProjects.projectId"]
                     }).then
-                    ((foundMedia: Media) => {
-                        resolve(new SfiltriraniPodatki([foundMedia], 1));
-                    }, (err) => {
-                        console.log(err);
-                        reject();
-                    });
+                ((foundMedia: Media) => {
+                    resolve(new SfiltriraniPodatki([foundMedia], 1));
+                }, (err) => {
+                    console.log(err);
+                    reject();
+                });
             }
 
             const filtriArr: number[] = [];
@@ -205,7 +206,7 @@ module.exports = class ProjektService {
                     console.log(err);
                     reject();
                 })
-            //if there are filters involved
+                //if there are filters involved
             } else { // select where filtrisdan
                 this.mediaTagRepository.find({
                     where: {tagId: In(filtriArr)},
@@ -232,25 +233,37 @@ module.exports = class ProjektService {
         });
     }
 
-    //filtriraj medije po nastavitvah
-    private filtrirajPoNastavitvah(medias: Media[], nastavitve: FiltriranjeNastavitve): Promise<SfiltriraniPodatki> {
-        return new Promise<SfiltriraniPodatki> ((resolve, reject) => {
-            medias.sort(function (a, b) {
-                return a[nastavitve.filtrirajPo] - b[nastavitve.filtrirajPo];
-            });
+    //saves new connection to the database, else
+    public saveMediaProject(mediaId: number, projectId: number): Promise<string> {
+        return new Promise<string>((resolve, reject) => {
+            this.mediaRepository.findOneOrFail({where: {mediaId: mediaId}}).then
+            ((media: Media) => {
+                this.projectRepository.findOneOrFail({where: {projectId: projectId}}).then
+                ((project: Project) => {
+                    //both media  and path is found
+                    let mediaProject = new MediaProject();
+                    mediaProject.mediaId = media;
+                    mediaProject.projectId = project;
 
-            if (nastavitve.filtrirajAsc === false) {
-                medias.reverse();
-            }
-
-            // st vseh rezultatov brez upostevanja limita
-            const stVsehRezultatov = medias.length;
-
-            // omeji (limit) -> mogoce bi blo fajn kam v session shranit ta arrray? Al pa na client?
-            const zacetek = (nastavitve.stStrani - 1) * nastavitve.stNaStran;
-            medias = medias.slice(zacetek, zacetek + nastavitve.stNaStran);
-
-            resolve(new SfiltriraniPodatki(medias, stVsehRezultatov));
+                    this.mediaProjectRepository.findOneOrFail({where: {projectId: project, mediaId: media}}).then
+                    ((mediaProject: MediaProject) => {
+                        resolve("Media already inspected under this project");
+                    }, () => {
+                        //new connection to be made
+                        this.mediaProjectRepository.save(mediaProject).then
+                        (() => {
+                            resolve("New mediaProject connection saved to the database");
+                        }, (err) => {
+                            console.log(err);
+                            reject("Unable to save to the database");
+                        });
+                    });
+                }, () => {
+                    reject("Path not found in the database");
+                });
+            }, () => {
+                reject("Media not found in the database");
+            })
         });
     }
 
@@ -289,37 +302,25 @@ module.exports = class ProjektService {
         });
     }
 
-    //saves new connection to the database, else
-    public  saveMediaProject(mediaId: number, projectId: number): Promise<string>{
-        return new Promise<string> ((resolve, reject) => {
-            this.mediaRepository.findOneOrFail({where: {mediaId: mediaId}}).then
-            ((media: Media)=>{
-                this.projectRepository.findOneOrFail({where: {projectId: projectId}}).then
-                ((project: Project)=>{
-                    //both media  and path is found
-                    let mediaProject = new MediaProject();
-                    mediaProject.mediaId = media;
-                    mediaProject.projectId = project;
+    //filtriraj medije po nastavitvah
+    private filtrirajPoNastavitvah(medias: Media[], nastavitve: FiltriranjeNastavitve): Promise<SfiltriraniPodatki> {
+        return new Promise<SfiltriraniPodatki>((resolve, reject) => {
+            medias.sort(function (a, b) {
+                return a[nastavitve.filtrirajPo] - b[nastavitve.filtrirajPo];
+            });
 
-                    this.mediaProjectRepository.findOneOrFail( {where: {projectId: project, mediaId: media}}).then
-                    ((mediaProject: MediaProject)=>{
-                        resolve("Media already inspected under this project");
-                    },()=>{
-                        //new connection to be made
-                        this.mediaProjectRepository.save(mediaProject).then
-                        (()=>{
-                            resolve("New mediaProject connection saved to the database");
-                        }, (err)=>{
-                            console.log(err);
-                            reject("Unable to save to the database");
-                        });
-                    });
-                }, () => {
-                    reject("Path not found in the database");
-                });
-            }, ()=>{
-                reject("Media not found in the database");
-            })
+            if (nastavitve.filtrirajAsc === false) {
+                medias.reverse();
+            }
+
+            // st vseh rezultatov brez upostevanja limita
+            const stVsehRezultatov = medias.length;
+
+            // omeji (limit) -> mogoce bi blo fajn kam v session shranit ta arrray? Al pa na client?
+            const zacetek = (nastavitve.stStrani - 1) * nastavitve.stNaStran;
+            medias = medias.slice(zacetek, zacetek + nastavitve.stNaStran);
+
+            resolve(new SfiltriraniPodatki(medias, stVsehRezultatov));
         });
     }
 
