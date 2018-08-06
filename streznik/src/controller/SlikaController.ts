@@ -28,7 +28,9 @@ module.exports.dobiSliko = function (req: Request, res: Response, next: NextFunc
         (media: Media) => {
             res.sendFile(media.pathId.value + "/" + media.name, options, (err) => {
                 if (err) {
-                    res.status(400).json({err: err});
+                    res.status(400).end();
+                } else {
+                    res.status(200).end();
                 }
             });
         }, (err) => {
