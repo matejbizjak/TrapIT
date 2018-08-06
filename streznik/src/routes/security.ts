@@ -1,5 +1,5 @@
 module.exports.jeAdmin = function (req, res, next) {
-    if (req.payload.userRole === "admin") {
+    if (req.payload.user_info.roleId.role === "admin") {
         next();
     } else {
         res.status(401);
@@ -8,7 +8,7 @@ module.exports.jeAdmin = function (req, res, next) {
 };
 
 module.exports.jeReviewer = function (req, res, next) {
-    if (req.payload.userRole === "reviewer") {
+    if (req.payload.user_info.roleId.role === "reviewer") {
         next();
     } else {
         res.status(401);
@@ -17,7 +17,7 @@ module.exports.jeReviewer = function (req, res, next) {
 };
 
 module.exports.jeViewer = function (req, res, next) {
-    if (req.payload.userRole === "viewer") {
+    if (req.payload.user_info.roleId.role === "viewer") {
         next();
     } else {
         res.status(401);

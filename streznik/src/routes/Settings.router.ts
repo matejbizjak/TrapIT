@@ -14,19 +14,16 @@ const prijavljen = jwt({
     userProperty: "payload"
 });
 
-//this routing is for SettingsController,
-//TODO sctrictly under Admin permissions
-
 //returns current set BasePath
-router.get('/basePath', SettingsController.getBasePath);
+router.get('/basePath', prijavljen, security.jeAdmin, SettingsController.getBasePath);
 //returns all avalible folders with the name
-router.get('/folder/:name', SettingsController.getAvailableFolders);
+router.get('/folder/:name', prijavljen, security.jeAdmin, SettingsController.getAvailableFolders);
 //adds folder with path to SQL database
-router.get('/folder/add/:path', SettingsController.addFolderToDatabase);
+router.get('/folder/add/:path', prijavljen, security.jeAdmin, SettingsController.addFolderToDatabase);
 //get paths
-router.get('/paths', SettingsController.getAllPaths);
+router.get('/paths', prijavljen, security.jeAdmin, SettingsController.getAllPaths);
 //update path
-router.get('/update/path/:pathId/:value', SettingsController.updatePathInDatabase);
+router.get('/update/path/:pathId/:value', prijavljen, security.jeAdmin, SettingsController.updatePathInDatabase);
 
 
 module.exports = router;

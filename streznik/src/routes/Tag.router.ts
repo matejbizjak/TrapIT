@@ -14,12 +14,12 @@ const prijavljen = jwt({
     userProperty: "payload"
 });
 
-router.post('/new', prijavljen, TagController.saveNewTag);
+router.post('/new', prijavljen, security.jeAdmin, TagController.saveNewTag);
 
-router.get('/children/:id', prijavljen, TagController.getChildren);
+router.get('/children/:id', prijavljen, security.jeAdmin, TagController.getChildren);
 
-router.post('/update', prijavljen, TagController.updateTag);
+router.post('/update', prijavljen, security.jeAdmin, TagController.updateTag);
 
-router.post('/delete', prijavljen, TagController.deleteTag);
+router.post('/delete', prijavljen, security.jeAdmin, TagController.deleteTag);
 
 module.exports = router;

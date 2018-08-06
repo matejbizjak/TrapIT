@@ -14,15 +14,6 @@ const prijavljen = jwt({
     userProperty: "payload"
 });
 
-// middleware that is specific to this router
-// router.use(function timeLog(req, res, next) {
-//     console.log('Time: ', Date.now());
-//     next()
-// });
-
-// tako bi zavaroval api, da mora biti user prijavljen in mora biti reviewer
-// router.post('/login', prijavljen, security.jeReviewer, AuthController.login);
-
 router.post('/dir', prijavljen, ProjektController.dobiDir);
 // router.get('/tagi/:projectId', prijavljen, ProjektController.dobiTage); // TODO
 router.get('/tagi/:id', prijavljen, ProjektController.dobiTage);

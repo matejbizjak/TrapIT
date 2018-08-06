@@ -14,12 +14,12 @@ const prijavljen = jwt({
     userProperty: "payload"
 });
 
-router.get('/users', prijavljen, UserController.getAll);
+router.get('/users', prijavljen, security.jeAdmin, UserController.getAll);
 
-router.post('/update', prijavljen, UserController.update);
+router.post('/update', prijavljen, security.jeAdmin, UserController.update);
 
-router.get('/delete/:id', prijavljen, UserController.delete);
+router.get('/delete/:id', prijavljen, security.jeAdmin, UserController.delete);
 
-router.post('/create', prijavljen, UserController.update);
+router.post('/create', prijavljen, security.jeAdmin, UserController.update);
 
 module.exports = router;

@@ -14,20 +14,10 @@ const prijavljen = jwt({
     userProperty: "payload"
 });
 
-// middleware that is specific to this router
-// router.use(function timeLog(req, res, next) {
-//     console.log('Time: ', Date.now());
-//     next()
-// });
+router.get('/slika/:mediaId', prijavljen, SlikaController.dobiSliko);
+router.post('/tagi/', prijavljen, SlikaController.shraniTage);
+router.get('/tagi/:mediaId', prijavljen, SlikaController.dobiTage);
 
-// tako bi zavaroval api, da mora biti user prijavljen in mora biti reviewer
-// router.post('/login', prijavljen, security.jeReviewer, AuthController.login);
-
-router.get('/slika/:mediaId', SlikaController.dobiSliko);
-router.post('/tagi/', SlikaController.shraniTage);
-router.get('/tagi/:mediaId', SlikaController.dobiTage);
-
-router.post('/pot', SlikaController.nastaviPot);
-
+router.post('/pot', prijavljen, security.jeAdmin, SlikaController.nastaviPot);
 
 module.exports = router;
