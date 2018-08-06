@@ -130,7 +130,7 @@
                *ngIf="filtriranjeNastavitve.filtrirajPo === 'interesting' && !filtriranjeNastavitve.filtrirajAsc"
                class="fa fa-sort-down"></i>
         </th>
-        <th value="viewed" >viewed
+        <th value="viewed" >viewed (<span>hide? <input type="checkbox" [(ngModel)]="projectsHide"></span>)
         </th>
     </tr>
     </thead>
@@ -144,10 +144,12 @@
         <td>{{medij.interesting}}</td>
         <td>
             <span>{{alreadySeen(medij.mediaProjects)}}</span>
-            <span *ngFor="let project of medij.mediaProjects; let x = index">
-                <span *ngIf="x != 0">,</span>
-                {{project.projectId.name}}
-            </span>
+            <ng-container *ngIf="!projectsHide">
+                <span *ngFor="let project of medij.mediaProjects; let x = index">
+                    <span *ngIf="x != 0 ">,</span>
+                    {{project.projectId.name}}
+                </span>
+            </ng-container>
         </td>
     </tr>
     </tbody>
