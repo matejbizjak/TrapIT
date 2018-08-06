@@ -169,14 +169,18 @@ module.exports = class ProjektService {
     public filtrirajPodatke(filtri: TagZInputValue[], nastavitve: FiltriranjeNastavitve, mediaId?: number): Promise<SfiltriraniPodatki> {
         return new Promise((resolve, reject) => {
 
+            //if there is a specific media id search, get that one
             if(mediaId){
-                this.mediaRepository.findOne({where: {mediaId: mediaId}, relations: ["siteId", "mediaProjects", "mediaProjects.projectId"]}).then
-                ((foundMedia: Media) => {
-                    resolve(new SfiltriraniPodatki([foundMedia], 1));
-                }, (err) => {
-                    console.log(err);
-                    reject();
-                })
+                this.mediaRepository.findOne(
+                    {where: {mediaId: mediaId},
+                        relations: ["siteId", "mediaProjects", "mediaProjects.projectId"]
+                    }).then
+                    ((foundMedia: Media) => {
+                        resolve(new SfiltriraniPodatki([foundMedia], 1));
+                    }, (err) => {
+                        console.log(err);
+                        reject();
+                    });
             }
 
             const filtriArr: number[] = [];
@@ -184,21 +188,24 @@ module.exports = class ProjektService {
                 filtriArr.push(filtriKey.tagId);
             }
 
-            if (filtriArr.length === 0) { // select all
-                this.mediaTagRepository.find({
-                    relations: ["tagId", "mediaId", "mediaId.siteId", "mediaId.mediaProjects", "mediaId.mediaProjects.projectId"],
+            //if there are no selected filters for tags, just search the damn media table
+            if (filtriArr.length === 0) { // select all from media
+                this.mediaRepository.find({
+                    relations: ["siteId", "mediaProjects", "mediaProjects.projectId"],
                     order: {mediaId: "ASC"}
-                }).then(
-                    (mediaTags: MediaTag[]) => {
-                        this.izlusciMediaIdje(mediaTags, filtriArr, nastavitve).then((sfiltriraniPodatki: SfiltriraniPodatki) => {
-                                resolve(sfiltriraniPodatki);
-                            }
-                        );
+                }).then((medias: Media[]) => {
+                    this.filtrirajPoNastavitvah(medias, nastavitve).then
+                    ((filteredBySettings: SfiltriraniPodatki) => {
+                        resolve(filteredBySettings);
                     }, (err) => {
                         console.log(err);
                         reject();
-                    }
-                );
+                    })
+                }, (err) => {
+                    console.log(err);
+                    reject();
+                })
+            //if there are filters involved
             } else { // select where filtrisdan
                 this.mediaTagRepository.find({
                     where: {tagId: In(filtriArr)},
@@ -206,8 +213,14 @@ module.exports = class ProjektService {
                     order: {mediaId: "ASC"}
                 }).then(
                     (mediaTags: MediaTag[]) => {
-                        this.izlusciMediaIdje(mediaTags, filtriArr, nastavitve).then((sfiltriraniPodatki: SfiltriraniPodatki) => {
-                                resolve(sfiltriraniPodatki);
+                        this.izlusciMediaIdje(mediaTags, filtriArr).then((medias: Media[]) => {
+                                this.filtrirajPoNastavitvah(medias, nastavitve).then
+                                ((filteredBySettings: SfiltriraniPodatki) => {
+                                    resolve(filteredBySettings);
+                                }, (err) => {
+                                    console.log(err);
+                                    reject();
+                                })
                             }
                         );
                     }, (err) => {
@@ -219,8 +232,31 @@ module.exports = class ProjektService {
         });
     }
 
-    private izlusciMediaIdje(mediaTags: MediaTag[], filtri: number[], nastavitve: FiltriranjeNastavitve): Promise<SfiltriraniPodatki> {
-        return new Promise<SfiltriraniPodatki>((resolve, reject) => {
+    //filtriraj medije po nastavitvah
+    private filtrirajPoNastavitvah(medias: Media[], nastavitve: FiltriranjeNastavitve): Promise<SfiltriraniPodatki> {
+        return new Promise<SfiltriraniPodatki> ((resolve, reject) => {
+            medias.sort(function (a, b) {
+                return a[nastavitve.filtrirajPo] - b[nastavitve.filtrirajPo];
+            });
+
+            if (nastavitve.filtrirajAsc === false) {
+                medias.reverse();
+            }
+
+            // st vseh rezultatov brez upostevanja limita
+            const stVsehRezultatov = medias.length;
+
+            // omeji (limit) -> mogoce bi blo fajn kam v session shranit ta arrray? Al pa na client?
+            const zacetek = (nastavitve.stStrani - 1) * nastavitve.stNaStran;
+            medias = medias.slice(zacetek, zacetek + nastavitve.stNaStran);
+
+            resolve(new SfiltriraniPodatki(medias, stVsehRezultatov));
+        });
+    }
+
+    //find all medias from mediaTags by filtri?
+    private izlusciMediaIdje(mediaTags: MediaTag[], filtri: number[]): Promise<Media[]> {
+        return new Promise<Media[]>((resolve, reject) => {
             const filtriBackup: number[] = JSON.parse(JSON.stringify(filtri));
             let medijiZaPrikaz: Media[] = [];
 
@@ -249,24 +285,7 @@ module.exports = class ProjektService {
                     dodalBool = true;
                 }
             }
-
-            // sortiraj
-            medijiZaPrikaz.sort(function (a, b) {
-                return a[nastavitve.filtrirajPo] - b[nastavitve.filtrirajPo];
-            });
-
-            if (nastavitve.filtrirajAsc === false) {
-                medijiZaPrikaz.reverse();
-            }
-
-            // st vseh rezultatov brez upostevanja limita
-            const stVsehRezultatov = medijiZaPrikaz.length;
-
-            // omeji (limit)
-            const zacetek = (nastavitve.stStrani - 1) * nastavitve.stNaStran;
-            medijiZaPrikaz = medijiZaPrikaz.slice(zacetek, zacetek + nastavitve.stNaStran);
-
-            resolve(new SfiltriraniPodatki(medijiZaPrikaz, stVsehRezultatov));
+            resolve(medijiZaPrikaz);
         });
     }
 
