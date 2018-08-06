@@ -7,6 +7,7 @@
         <button class="btn" (click)="prejsnjaSlika()">Nazaj</button>
         <button class="btn btn-success" (click)="shraniVnose()">Shrani</button>
         <button class="btn" (click)="naslednjaSlika()">Naprej</button>
+        <div *ngIf="loading === true" class="loader float-left ml-3 mt-1"></div>
     </div>
 </div>
 

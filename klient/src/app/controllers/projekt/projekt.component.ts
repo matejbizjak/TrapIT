@@ -31,7 +31,7 @@ export class ProjektComponent implements OnInit {
     filtriranjeNastavitve: FiltriranjeNastavitve;
     stVsehZadetkov: number;
     specificMediaId: number = null;
-    mediaPerPage: number = 25;
+    mediaPerPage = 25;
 
     loading = false;
 
@@ -100,27 +100,32 @@ export class ProjektComponent implements OnInit {
     //     }
     // }
 
-    filtrirajPrikaz(resetSort) {
-        this.loading = true;
-        this.filtriranjeNastavitve.stNaStran = this.mediaPerPage;
-        if (resetSort) {
-            this.filtriranjeNastavitve.filtrirajPo = "mediaId";
-            this.filtriranjeNastavitve.filtrirajAsc = true;
-            this.filtriranjeNastavitve.stStrani = 1;
-        }
-        this.projektService.pretovriVOblikoZaPosiljatFiltriranje(this.mozniTagi).then(
-            (tagi: TagZInputValue[]) => {
-                this.projektService.filtrirajSlike(tagi, this.filtriranjeNastavitve, this.specificMediaId).subscribe(
-                    (sfiltriraniPodatki: SfiltriraniPodatki) => {
-                        this.medijiSeznam = sfiltriraniPodatki.mediji;
-                        this.stVsehZadetkov = sfiltriraniPodatki.stVsehMedijev;
-                        this.loading = false;
-                        this.specificMediaId = null;
-                    }, (err) => {
-                    }
-                );
+    filtrirajPrikaz(resetSort): Promise<Media[]> {
+        return new Promise<Media[]>((resolve, reject) => {
+            this.loading = true;
+            this.filtriranjeNastavitve.stNaStran = this.mediaPerPage;
+            if (resetSort) {
+                this.filtriranjeNastavitve.filtrirajPo = "mediaId";
+                this.filtriranjeNastavitve.filtrirajAsc = true;
+                this.filtriranjeNastavitve.stStrani = 1;
             }
-        );
+            this.projektService.pretovriVOblikoZaPosiljatFiltriranje(this.mozniTagi).then(
+                (tagi: TagZInputValue[]) => {
+                    this.projektService.filtrirajSlike(tagi, this.filtriranjeNastavitve, this.specificMediaId).subscribe(
+                        (sfiltriraniPodatki: SfiltriraniPodatki) => {
+                            this.medijiSeznam = sfiltriraniPodatki.mediji;
+                            this.stVsehZadetkov = sfiltriraniPodatki.stVsehMedijev;
+                            this.loading = false;
+                            this.specificMediaId = null;
+
+                            resolve(sfiltriraniPodatki.mediji);
+                        }, (err) => {
+                            reject();
+                        }
+                    );
+                }
+            );
+        });
     }
 
     sortClick(e) {

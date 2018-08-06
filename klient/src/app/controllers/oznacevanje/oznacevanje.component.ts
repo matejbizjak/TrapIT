@@ -30,6 +30,7 @@ export class OznacevanjeComponent implements OnInit {
     mozniTagiSamoId: Set<number>;
 
     potDoSlike: string[] = [];
+    loading = false;
 
     // stupid
     vstavljenih = 0;
@@ -40,6 +41,7 @@ export class OznacevanjeComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.loading = true;
         this.nastaviPozicijoGledanegaMedie();
 
         this.potDoSlike.push("http://localhost:3000/api/slika/slika/" + this.izbranMedia.mediaId);
@@ -85,8 +87,10 @@ export class OznacevanjeComponent implements OnInit {
         this.oznacevanjeService.dobiTage(this.izbranMedia.mediaId).subscribe(
             (tagi: ZnaniTagiZaMedia) => {
                 this.napolniZeZnaneTage(tagi);
+                this.loading = false;
             }, (err) => {
                 console.log(err.error);
+                this.loading = false;
             }
         );
     }
@@ -170,27 +174,67 @@ export class OznacevanjeComponent implements OnInit {
         }
     }
 
+    dobiNovoStranZMediji(naslednja: boolean): Promise<any> {
+        return new Promise<any>((resolve, reject) => {
+            if (naslednja) {
+                this.projectComponent.filtriranjeNastavitve.stStrani++;
+            } else {
+                this.projectComponent.filtriranjeNastavitve.stStrani--;
+            }
+            this.projectComponent.filtrirajPrikaz(false).then(
+                (filtriraniMedia: Media[]) => {
+                    this.filtriraniMedia = filtriraniMedia;
+                    this.izbranMedia = this.filtriraniMedia[this.filtriraniMedia.length - 1];
+                    resolve();
+                }
+            );
+        });
+    }
+
+    prikaziNovoSliko() {
+        this.potDoSlike[0] = "http://localhost:3000/api/slika/slika/" + this.izbranMedia.mediaId;
+        this.dobiTage();
+        this.mozniTagi = new Array();
+        Object.assign(this.mozniTagi, JSON.parse(JSON.stringify(this.mozniTagiCopy)));
+        this.loading = false;
+    }
+
     prejsnjaSlika() {
         this.shraniVnose();
-        if (this.pozicijaVSeznamu !== 0) {
+        if (this.pozicijaVSeznamu === 0) {
+            if (this.projectComponent.filtriranjeNastavitve.stStrani !== 1) {
+                this.loading = true;
+                this.dobiNovoStranZMediji(false).then(() => {
+                    this.pozicijaVSeznamu = this.filtriraniMedia.length - 1;
+                    this.izbranMedia = this.filtriraniMedia[this.pozicijaVSeznamu];
+                    this.prikaziNovoSliko();
+                });
+            }
+        } else {
+            this.loading = true;
             this.pozicijaVSeznamu--;
             this.izbranMedia = this.filtriraniMedia[this.pozicijaVSeznamu];
-            this.potDoSlike[0] = "http://localhost:3000/api/slika/slika/" + this.izbranMedia.mediaId;
-            this.dobiTage();
-            this.mozniTagi = new Array();
-            Object.assign(this.mozniTagi, JSON.parse(JSON.stringify(this.mozniTagiCopy)));
+            this.prikaziNovoSliko();
         }
     }
 
     naslednjaSlika() {
         this.shraniVnose();
-        if (this.pozicijaVSeznamu !== this.filtriraniMedia.length - 1) {
+        if (this.pozicijaVSeznamu === this.filtriraniMedia.length - 1) {
+            const stVsehStrani = Math.ceil(this.projectComponent.stVsehZadetkov / this.projectComponent.mediaPerPage);
+            if (this.projectComponent.filtriranjeNastavitve.stStrani !== stVsehStrani) {
+                this.loading = true;
+                this.dobiNovoStranZMediji(true).then(() => {
+                    this.pozicijaVSeznamu = 0;
+                    this.izbranMedia = this.filtriraniMedia[this.pozicijaVSeznamu];
+                    this.prikaziNovoSliko();
+                });
+            }
+        } else {
+            this.loading = true;
             this.pozicijaVSeznamu++;
             this.izbranMedia = this.filtriraniMedia[this.pozicijaVSeznamu];
-            this.potDoSlike[0] = "http://localhost:3000/api/slika/slika/" + this.izbranMedia.mediaId;
-            this.dobiTage();
-            this.mozniTagi = new Array();
-            Object.assign(this.mozniTagi, JSON.parse(JSON.stringify(this.mozniTagiCopy)));
+            this.prikaziNovoSliko();
         }
     }
 
