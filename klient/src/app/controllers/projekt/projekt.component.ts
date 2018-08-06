@@ -112,7 +112,6 @@ export class ProjektComponent implements OnInit {
             (tagi: TagZInputValue[]) => {
                 this.projektService.filtrirajSlike(tagi, this.filtriranjeNastavitve, this.specificMediaId).subscribe(
                     (sfiltriraniPodatki: SfiltriraniPodatki) => {
-                        console.log(sfiltriraniPodatki);
                         this.medijiSeznam = sfiltriraniPodatki.mediji;
                         this.stVsehZadetkov = sfiltriraniPodatki.stVsehMedijev;
                         this.loading = false;

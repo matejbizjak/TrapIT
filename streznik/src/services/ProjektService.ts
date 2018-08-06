@@ -169,8 +169,11 @@ module.exports = class ProjektService {
     public filtrirajPodatke(filtri: TagZInputValue[], nastavitve: FiltriranjeNastavitve, mediaId?: number): Promise<SfiltriraniPodatki> {
         return new Promise((resolve, reject) => {
 
-            if(mediaId){
-                this.mediaRepository.findOne({where: {mediaId: mediaId}, relations: ["siteId", "mediaProjects", "mediaProjects.projectId"]}).then
+            if (mediaId) {
+                this.mediaRepository.findOne({
+                    where: {mediaId: mediaId},
+                    relations: ["siteId", "mediaProjects", "mediaProjects.projectId"]
+                }).then
                 ((foundMedia: Media) => {
                     resolve(new SfiltriraniPodatki([foundMedia], 1));
                 }, (err) => {
@@ -185,21 +188,17 @@ module.exports = class ProjektService {
             }
 
             if (filtriArr.length === 0) { // select all
-                this.mediaTagRepository.find({
-                    relations: ["tagId", "mediaId", "mediaId.siteId", "mediaId.mediaProjects", "mediaId.mediaProjects.projectId"],
+                const orderSettings = {};
+                orderSettings[nastavitve.filtrirajPo] = nastavitve.filtrirajAsc === true ? "ASC" : "DESC";
+                this.mediaRepository.find({
+                    relations: ["siteId", "pathId", "lastUserId"],
                     order: {mediaId: "ASC"}
                 }).then(
-                    (mediaTags: MediaTag[]) => {
-                        this.izlusciMediaIdje(mediaTags, filtriArr, nastavitve).then((sfiltriraniPodatki: SfiltriraniPodatki) => {
-                                resolve(sfiltriraniPodatki);
-                            }
-                        );
-                    }, (err) => {
-                        console.log(err);
-                        reject();
+                    (medias: Media[]) => {
+                        resolve(this.sortirajInOmeji(medias, nastavitve));
                     }
-                );
-            } else { // select where filtrisdan
+                )
+            } else { // select where filtri
                 this.mediaTagRepository.find({
                     where: {tagId: In(filtriArr)},
                     relations: ["tagId", "mediaId", "mediaId.siteId", "mediaId.mediaProjects", "mediaId.mediaProjects.projectId"],
@@ -216,6 +215,40 @@ module.exports = class ProjektService {
                     }
                 );
             }
+        });
+    }
+
+    //saves new connection to the database, else
+    public saveMediaProject(mediaId: number, projectId: number): Promise<string> {
+        return new Promise<string>((resolve, reject) => {
+            this.mediaRepository.findOneOrFail({where: {mediaId: mediaId}}).then
+            ((media: Media) => {
+                this.projectRepository.findOneOrFail({where: {projectId: projectId}}).then
+                ((project: Project) => {
+                    //both media  and path is found
+                    let mediaProject = new MediaProject();
+                    mediaProject.mediaId = media;
+                    mediaProject.projectId = project;
+
+                    this.mediaProjectRepository.findOneOrFail({where: {projectId: project, mediaId: media}}).then
+                    ((mediaProject: MediaProject) => {
+                        resolve("Media already inspected under this project");
+                    }, () => {
+                        //new connection to be made
+                        this.mediaProjectRepository.save(mediaProject).then
+                        (() => {
+                            resolve("New mediaProject connection saved to the database");
+                        }, (err) => {
+                            console.log(err);
+                            reject("Unable to save to the database");
+                        });
+                    });
+                }, () => {
+                    reject("Path not found in the database");
+                });
+            }, () => {
+                reject("Media not found in the database");
+            })
         });
     }
 
@@ -250,58 +283,28 @@ module.exports = class ProjektService {
                 }
             }
 
-            // sortiraj
-            medijiZaPrikaz.sort(function (a, b) {
-                return a[nastavitve.filtrirajPo] - b[nastavitve.filtrirajPo];
-            });
-
-            if (nastavitve.filtrirajAsc === false) {
-                medijiZaPrikaz.reverse();
-            }
-
-            // st vseh rezultatov brez upostevanja limita
-            const stVsehRezultatov = medijiZaPrikaz.length;
-
-            // omeji (limit)
-            const zacetek = (nastavitve.stStrani - 1) * nastavitve.stNaStran;
-            medijiZaPrikaz = medijiZaPrikaz.slice(zacetek, zacetek + nastavitve.stNaStran);
-
-            resolve(new SfiltriraniPodatki(medijiZaPrikaz, stVsehRezultatov));
+            resolve(this.sortirajInOmeji(medijiZaPrikaz, nastavitve));
         });
     }
 
-    //saves new connection to the database, else
-    public  saveMediaProject(mediaId: number, projectId: number): Promise<string>{
-        return new Promise<string> ((resolve, reject) => {
-            this.mediaRepository.findOneOrFail({where: {mediaId: mediaId}}).then
-            ((media: Media)=>{
-                this.projectRepository.findOneOrFail({where: {projectId: projectId}}).then
-                ((project: Project)=>{
-                    //both media  and path is found
-                    let mediaProject = new MediaProject();
-                    mediaProject.mediaId = media;
-                    mediaProject.projectId = project;
-
-                    this.mediaProjectRepository.findOneOrFail( {where: {projectId: project, mediaId: media}}).then
-                    ((mediaProject: MediaProject)=>{
-                        resolve("Media already inspected under this project");
-                    },()=>{
-                        //new connection to be made
-                        this.mediaProjectRepository.save(mediaProject).then
-                        (()=>{
-                            resolve("New mediaProject connection saved to the database");
-                        }, (err)=>{
-                            console.log(err);
-                            reject("Unable to save to the database");
-                        });
-                    });
-                }, () => {
-                    reject("Path not found in the database");
-                });
-            }, ()=>{
-                reject("Media not found in the database");
-            })
+    private sortirajInOmeji(medijiZaPrikaz: Media[], nastavitve: FiltriranjeNastavitve): SfiltriraniPodatki {
+        // sortiraj
+        medijiZaPrikaz.sort(function (a, b) {
+            return a[nastavitve.filtrirajPo] - b[nastavitve.filtrirajPo];
         });
+
+        if (nastavitve.filtrirajAsc === false) {
+            medijiZaPrikaz.reverse();
+        }
+
+        // st vseh rezultatov brez upostevanja limita
+        const stVsehRezultatov = medijiZaPrikaz.length;
+
+        // omeji (limit)
+        const zacetek = (nastavitve.stStrani - 1) * nastavitve.stNaStran;
+        medijiZaPrikaz = medijiZaPrikaz.slice(zacetek, zacetek + nastavitve.stNaStran);
+
+        return new SfiltriraniPodatki(medijiZaPrikaz, stVsehRezultatov);
     }
 
 };
