@@ -18,7 +18,7 @@ module.exports.login = function (req: Request, res: Response, next: NextFunction
                 user_info: user
             }, RSA_PRIVATE_KEY, {
                 algorithm: 'RS256',
-                expiresIn: "1h"
+                expiresIn: "12h"
             });
             // send the JWT back to the user
             res.status(200).json({

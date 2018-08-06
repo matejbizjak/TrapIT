@@ -64,4 +64,8 @@ export class AuthService {
         const expiresAt = JSON.parse(expiration) * 1000;
         return moment(expiresAt);
     }
+
+    getTokenId(): string {
+        return localStorage.getItem("trapitIdToken");
+    }
 }
