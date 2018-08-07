@@ -12,6 +12,7 @@ import {ZnaniTagiZaMedia} from "../../models/responses/znani-tagi-za-media";
 import {ProjektComponent} from "../projekt/projekt.component";
 import {AuthService} from "../../services/avtentikacija/auth.service";
 
+
 @Component({
     selector: "app-oznacevanje",
     templateUrl: "./oznacevanje.component.html",
@@ -45,8 +46,13 @@ export class OznacevanjeComponent implements OnInit {
         this.loading = true;
         this.nastaviPozicijoGledanegaMedie();
 
-        this.potDoSlike.push("http://localhost:3000/api/slika/slika/" + this.izbranMedia.mediaId
-            + "?token=" + this.authService.getTokenId());
+        // :TODO the domain will change
+        this.potDoSlike.push("http://localhost:3000/api/slika/"
+                            + (this.izbranMedia.image
+                                    ? "slika"
+                                    : "video")
+                            + "/" + this.izbranMedia.mediaId
+                            + "?token=" + this.authService.getTokenId());
 
         this.mediaData = new MediaData();
         this.mozniTagiSamoId = new Set();
@@ -194,8 +200,12 @@ export class OznacevanjeComponent implements OnInit {
     }
 
     prikaziNovoSliko() {
-        this.potDoSlike[0] = "http://localhost:3000/api/slika/slika/" + this.izbranMedia.mediaId
-            + "?token=" + this.authService.getTokenId();
+        this.potDoSlike[0] = "http://localhost:3000/api/slika/"
+                        + (this.izbranMedia.image
+                            ? "slika"
+                            : "video")
+                        + "/" + this.izbranMedia.mediaId
+                        + "?token=" + this.authService.getTokenId();
         this.dobiTage();
         this.mozniTagi = new Array();
         Object.assign(this.mozniTagi, JSON.parse(JSON.stringify(this.mozniTagiCopy)));

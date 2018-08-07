@@ -8,7 +8,7 @@ import {Site} from "../entity/Site";
 const GlobalVarService = require("../services/GlobalVarService");
 
 module.exports = class SettingsService {
-    private lastRegDate: string = "2000-12-12 12:12:12";
+    private lastRegDate: string = "1899-12-12 12:12:12";
     private mediaRepository = getRepository(Media);
     private siteRepository = getRepository(Site);
     private pathRepository = getRepository(Path);
@@ -78,7 +78,7 @@ module.exports = class SettingsService {
             var date = await this.getExifDate(file);
             if (date == undefined) date = this.lastRegDate;
             var siteId = (await this.getSiteId(data[data.length - 3]));
-            var path = data.splice(0, data.length - 3).join(pathLib.sep) + pathLib.sep;
+            var path = data.splice(0, data.length - 2).join(pathLib.sep) + pathLib.sep;
             var pathId = (await this.getPathId(path));
             var name = await data[data.length - 2] + pathLib.sep + data[data.length - 1];
 
@@ -107,7 +107,7 @@ module.exports = class SettingsService {
             try {
                 new ExifImage({image: path}, (error, exifData) => {
                     if (error) {
-                        console.log(error.message);
+                        //console.log(error.message);
                         resolve(undefined);
                     }
                     else if (exifData.exif.DateTimeOriginal != undefined) {

@@ -2,6 +2,9 @@ import {getConnection, getRepository} from "typeorm";
 import {Media} from "../entity/Media";
 import {MediaTag} from "../entity/MediaTag";
 import {TagShrani} from "../entity/requests/tag-shrani";
+import * as fs from "fs";
+import {Request} from "express";
+import {Response} from "express";
 
 module.exports = class SlikaService {
     private mediaRepository = getRepository(Media);
@@ -15,6 +18,41 @@ module.exports = class SlikaService {
         return new Promise<Media>(resolve => {
             resolve(media);
         });
+    }
+
+    public streamVideo(req: Request, res: Response, video: Media){
+        const path = video.pathId.value + video.name;
+        const stat = fs.statSync(path);
+        const fileSize = stat.size;
+        const range = <string> req.headers.range;
+        const videoType = video.name.split(".").pop();
+
+        if(range) {
+            const parts = range.replace(/bytes=/, "").split("-");
+            const start = parseInt(parts[0], 10);
+            const end = parts[1]
+                ? parseInt(parts[1], 10)
+                : fileSize - 1;
+            const chunkSize = (end - start) + 1;
+            const file = fs.createReadStream(path, {start, end});
+            let head = {
+                'Content-Range': `bytes ${start}-${end}/${fileSize}`,
+                'Accept-Ranges': 'bytes',
+                'Content-Length': chunkSize,
+                'Content-Type': 'video/' + videoType,
+            }
+
+            res.writeHead(206, head);
+            file.pipe(res);
+        } else {
+            let head = {
+                'Content-Length': fileSize,
+                'Content-Type': 'video/' + videoType,
+            }
+
+            res.writeHead(200, head)
+            fs.createReadStream(path).pipe(res);
+        }
     }
 
     public async shraniTage(podatki: TagShrani): Promise<any> {

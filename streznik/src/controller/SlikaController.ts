@@ -43,13 +43,18 @@ module.exports.dobiSliko = function (req: Request, res: Response, next: NextFunc
         () => {
             slikaService.dobiMedia(req.params.mediaId).then(
                 (media: Media) => {
-                    res.sendFile(media.pathId.value + "/" + media.name, options, (err) => {
-                        if (err) {
-                            res.status(400).end();
-                        } else {
-                            res.status(200).end();
-                        }
-                    });
+                    if(media.image){
+                        res.sendFile(media.pathId.value + "/" + media.name, options, (err) => {
+                            if (err) {
+                                res.status(400).end();
+                            } else {
+                                res.status(200).end();
+                            }
+                        });
+                    } else{
+                        res.status(400).json({err: "Media ni slika"}).end();
+                    }
+
                 }, (err) => {
                     res.status(400).json({err: err}).end();
                 }
@@ -59,6 +64,26 @@ module.exports.dobiSliko = function (req: Request, res: Response, next: NextFunc
         res.status(401).json({err: err}).end();
     });
 };
+
+module.exports.dobiVideo = function (req: Request, res: Response, next: NextFunction) {
+    const slikaService = new SlikaService();
+
+    checkAuthToken(req.query.token).then
+    (() => {
+        slikaService.dobiMedia(req.params.mediaId).then
+        ((media: Media) => {
+            if(media.image){
+                res.status(400).json({err: "Requested media is not a video/.avi file."})
+            } else {
+                slikaService.streamVideo(req, res, media);
+            }
+        }, () => {
+
+        })
+    }, (err) => {
+       // res.status(401).json({err: "Unauthorized"}).end();
+    })
+}
 
 module.exports.shraniTage = function (req: Request, res: Response, next: NextFunction) {
     const slikaService = new SlikaService();

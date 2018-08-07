@@ -15,6 +15,7 @@ const prijavljen = jwt({
 });
 
 router.get('/slika/:mediaId', SlikaController.dobiSliko);
+router.get('/video/:mediaId', SlikaController.dobiVideo);
 router.post('/tagi/', prijavljen, SlikaController.shraniTage);
 router.get('/tagi/:mediaId', prijavljen, SlikaController.dobiTage);
 
