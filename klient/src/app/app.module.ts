@@ -24,7 +24,51 @@ import {UrejanjeZnackeComponent} from "./controllers/urejanje-znacke/urejanje-zn
 import {AddFolderComponent} from "./controllers/nastavitve/add-folder/add-folder.component";
 import {UporabnikiComponent} from "./controllers/uporabniki/uporabniki.component";
 import {ImageViewerModule} from "ngx-image-viewer";
-import { PathSettingsComponent } from './controllers/nastavitve/path-settings/path-settings.component';
+import { PathSettingsComponent } from "./controllers/nastavitve/path-settings/path-settings.component";
+
+
+// angular material
+import {platformBrowserDynamic} from "@angular/platform-browser-dynamic";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {CdkTableModule} from "@angular/cdk/table";
+import {CdkTreeModule} from "@angular/cdk/tree";
+import {MatSelectModule,
+    MatAutocompleteModule,
+    MatBadgeModule,
+    MatBottomSheetModule,
+    MatButtonModule,
+    MatButtonToggleModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatChipsModule,
+    MatDatepickerModule,
+    MatDialogModule,
+    MatDividerModule,
+    MatExpansionModule,
+    MatGridListModule,
+    MatIconModule,
+    MatInputModule,
+    MatListModule,
+    MatMenuModule,
+    MatNativeDateModule,
+    MatPaginatorModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    MatRadioModule,
+    MatRippleModule,
+    MatSidenavModule,
+    MatSliderModule,
+    MatSlideToggleModule,
+    MatSnackBarModule,
+    MatSortModule,
+    MatStepperModule,
+    MatTableModule,
+    MatTabsModule,
+    MatToolbarModule,
+    MatTooltipModule,
+    MatTreeModule,
+} from "@angular/material";
+
 
 const imageViewerSettings = {
     btnClass: "default", // The CSS class(es) that will apply to the buttons
@@ -75,7 +119,47 @@ export function HttpLoaderFactory(http: HttpClient) {
         PathSettingsComponent
     ],
     imports: [
+        // angular material
+        CdkTableModule,
+        CdkTreeModule,
+        MatAutocompleteModule,
+        MatBadgeModule,
+        MatBottomSheetModule,
+        MatButtonModule,
+        MatButtonToggleModule,
+        MatCardModule,
+        MatCheckboxModule,
+        MatChipsModule,
+        MatStepperModule,
+        MatDatepickerModule,
+        MatDialogModule,
+        MatDividerModule,
+        MatExpansionModule,
+        MatGridListModule,
+        MatIconModule,
+        MatInputModule,
+        MatListModule,
+        MatMenuModule,
+        MatNativeDateModule,
+        MatPaginatorModule,
+        MatProgressBarModule,
+        MatProgressSpinnerModule,
+        MatRadioModule,
+        MatRippleModule,
+        MatSelectModule,
+        MatSidenavModule,
+        MatSliderModule,
+        MatSlideToggleModule,
+        MatSnackBarModule,
+        MatSortModule,
+        MatTableModule,
+        MatTabsModule,
+        MatToolbarModule,
+        MatTooltipModule,
+        MatTreeModule,
+        //
         BrowserModule,
+        BrowserAnimationsModule,
         AppRoutingModule,
         HttpClientModule,
         FormsModule,

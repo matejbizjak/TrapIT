@@ -10,6 +10,9 @@ import {TagZInputValue} from "../../models/entities/custom/tag-z-input-value";
 import {FiltriranjeNastavitve} from "../../models/entities/custom/filtriranje-nastavitve";
 import {SfiltriraniPodatki} from "../../models/responses/sfiltrirani-podatki";
 import {MediaProject} from "../../models/entities/media-project.entity";
+import {Project} from "../../models/entities/project.entity";
+import {MatFormField, MatSelect} from "@angular/material";
+import {FormControl} from "@angular/forms";
 
 @Component({
     selector: "app-projekt",
@@ -23,6 +26,9 @@ export class ProjektComponent implements OnInit {
     mozniTagi: TagParent[];
     mozniTagiCopy: TagParent[];
     mozniTagiSamoId: Set<number>;
+
+    mozniProjekti: Project[];
+    filtriraniProjektiControl = new FormControl();
 
     izbranMedia: Media;
     medijiSeznam: Media[];
@@ -55,6 +61,7 @@ export class ProjektComponent implements OnInit {
         this.dobiMozneTage().then(() => {
             // this.nastaviCheckboxeNaFalse();
         });
+        this.dobiMozneProjekte();
 
         this.izbranMedia = null;
         this.medijiSeznam = [];
@@ -77,6 +84,13 @@ export class ProjektComponent implements OnInit {
                 }
             );
         });
+    }
+
+    dobiMozneProjekte() {
+        this.projektService.dobiProjekte().subscribe((projekti: Project[]) => {
+            console.log(projekti);
+            this.mozniProjekti = projekti;
+        })
     }
 
     // returns a check mark if it was already seen :,D
@@ -111,6 +125,8 @@ export class ProjektComponent implements OnInit {
                 this.filtriranjeNastavitve.filtrirajPo = "mediaId";
                 this.filtriranjeNastavitve.filtrirajAsc = true;
                 this.filtriranjeNastavitve.stStrani = 1;
+                this.filtriranjeNastavitve.projekti = this.filtriraniProjektiControl.value;
+                console.log(this.filtriranjeNastavitve);
             }
             this.projektService.pretovriVOblikoZaPosiljatFiltriranje(this.mozniTagi).then(
                 (tagi: TagZInputValue[]) => {
@@ -121,6 +137,7 @@ export class ProjektComponent implements OnInit {
                             this.stVsehZadetkov = sfiltriraniPodatki.stVsehMedijev;
                             this.loading = false;
                             this.specificMediaId = null;
+                            this.filtriraniProjektiControl = new FormControl();
 
                             resolve(sfiltriraniPodatki.mediji);
                         }, (err) => {

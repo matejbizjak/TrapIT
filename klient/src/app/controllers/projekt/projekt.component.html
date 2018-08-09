@@ -73,6 +73,16 @@
             </div>
         </div>
     </form>
+    <!-- Search by projekti -->
+    <form class="projekti">
+        <mat-form-field>
+            <mat-select placeholder="Filtriranje po projektih" [formControl]="this.filtriraniProjektiControl" multiple>
+                <mat-option *ngFor="let projekt of mozniProjekti" [value]="projekt">{{projekt.name}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <p>Možno jih je izbrati več, našle se bodo pa vse slike, ki vključujejo vsaj enega izmed izbranih projekto.</p>
+        <hr>
+    </form>
 </div>
 
 <div style="width: auto" >
@@ -130,8 +140,14 @@
                *ngIf="filtriranjeNastavitve.filtrirajPo === 'interesting' && !filtriranjeNastavitve.filtrirajAsc"
                class="fa fa-sort-down"></i>
         </th>
+
+        <!-- TODO filtracija po lastUserId -->
+        <!-- še ne funkcionaira <th  value="lastUserId"> Last use <th> -->
+
+        <!-- TODO filtracija po viewed -->
         <th value="viewed" >viewed (<span>hide? <input type="checkbox" [(ngModel)]="projectsHide"></span>)
         </th>
+
     </tr>
     </thead>
     <tbody>
@@ -142,6 +158,7 @@
         <td>{{medij.image ? "slika" : "video"}}</td>
         <td>{{medij.empty}}</td>
         <td>{{medij.interesting}}</td>
+        <!-- td> <span *ngIf="medij.lastUserId">{{medij.lastUserId.username}}</span> <span *ngIf="!medij.lastUserId">-</span> </td -->
         <td>
             <span>{{alreadySeen(medij.mediaProjects)}}</span>
             <ng-container *ngIf="!projectsHide">

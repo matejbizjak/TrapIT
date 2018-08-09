@@ -179,7 +179,7 @@ module.exports = class ProjektService {
                 this.mediaRepository.findOne(
                     {
                         where: {mediaId: mediaId},
-                        relations: ["siteId", "mediaProjects", "mediaProjects.projectId"]
+                        relations: ["siteId", "mediaProjects", "mediaProjects.projectId", "last"]
                     }).then
                 ((foundMedia: Media) => {
                     resolve(new SfiltriraniPodatki([foundMedia], 1));
@@ -215,7 +215,7 @@ module.exports = class ProjektService {
             } else { // select where filtrisdan
                 this.mediaTagRepository.find({
                     where: {tagId: In(filtriArr)},
-                    relations: ["tagId", "mediaId", "mediaId.siteId"],
+                    relations: ["tagId", "mediaId", "mediaId.siteId", "mediaId.mediaProjects", "mediaId.mediaProjects.projectId"],
                     order: {mediaId: "ASC"}
                 }).then(
                     (mediaTags: MediaTag[]) => {
@@ -272,6 +272,25 @@ module.exports = class ProjektService {
         });
     }
 
+    //preveri ali je katerikoli izmed projektov vkljucen pod posredovani medias preko projectMedia
+    private filtrirajPoProjektih(projects: Project[], medias: Media[]): Promise<Media[]> {
+        let filteredMedias: Media[] = [];
+
+        return new Promise<Media[]> ((resolve, reject) => {
+            for(let media of medias) {
+                //console.log(media);
+                for(let mediaproject of media.mediaProjects) {
+                    if(projects.filter(e => e.projectId === mediaproject.projectId.projectId).length > 0){
+                        filteredMedias.push(media);
+                        break;
+                    }
+                }
+            }
+
+            resolve(filteredMedias);
+        });
+    }
+
     //find all medias from mediaTags by filtri?
     private izlusciMediaIdje(mediaTags: MediaTag[], filtri: number[]): Promise<Media[]> {
         return new Promise<Media[]>((resolve, reject) => {
@@ -308,8 +327,17 @@ module.exports = class ProjektService {
     }
 
     //filtriraj medije po nastavitvah
-    private filtrirajPoNastavitvah(medias: Media[], nastavitve: FiltriranjeNastavitve): Promise<SfiltriraniPodatki> {
+    private async filtrirajPoNastavitvah(medias: Media[], nastavitve: FiltriranjeNastavitve): Promise<SfiltriraniPodatki> {
+
+        //filtriranje po projektu, ce je posredovano
+        if(nastavitve.projekti !== undefined && nastavitve.projekti !== null && nastavitve.projekti.length != 0){
+            console.log(nastavitve.projekti.length);
+            medias = await this.filtrirajPoProjektih(nastavitve.projekti, medias);
+        }
+
+        //filtriranje po drugih nastavitvah
         return new Promise<SfiltriraniPodatki>((resolve, reject) => {
+
             medias.sort(function (a, b) {
                 return a[nastavitve.filtrirajPo] - b[nastavitve.filtrirajPo];
             });
