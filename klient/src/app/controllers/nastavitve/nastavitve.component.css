@@ -20,3 +20,8 @@
     cursor: pointer;
     height: 100%;
 }
+
+.page-item.active .page-link {
+    background-color: #a51000 !important;
+    border-color: #a51000 !important;
+}

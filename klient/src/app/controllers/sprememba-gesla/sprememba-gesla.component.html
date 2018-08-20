@@ -1,0 +1,50 @@
+<div class="row">
+  <div class="col-4"></div>
+  <div class="col-4">
+    <div class="card">
+      <div class="card-header">
+        <h4>{{"GESLO.SPREMEMBA" | translate}}</h4>
+      </div>
+      <div class="card-body">
+        <div class="input-group mb-2">
+          <div class="input-group-prepend">
+            <span class="input-group-text" style="width: 130px">{{"GESLO.STARO" | translate}}:</span>
+          </div>
+          <input type="password" class="form-control" [(ngModel)]="oldPswrd">
+        </div>
+        <div class="input-group mb-2">
+          <div class="input-group-prepend">
+            <span class="input-group-text" style="width: 130px">{{"GESLO.NOVO" | translate}}:</span>
+          </div>
+          <input type="password" class="form-control" [(ngModel)]="newPswrd">
+        </div>
+        <div class="input-group mb-2">
+          <div class="input-group-prepend">
+            <span class="input-group-text" style="width: 130px">{{"GESLO.POTRDITEV" | translate}}:</span>
+          </div>
+          <input type="password" class="form-control" [(ngModel)]="confPswrd">
+        </div>
+        <hr>
+        <div class="card bg-light card-body" style="color: gray">
+          {{"GESLO.NAVODILA" | translate}}
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div class="btn btn-outline-dark mt-3 red-btn" style="float: right" (click)="spremeniGeslo()">{{"GESLO.POTRDI" | translate}}</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div class="card card-body border-danger mt-3" *ngIf="error">
+              {{"GESLO." + error | translate}}
+            </div>
+            <div class="card card-body border-success mt-3" *ngIf="success">
+              {{"GESLO.USPEH" | translate}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-4"></div>
+</div>

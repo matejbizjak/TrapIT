@@ -1,6 +1,8 @@
 import {Component, OnInit} from "@angular/core";
 import {ApiService} from "../../../services/api/api.service";
 import {Path} from "../../../models/entities/path.entity";
+import {TranslateService} from "@ngx-translate/core";
+import {LanguageService} from "../../../services/language.service";
 
 @Component({
     selector: "app-path-settings",
@@ -15,7 +17,11 @@ export class PathSettingsComponent implements OnInit {
     serverReply: string = "";
     paths: Path[];
 
-    constructor(private apiService: ApiService) {
+    constructor(private apiService: ApiService, public translate: TranslateService, private languageService: LanguageService) {
+        this.translate.setDefaultLang("slo");
+        this.languageService.dobiTrenutniJezik().then(lang => {
+            this.translate.use(lang);
+        });
     }
 
     ngOnInit() {

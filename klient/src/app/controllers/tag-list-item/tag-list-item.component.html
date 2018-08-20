@@ -1,11 +1,12 @@
-<div *ngFor="let child of children">
+<div *ngFor="let child of children; let i = index">
     <ul>
         <li class="mt-2">
             <div class="row">
                 <div class="col-12">
-                    <div class="card card-body" style="padding: 5px; background-color: #e9e7ee; width: 300px">
+                    <div class="card card-body" style="padding: 5px; background-color: #e9e7ee; width: 497px">
                         <div class="form-inline align-middle" style="display: inline-block; white-space: nowrap">
-                            <input class="form-control-sm" type="text" [(ngModel)]="child.tag.name">
+                            <input class="form-control-sm" type="text" [(ngModel)]="child.tag.sloName" (change)="nameChange(child.tag)">
+                            <input class="form-control-sm ml-1" type="text" [(ngModel)]="child.tag.engName">
                             <button class="btn btn-outline-success btn-sm ml-1" (click)="addToTag(child)">
                                 <i class="material-icons" style="display: flex">
                                     add_circle_outline

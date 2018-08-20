@@ -1,131 +1,206 @@
-<div class="container">
-    <div>
-        <ngx-image-viewer *ngIf="izbranMedia.image" [src]="potDoSlike"></ngx-image-viewer>
-
-    </div>
-
-
-    <div class="row mt-2">
-        <button class="btn" (click)="prejsnjaSlika()">Nazaj</button>
-        <button class="btn btn-success" (click)="shraniVnose()">Shrani</button>
-        <button class="btn" (click)="naslednjaSlika()">Naprej</button>
-        <div *ngIf="loading === true" class="loader float-left ml-3 mt-1"></div>
-    </div>
-</div>
-
-<div class="container">
-    <form id="tagi">
+<form id="tagi">
+    <div class="row">
         <!--media-->
+        <div class="col-6">
+            <div class="card card-body tag-content">
+                <div class="row">
+                    <div class="form-group col-6" *ngFor="let tag of mozniTagi">
+                        <img *ngIf="preveriCeLahkoDodaTag(tag)" src="../../../assets/images/plus.png" width="8px" height="8px"
+                             style="cursor: pointer"
+                             (click)="dodajSeEnTag(tag)">
+                        <img *ngIf="preveriCeLahkoOdstraniTag(tag) && !tag.checkbox" src="../../../assets/images/minus.png" width="8px" height="8px"
+                             style="cursor: pointer"
+                             (click)="odstraniTag(tag)" class="ml-2">
+                        <div *ngIf="tag.childTags.length > 0">
+                            <div *ngIf="!tag.checkbox">
+                                <label>
+                                    <span *ngIf="translate.currentLang === 'slv'">{{tag.sloName}}</span>
+                                    <span *ngIf="translate.currentLang === 'eng'">{{tag.engName}}</span>
+                                </label>
+                                <select class="form-control form-control-sm" [id]="tag.tagId" [(ngModel)]="tag.selectedChild"
+                                        [ngModelOptions]="{standalone: true}">
+                                    <option selected></option>
+                                    <option *ngFor="let child of tag.childTags" [ngValue]="child">{{child.name}}</option>
+                                </select>
+                            </div>
+                            <div *ngIf="tag.checkbox" class="card card-body radio-box mb-1">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <label class="check-container">
+                                            <span *ngIf="translate.currentLang === 'slv'">{{tag.sloName}}</span>
+                                            <span *ngIf="translate.currentLang === 'eng'">{{tag.engName}}</span>
+                                            <input class="form-check-input" type="checkbox" [(ngModel)]="tag.checkboxValue"
+                                                   (ngModelChange)="jeIzbralNivo($event, tag)" [ngModelOptions]="{standalone: true}">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
 
-        <div class="card card-body mt-3 static-media">
-            media značke
-            <hr>
-            <div>Media_id: {{izbranMedia.mediaId}}</div>
-            <div>Pregledano pod projektom: {{this.projectComponent.alreadySeen(this.izbranMedia.mediaProjects)}}</div>
-            <div>
-                <input class="form-check-input" type="checkbox" id="empty" [(ngModel)]="mediaData.empty"
-                       [ngModelOptions]="{standalone: true}">
-                <label class="form-check-label" for="empty">Prazna</label>
-            </div>
-            <div>
-                <input class="form-check-input" type="checkbox" id="interesting" [(ngModel)]="mediaData.interesting"
-                       [ngModelOptions]="{standalone: true}">
-                <label class="form-check-label" for="interesting">Zanimiva</label>
-            </div>
-            <div>
-                <label class="form-check-label" for="comment">Komentar</label>
-                <textarea class="form-control" id="comment" [(ngModel)]="mediaData.comment"
-                          [ngModelOptions]="{standalone: true}"></textarea>
+                            <div *ngIf="tag.selectedChild && tag.selectedChild.childTags.length > 0">
+                                <div *ngIf="!tag.selectedChild.checkbox">
+                                    <label *ngIf="!tag.checkbox">
+                                        <span *ngIf="translate.currentLang === 'slv'">{{tag.selectedChild.sloName}}</span>
+                                        <span *ngIf="translate.currentLang === 'eng'">{{tag.selectedChild.engName}}</span>
+                                    </label>
+                                    <select class="form-control form-control-sm" [id]="tag.selectedChild.tagId"
+                                            [(ngModel)]="tag.selectedChild.selectedChild"
+                                            [ngModelOptions]="{standalone: true}">
+                                        <option selected></option>
+                                        <option *ngFor="let child2 of tag.selectedChild.childTags" [ngValue]="child2">
+                                            <span *ngIf="translate.currentLang === 'slv'">{{child2.sloName}}</span>
+                                            <span *ngIf="translate.currentLang === 'eng'">{{child2.engName}}</span>
+                                        </option>
+                                    </select>
+                                </div>
+                                <div *ngIf="tag.selectedChild.checkbox" class="card card-body radio-box mb-1">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <label class="check-container"><span *ngIf="!tag.checkbox">
+                                                <span *ngIf="translate.currentLang === 'slv'">{{tag.selectedChild.sloName}}</span>
+                                                <span *ngIf="translate.currentLang === 'eng'">{{tag.selectedChild.engName}}</span>
+                                            </span>
+                                                <input class="form-check-input" type="checkbox" [(ngModel)]="tag.selectedChild.checkboxValue"
+                                                       (ngModelChange)="jeIzbralNivo($event, tag.selectedChild)" [ngModelOptions]="{standalone: true}">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="tag.selectedChild.selectedChild && tag.selectedChild.selectedChild.input">
+                                    <label>{{"OZNACEVANJE.STEVILO" | translate}}</label>
+                                    <input class="form-control form-control-sm" type="number"
+                                           [(ngModel)]="tag.selectedChild.selectedChild.inputValue"
+                                           [ngModelOptions]="{standalone: true}">
+                                </div>
+
+                                <div *ngIf="tag.selectedChild.selectedChild && tag.selectedChild.selectedChild.childTags.length > 0">
+                                    <div *ngIf="!tag.selectedChild.selectedChild.checkbox">
+                                        <label *ngIf="!tag.checkbox">
+                                            <span *ngIf="translate.currentLang === 'slv'">{{tag.selectedChild.selectedChild.sloName}}</span>
+                                            <span *ngIf="translate.currentLang === 'eng'">{{tag.selectedChild.selectedChild.engName}}</span>
+                                        </label>
+                                        <select class="form-control form-control-sm" [id]="tag.selectedChild.selectedChild.tagId"
+                                                [(ngModel)]="tag.selectedChild.selectedChild.selectedChild"
+                                                [ngModelOptions]="{standalone: true}">
+                                            <option selected></option>
+                                            <option *ngFor="let child3 of tag.selectedChild.selectedChild.childTags"
+                                                    [ngValue]="child3">
+                                                {{child3.name}}
+                                                <span *ngIf="translate.currentLang === 'slv'">{{child3.sloName}}</span>
+                                                <span *ngIf="translate.currentLang === 'eng'">{{child3.engName}}</span>
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div *ngIf="tag.selectedChild.selectedChild.checkbox" class="card card-body radio-box mb-1">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <label class="check-container"><span *ngIf="!tag.checkbox">
+                                                    <span *ngIf="translate.currentLang === 'slv'">{{tag.selectedChild.selectedChild.sloName}}</span>
+                                                    <span *ngIf="translate.currentLang === 'eng'">{{tag.selectedChild.selectedChild.engName}}</span>
+                                                </span>
+                                                    <input class="form-check-input" type="checkbox" [(ngModel)]="tag.selectedChild.selectedChild.checkboxValue"
+                                                           (ngModelChange)="jeIzbralNivo($event, tag.selectedChild.selectedChild)" [ngModelOptions]="{standalone: true}">
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div *ngIf="tag.selectedChild.selectedChild.selectedChild && tag.selectedChild.selectedChild.selectedChild.input">
+                                        <label>{{"OZNACEVANJE.STEVILO" | translate}}</label>
+                                        <input class="form-control form-control-sm" type="number"
+                                               [(ngModel)]="tag.selectedChild.selectedChild.selectedChild.inputValue"
+                                               [ngModelOptions]="{standalone: true}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="tag.childTags.length === 0 && tag.input">
+                            <label>
+                                <span *ngIf="translate.currentLang === 'slv'">{{tag.sloName}}</span>
+                                <span *ngIf="translate.currentLang === 'eng'">{{tag.engName}}</span>
+                            </label>
+                            <input class="form-control form-control-sm" type="number" [(ngModel)]="tag.inputValue"
+                                   [ngModelOptions]="{standalone: true}">
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <!--tag-->
-        <div class="card card-body mt-3 tag-content">
-        tag značke
-        <hr>
-        <div class="form-group" *ngFor="let tag of mozniTagi">
-            <img *ngIf="preveriCeLahkoDodaTag(tag)" src="../../../assets/images/plus.png" width="8px" height="8px"
-                 style="cursor: pointer"
-                 (click)="dodajSeEnTag(tag)">
-            <img *ngIf="preveriCeLahkoOdstraniTag(tag)" src="../../../assets/images/minus.png" width="8px" height="8px"
-                 style="cursor: pointer"
-                 (click)="odstraniTag(tag)" class="ml-2">
-            <div *ngIf="tag.childTags.length > 0">
-                <div *ngIf="!tag.checkbox">
-                    <label>{{tag.name}}</label>
-                    <select class="form-control form-control-sm" [id]="tag.tagId" [(ngModel)]="tag.selectedChild"
-                            [ngModelOptions]="{standalone: true}">
-                        <option selected></option>
-                        <option *ngFor="let child of tag.childTags" [ngValue]="child">{{child.name}}</option>
-                    </select>
+        <div class="col-6">
+            <div class="card card-body">
+                <div>
+                    <ngx-image-viewer *ngIf="izbranMedia.image" [src]="potDoSlike"></ngx-image-viewer>
                 </div>
-                <div *ngIf="tag.checkbox">
-                    <input class="form-check-input" type="checkbox" [(ngModel)]="tag.checkboxValue"
-                           (ngModelChange)="jeIzbralNivo($event, tag)" [ngModelOptions]="{standalone: true}">
-                    <label class="form-check-label">{{tag.name}}</label>
-                </div>
-
-                <div *ngIf="tag.selectedChild && tag.selectedChild.childTags.length > 0">
-                    <div *ngIf="!tag.selectedChild.checkbox">
-                        <label *ngIf="!tag.checkbox">{{tag.selectedChild.name}}</label>
-                        <select class="form-control form-control-sm" [id]="tag.selectedChild.tagId"
-                                [(ngModel)]="tag.selectedChild.selectedChild"
-                                [ngModelOptions]="{standalone: true}">
-                            <option selected></option>
-                            <option *ngFor="let child2 of tag.selectedChild.childTags" [ngValue]="child2">
-                                {{child2.name}}
-                            </option>
-                        </select>
-                    </div>
-                    <div *ngIf="tag.selectedChild.checkbox">
-                        <input class="form-check-input" type="checkbox" [(ngModel)]="tag.selectedChild.checkboxValue"
-                               (ngModelChange)="jeIzbralNivo($event, tag.selectedChild)"
-                               [ngModelOptions]="{standalone: true}">
-                        <label class="form-check-label" *ngIf="!tag.checkbox">{{tag.selectedChild.name}}</label>
-                    </div>
-
-                    <div *ngIf="tag.selectedChild.selectedChild && tag.selectedChild.selectedChild.input">
-                        <label>število</label>
-                        <input class="form-control form-control-sm" type="number"
-                               [(ngModel)]="tag.selectedChild.selectedChild.inputValue"
-                               [ngModelOptions]="{standalone: true}">
-                    </div>
-
-                    <div *ngIf="tag.selectedChild.selectedChild && tag.selectedChild.selectedChild.childTags.length > 0">
-                        <div *ngIf="!tag.selectedChild.selectedChild.checkbox">
-                            <label *ngIf="!tag.checkbox">{{tag.selectedChild.selectedChild.name}}</label>
-                            <select class="form-control form-control-sm" [id]="tag.selectedChild.selectedChild.tagId"
-                                    [(ngModel)]="tag.selectedChild.selectedChild.selectedChild"
-                                    [ngModelOptions]="{standalone: true}">
-                                <option selected></option>
-                                <option *ngFor="let child3 of tag.selectedChild.selectedChild.childTags"
-                                        [ngValue]="child3">
-                                    {{child3.name}}
-                                </option>
-                            </select>
-                        </div>
-                        <div *ngIf="tag.selectedChild.selectedChild.checkbox">
-                            <input class="form-check-input" type="checkbox"
-                                   [(ngModel)]="tag.selectedChild.selectedChild.checkboxValue"
-                                   (ngModelChange)="jeIzbralNivo($event, tag.selectedChild.selectedChild)"
-                                   [ngModelOptions]="{standalone: true}">
-                            <label class="form-check-label" *ngIf="!tag.checkbox">{{tag.selectedChild.selectedChild.name}}</label>
-                        </div>
-
-                        <div *ngIf="tag.selectedChild.selectedChild.selectedChild && tag.selectedChild.selectedChild.selectedChild.input">
-                            <label>število</label>
-                            <input class="form-control form-control-sm" type="number"
-                                   [(ngModel)]="tag.selectedChild.selectedChild.selectedChild.inputValue"
-                                   [ngModelOptions]="{standalone: true}">
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <div style="text-align: center">
+                            <button class="btn" (click)="prejsnjaSlika()" style="float: left">{{"OZNACEVANJE.NAZAJ" | translate}}</button>
+                            <button class="btn btn-success" (click)="shraniVnose()">{{"OZNACEVANJE.SHRANI" | translate}}</button>
+                            <button class="btn" (click)="naslednjaSlika()" style="float: right">{{"OZNACEVANJE.NAPREJ" | translate}}</button>
+                            <div *ngIf="loading === true" class="loader float-left ml-3 mt-1"></div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div *ngIf="tag.childTags.length === 0 && tag.input">
-                <label>{{tag.name}}</label>
-                <input class="form-control form-control-sm" type="number" [(ngModel)]="tag.inputValue"
-                       [ngModelOptions]="{standalone: true}">
+            <div class="card card-body mt-3 static-media">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="mb-1">{{"OZNACEVANJE.MEDIA_ID" | translate}}: {{izbranMedia.mediaId}}</div>
+                        <div class="card card-body radio-box mb-1">
+                            <div class="row">
+                                <div class="col-12">
+                                    <label class="check-container">{{"OZNACEVANJE.PRAZNO" | translate}}
+                                        <input class="form-check-input" type="checkbox" [(ngModel)]="mediaData.empty"
+                                               [ngModelOptions]="{standalone: true}">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card card-body radio-box mb-1">
+                            <div class="row">
+                                <div class="col-12">
+                                    <label class="check-container">{{"OZNACEVANJE.ZANIMIVA" | translate}}
+                                        <input class="form-check-input" type="checkbox" [(ngModel)]="mediaData.interesting"
+                                               [ngModelOptions]="{standalone: true}">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="mb-1">{{"OZNACEVANJE.PREGLEDANO" | translate}}: {{this.projectComponent.alreadySeen(this.izbranMedia.mediaProjects)}}</div>
+                        <div class="card card-body radio-box mb-1" style="height: 41px">
+                            <span *ngIf="!this.izbranMedia.lastUserId">
+                                {{"OZNACEVANJE.NAZADNJE_PREGLEDAL" | translate}}: /
+                            </span>
+                            <span *ngIf="this.izbranMedia.lastUserId">
+                                {{"OZNACEVANJE.NAZADNJE_PREGLEDAL" | translate}}: {{this.izbranMedia.lastUserId.username}}
+                            </span>
+                        </div>
+                        <div class="card card-body radio-box mb-1" style="height: 41px">
+                            <span *ngIf="!this.izbranMedia.lastDate">
+                                {{"OZNACEVANJE.NAZADNJE_PREGLEDANO" | translate}}: /
+                            </span>
+                            <span *ngIf="this.izbranMedia.lastDate">
+                                {{"OZNACEVANJE.NAZADNJE_PREGLEDANO" | translate}}: {{this.izbranMedia.lastDate.toString().substring(8, 10) + '.' +
+                                  this.izbranMedia.lastDate.toString().substring(5, 7) + '.' +
+                                  this.izbranMedia.lastDate.toString().substring(0, 4)}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <label class="form-check-label" for="comment">{{"OZNACEVANJE.KOMENTAR" | translate}}</label>
+                    <textarea class="form-control" id="comment" [(ngModel)]="mediaData.comment"
+                              [ngModelOptions]="{standalone: true}"></textarea>
+                </div>
             </div>
         </div>
-        </div>
-    </form>
-</div>
+    </div>
+</form>

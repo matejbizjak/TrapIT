@@ -1,9 +1,6 @@
-.fri-red {
-    background-color: #b4162c;
-}
-
-.zaglavje {
-    height: 5em;
+.header {
+    background-color: #3b3d4b;
+    height: 60px;
 }
 
 main {
@@ -11,19 +8,19 @@ main {
 }
 
 .header-title {
+    line-height: 60px;
+    font-size: 40px;
     float: left;
     color: white;
     font-weight: bold;
-    font-size: 3em;
     margin-left: 5px;
-    margin-top: 5px;
 }
 
 .spusti-dol {
-    display: inline;
+    height: 100%;
     float: right;
     margin-right: 20px;
-    margin-top: 20px;
+    line-height: 60px;
 }
 
 .spusti-dol button {
@@ -32,4 +29,8 @@ main {
 
 .spusti-dol:hover button {
     text-decoration: none;
+}
+
+.dropdown-item:focus {
+    background-color: #a51000 !important;
 }

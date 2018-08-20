@@ -1,16 +1,16 @@
 <div class="card card-body" style="overflow: auto">
     <div class="row">
         <div class="col-12">
-            <button class="btn btn-outline-danger ml-1" style="float: right" (click)="ref.hide()">Prekliči</button>
+            <button class="btn btn-outline-danger ml-1" style="float: right" (click)="ref.hide()">{{"ZNACKE.PREKLICI" | translate}}</button>
             <button class="btn btn-outline-success ml-1" style="float: right" (click)="saveChanges(deleteConfirmation)">
-                Shrani
+                {{"ZNACKE.SHRANI" | translate}}
             </button>
-            <button class="btn btn-outline-warning" style="float: right" (click)="resetTag()">Ponsatavi</button>
+            <button class="btn btn-outline-warning" style="float: right" (click)="resetTag()">{{"ZNACKE.PONASTAVI" | translate}}</button>
             <div *ngIf="saveSuccess">
-                <div class="alert alert-success" style="float: left">Spremembe uspešno shranjene</div>
+                <div class="alert alert-success" style="float: left">{{"ZNACKE.SPREMEMBEUSPEH" | translate}}</div>
             </div>
             <div *ngIf="saveError">
-                <div class="alert alert-danger" style="float: left">Napaka</div>
+                <div class="alert alert-danger" style="float: left">{{"ZNACKE.NAPAKA" | translate}}</div>
             </div>
         </div>
     </div>
@@ -21,7 +21,7 @@
 
     <ng-template #deleteConfirmation>
         <div class="modal-header">
-            <h4 class="modal-title pull-left">Ali ste prepričani?</h4>
+            <h4 class="modal-title pull-left">{{"ZNACKE.PREPRICANI" | translate}}?</h4>
             <button type="button" class="close pull-right" aria-label="Close"
                     (click)="deleteRef.hide(deleteConfirmation)">
                 <span aria-hidden="true">&times;</span>
@@ -32,24 +32,23 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="alert-warning card card-body mb-2">
-                            POZOR! Vsaka značka, ki jo odstranite, bo trajno izbrisana iz podatkovne baze SKUPAJ Z
-                            NJENIMI PODZNAČKAMI. Značko izbrišite le, če ste prepričani, da jo več ne potrebujete.
+                            {{"ZNACKE.POZOR" | translate}}
                         </div>
                     </div>
                 </div>
                 <button class="btn btn-outline-danger" style="float: right"
-                        (click)="deleteRef.hide(deleteConfirmation)">Ne
+                        (click)="deleteRef.hide(deleteConfirmation)">{{"ZNACKE.NE" | translate}}
                 </button>
-                <button class="btn btn-outline-success mr-2" style="float: right" (click)="deleteTag()">Da</button>
+                <button class="btn btn-outline-success mr-2" style="float: right" (click)="deleteTag()">{{"ZNACKE.DA" | translate}}</button>
             </div>
             <div *ngIf="deleteSuccess">
-                <div class="alert alert-success" style="float: left">Značka izbrisana</div>
+                <div class="alert alert-success" style="float: left">{{"ZNACKE.IZBRISANA" | translate}}</div>
                 <button class="btn btn-outline-success mr-2" style="float: right"
-                        (click)="deleteRef.hide(deleteConfirmation); close.emit()">V redu
+                        (click)="deleteRef.hide(deleteConfirmation); close.emit()">{{"ZNACKE.OK" | translate}}
                 </button>
             </div>
             <div *ngIf="deleteError">
-                <div class="alert alert-danger" style="float: left">Napaka</div>
+                <div class="alert alert-danger" style="float: left">{{"ZNACKE.NAPAKA" | translate}}</div>
             </div>
         </div>
     </ng-template>

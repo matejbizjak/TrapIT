@@ -1,6 +1,6 @@
 <div class="card mt-3">
   <div class="card-header">
-    <span class="float-left"> Nastavitve poti do slik znotraj podatkovne baze</span>
+    <span class="float-left">{{'MAPA.POT_ZNOTRAJ_BAZE' | translate}}</span>
     <div *ngIf="loading == 0" class="loader float-left ml-3"></div>
   </div>
   <div class="card-body">
@@ -9,14 +9,14 @@
     <!-- functional part -->
     <div *ngIf="paths">
       <div *ngIf="serverReply" class="card card-body mt-3">
-        <div>Odgovor strežnika:</div>
+        <div>{{'MAPA.ODGOVOR_STREZNIKA' | translate}}:</div>
         <div id="server-reply" class="md-3">{{serverReply}}</div>
       </div>
       <table class="table table-bordered table-hover table-sm mt-3">
         <thead class="thead-dark">
         <tr>
           <th scope="col">#</th>
-          <th scope="col">Path <button class="btn btn-outline-dark float-right p-1" (click)="getAllPaths()">Osveži</button></th>
+          <th scope="col">Path <button class="btn btn-outline-dark float-right p-1" (click)="getAllPaths()">{{'MAPA.OSVEZI' | translate}}</button></th>
         </tr>
         </thead>
 
@@ -36,7 +36,7 @@
           <input #editPathHTML type="text" class="form-control" aria-label="potDoSlik"
                  aria-describedby="basic-addon2" [(ngModel)]="selectedPath.value" (keyup.enter)="updatePath(selectedPath)">
           <div class="input-group-append">
-            <button class="btn btn-outline-secondary" type="button" (click)="updatePath(selectedPath)">Nastavi
+            <button class="btn btn-outline-secondary" type="button" (click)="updatePath(selectedPath)">{{'MAPA.NASTAVI' | translate}}
             </button>
           </div>
         </div>

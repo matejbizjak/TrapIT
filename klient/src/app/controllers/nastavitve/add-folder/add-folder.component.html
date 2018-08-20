@@ -1,30 +1,28 @@
 <div class="card mt-3">
     <div class="card-header">
-        <span class="float-left"> Dodajanje nove mape </span>
+        <span class="float-left">{{"MAPA.DODAJANJE" | translate}}</span>
         <div *ngIf="loading == 0" class="loader float-left ml-3"></div>
     </div>
     <div class="card-body">
         <!-- functional part -->
         <!-- current basePath name-->
-        <div>Trenutna pot do slik: <span id="basePath">{{basePath}}</span>
-            <button class="btn btn-outline-dark ml-2" (click)="getBasePath()">Osveži</button>
+        <div>{{"MAPA.TRENUTNA" | translate}}: <span id="basePath">{{basePath}}</span>
+            <button class="btn btn-outline-dark ml-2" (click)="getBasePath()">{{"MAPA.OSVEZI" | translate}}</button>
         </div>
 
         <!-- what is the new folders name -->
         <hr>
-        <div>Navodila za dodajanje nove mape slik v bazo:</div>
+        <div>{{"MAPA.NAVODILA_H" | translate}}:</div>
         <ul>
-            <li>Struktura poti naj bo: (DISK:\leto\ime_krmišča\ime_krmišča_datum-slik\slike...)</li>
-            <li>Nove slike se lahko dodajajo le v posamične nove mape, ki ne vsebujejo že obstoječe in registrirane
-                slike znotraj baze!
-            </li>
-            <li>Nova mapa lahko vsebuje tudi še več map s slikami.</li>
-            <li>Naložite novo mapo z novimi slikami na strežnik in si zapomnite pot do nove mape!</li>
-            <li>Spodaj vpišite ime mape in nato sledite nadaljnim navodilom:</li>
+            <li>{{"MAPA.NAVODILA_1" | translate}}</li>
+            <li>{{"MAPA.NAVODILA_2" | translate}}</li>
+            <li>{{"MAPA.NAVODILA_3" | translate}}</li>
+            <li>{{"MAPA.NAVODILA_4" | translate}}</li>
+            <li>{{"MAPA.NAVODILA_5" | translate}}</li>
         </ul>
 
         <div class="input-group">
-            <input #inputFolderHTML type="text" placeholder="ime mape (npr. nova_mapa)" class="form-control" aria-label="potDoSlik"
+            <input #inputFolderHTML type="text" placeholder="{{'MAPA.NAVODILA_PLACEHOLDER' | translate}}" class="form-control" aria-label="potDoSlik"
                    aria-describedby="basic-addon2" (keyup.enter)="getAvaliableFolders(inputFolderHTML.value)">
             <div class="input-group-append">
                 <button class="btn btn-outline-secondary" type="button" (click)="getAvaliableFolders(inputFolderHTML.value)">OK
@@ -34,7 +32,7 @@
 
         <!-- warning form / instruction div-->
         <div *ngIf="serverReply" class="card card-body mt-3">
-            <div>Odgovor strežnika:</div>
+            <div>{{'MAPA.ODGOVOR_STREZNIKA' | translate}}:</div>
             <div id="server-reply" class="md-3">{{serverReply}}</div>
 
             <!-- clickable selection of buttons -->
@@ -65,10 +63,10 @@
             <!-- files scrollable  -->
             <div *ngIf="files">
                 <hr>
-                <ul>Legenda barv:
-                    <li>Zelena - datoteka uspešno dodana v bazo</li>
-                    <li>Rumena - datoteka je že v bazo bila uvožena</li>
-                    <li>Rdeča - datoteka se v bazo ni uspešno uvozila</li>
+                <ul>{{'MAPA.LEGENDA_BARV' | translate}}:
+                    <li>{{'MAPA.ZELENA' | translate}}</li>
+                    <li>{{'MAPA.RUMENA' | translate}}</li>
+                    <li>{{'MAPA.RDECA' | translate}}</li>
                 </ul>
                 <hr>
                 <div class="files">

@@ -4,6 +4,8 @@ import {User} from "../../models/entities/user.entity";
 import {FormsModule} from "@angular/forms";
 import {BsModalRef, BsModalService} from "ngx-bootstrap";
 import {a} from "@angular/core/src/render3";
+import {TranslateService} from "@ngx-translate/core";
+import {LanguageService} from "../../services/language.service";
 
 @Component({
   selector: "app-uporabniki",
@@ -33,7 +35,13 @@ export class UporabnikiComponent implements OnInit {
   public deleteUserSuccess = false;
   public createUserSuccess = false;
 
-  constructor(private uporabnikiService: UserService, private modalService: BsModalService) { }
+  constructor(private uporabnikiService: UserService, private modalService: BsModalService,
+              public translate: TranslateService, private languageService: LanguageService) {
+      this.translate.setDefaultLang("eng");
+      this.languageService.dobiTrenutniJezik().then(lang => {
+          this.translate.use(lang);
+      });
+  }
 
   ngOnInit() {
     this.dobiUporabnike();
@@ -131,6 +139,7 @@ export class UporabnikiComponent implements OnInit {
       });
   }
 
+  /* CURRENTLY UNUSED
   public deleteUser(user: User) {
       this.uporabnikiService.deleteUser(user).subscribe(() => {
           this.deleteUserSuccess = true;
@@ -141,6 +150,7 @@ export class UporabnikiComponent implements OnInit {
           this.userFail = true;
       });
   }
+  */
 
   public showCreate(ref: TemplateRef<any>) {
     this.userToEdit = new User;

@@ -4,6 +4,7 @@ import {Tag} from "../../models/entities/tag.entity";
 import {TagZInputValue} from "../../models/entities/custom/tag-z-input-value";
 import {TagParent} from "../../models/entities/custom/tag-parent";
 import {FiltriranjeNastavitve} from "../../models/entities/custom/filtriranje-nastavitve";
+import {MediaSearch} from "../../models/entities/custom/media-search";
 
 export interface Projekt {
     projectId: number;
@@ -70,9 +71,9 @@ export class ProjektService {
         return this.http.post(url, {projId});
     }
 
-    filtrirajSlike(izbraniTagi: TagZInputValue[], nastavitve: FiltriranjeNastavitve, mediaId: number = null) {
+    filtrirajSlike(izbraniTagi: TagZInputValue[], nastavitve: FiltriranjeNastavitve, mediaId: number = null, mediaSearch: MediaSearch) {
         const url = "/projekt/filter";
-        return this.http.post(url, {tagi: izbraniTagi, nastavitve: nastavitve, mediaId: mediaId});
+        return this.http.post(url, {tagi: izbraniTagi, nastavitve: nastavitve, mediaId: mediaId, mediaSearch: mediaSearch});
     }
 
     pretovriVOblikoZaPosiljatFiltriranje(tagi: TagParent[]): Promise<TagZInputValue[]> { // TagParent[] pretvori v seznam id-tagov

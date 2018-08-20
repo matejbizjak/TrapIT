@@ -2,6 +2,8 @@ import {Component, OnInit} from "@angular/core";
 import {Router} from "@angular/router";
 import {Projekt, ProjektService} from "../../../services/projekt/projekt.service";
 import {PageChangedEvent} from "ngx-bootstrap/pagination";
+import {TranslateService} from "@ngx-translate/core";
+import {LanguageService} from "../../../services/language.service";
 
 @Component({
     selector: "app-index-choose-project",
@@ -13,7 +15,12 @@ export class ChooseProjectComponent implements OnInit {
     public projekti: Projekt[];
     public prikazaniProjekti: Projekt[];
 
-    constructor(private projektService: ProjektService, private router: Router) {
+    constructor(private projektService: ProjektService, private router: Router, private translate: TranslateService,
+                private languageService: LanguageService) {
+        this.translate.setDefaultLang("slo");
+        this.languageService.dobiTrenutniJezik().then(lang => {
+            this.translate.use(lang);
+        });
     }
 
     dobiProjekte(): Promise<any> {

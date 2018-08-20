@@ -113,7 +113,7 @@ module.exports.izbrisiProjekt = function (req: Request, res: Response, next: Nex
 
 module.exports.filtriraj = function (req: Request, res: Response, next: NextFunction) {
     const projektService = new ProjektService();
-    projektService.filtrirajPodatke(req.body.tagi, req.body.nastavitve, req.body.mediaId).then(
+    projektService.filtrirajPodatke(req.body.tagi, req.body.nastavitve, req.body.mediaSearch, req.body.mediaId).then(
         (sfiltriraniPodatki: SfiltriraniPodatki) => {
             res.status(200).json(sfiltriraniPodatki);
         }, (err) => {

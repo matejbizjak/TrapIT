@@ -1,2 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
+.accent-red-text {
+    color: #a51000;
+}
+.accent-red-back {
+    background-color: #a51000;
+    color: #1b1e26;
+}
+
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";

@@ -68,4 +68,19 @@ export class AuthService {
     getTokenId(): string {
         return localStorage.getItem("trapitIdToken");
     }
+
+    spremeniGeslo(old: string, nEw: string, conf: string) {
+        const url = "/auth/geslo";
+
+        return new Promise((resolve, reject) => {
+            this.http.post(url, {user: JSON.parse(localStorage.getItem("trapitUserInfo")).username, old: old, nEw: nEw, conf: conf}).subscribe(
+                () => {
+                    resolve();
+                },
+                (err) => {
+                    reject(err);
+                }
+            );
+        });
+    }
 }

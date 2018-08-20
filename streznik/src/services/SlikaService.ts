@@ -65,10 +65,67 @@ module.exports = class SlikaService {
             podatki.mediaData.interesting = false;
         }
 
+        const prevMedia = await this.mediaRepository.findOne({
+            where: {mediaId: podatki.media.mediaId}
+        });
+
+        let different = false;
+        if (prevMedia !== podatki.media) {
+            different = true;
+        }
+
         await getConnection().createQueryBuilder().update(Media).set({
             empty: podatki.mediaData.empty,
-            interesting: podatki.mediaData.interesting, comment: podatki.mediaData.comment
+            interesting: podatki.mediaData.interesting,
+            comment: podatki.mediaData.comment
         }).where("mediaId = :id", {id: podatki.media.mediaId}).execute();
+
+        const prev = await this.mediaTagRepository.find({
+            where: {mediaId: podatki.media.mediaId},
+            relations: ["mediaId", "tagId", "userId"],
+            order: {tagId: "ASC"}
+        });
+
+        podatki.oznaceniTagi = podatki.oznaceniTagi.sort((a, b) => {
+            return a.tagId - b.tagId;
+        });
+
+        prev.forEach(element => {
+            if (prev.indexOf(element) < podatki.oznaceniTagi.length) {
+                if (element.inputValue != podatki.oznaceniTagi[prev.indexOf(element)].inputValue ||
+                    element.tagId.tagId != podatki.oznaceniTagi[prev.indexOf(element)].tagId) {
+                    different = true;
+                }
+            }
+        });
+
+        if (different) {
+            const date = new Date();
+            let currDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ';
+            if (date.getHours() < 10) {
+                currDate += '0';
+                currDate += date.getHours() + ':';
+            } else {
+                currDate += date.getHours() + ':';
+            }
+            if (date.getMinutes() < 10) {
+                currDate += '0';
+                currDate += date.getMinutes() + ':';
+            } else {
+                currDate += date.getMinutes() + ':';
+            }
+            if (date.getSeconds() < 10) {
+                currDate += '0';
+                currDate += date.getSeconds();
+            } else {
+                currDate += date.getSeconds();
+            }
+            await getConnection().createQueryBuilder()
+                .update(Media)
+                .where({mediaId: media.mediaId})
+                .set({lastUserId: podatki.user, lastDate: currDate})
+                .execute().then(()=>{}, (err)=>{console.log(err)});
+        }
 
         // TODO ne brisat tagov če so že not
 

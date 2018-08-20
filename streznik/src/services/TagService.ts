@@ -26,7 +26,9 @@ module.exports = class TagService {
                                 name: tag.tag.name,
                                 parentTagId: parentId,
                                 input: tag.tag.input,
-                                checkbox: tag.tag.checkbox
+                                checkbox: tag.tag.checkbox,
+                                sloName: tag.tag.sloName,
+                                engName: tag.tag.engName
                             }
                         ])
                         .execute().then(() => {
@@ -41,7 +43,9 @@ module.exports = class TagService {
                                         parentTagId: null,
                                         tags: null,
                                         projectTags: null,
-                                        mediaTags: null
+                                        mediaTags: null,
+                                        sloName: null,
+                                        engName: null
                                     }, children: null
                                 }, tag1).then(() => {
                                     this.saveNewTag({
@@ -53,7 +57,9 @@ module.exports = class TagService {
                                             parentTagId: null,
                                             tags: null,
                                             projectTags: null,
-                                            mediaTags: null
+                                            mediaTags: null,
+                                            sloName: null,
+                                            engName: null
                                         }, children: null
                                     }, tag1).then(() => {
                                         resolve();
@@ -210,7 +216,9 @@ module.exports = class TagService {
                         name: tag.tag.name,
                         input: tag.tag.input,
                         checkbox: tag.tag.checkbox,
-                        parentTagId: tag.tag.parentTagId
+                        parentTagId: tag.tag.parentTagId,
+                        sloName: tag.tag.sloName,
+                        engName: tag.tag.engName
                     })
                     .where("tagId = :id", {id: tag.tag.tagId})
                     .execute().then(() => {
@@ -268,7 +276,9 @@ module.exports = class TagService {
                             name: tag.tag.name,
                             input: tag.tag.input,
                             checkbox: tag.tag.checkbox,
-                            parentTagId: tag.tag.parentTagId
+                            parentTagId: tag.tag.parentTagId,
+                            sloName: tag.tag.sloName,
+                            engName: tag.tag.engName
                         })
                         .execute().then(() => {
                         if (tag.tag.checkbox) {

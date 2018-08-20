@@ -2,14 +2,14 @@
   <div class="col-12">
     <div class="card mb-2">
       <div class="card-body fixedSize">
-        <h3>Uporabniki</h3>
+        <h3>{{"UPORABNIKI.UPORABNIKI" | translate}}</h3>
         <table class="table table-bordered table-hover table-sm">
           <thead class="thead-dark">
           <tr>
-            <th scope="col">#</th>
-            <th scope="col">Uporabniško ime</th>
-            <th scope="col">Vloga</th>
-            <th scope="col">Aktivnost</th>
+            <th scope="col">id#</th>
+            <th scope="col">{{"UPORABNIKI.UPORABNISKO_IME" | translate}}</th>
+            <th scope="col">{{"UPORABNIKI.VLOGA" | translate}}</th>
+            <th scope="col">{{"UPORABNIKI.AKTIVNOST" | translate}}</th>
           </tr>
           </thead>
           <tbody *ngFor="let user of shownUsers">
@@ -21,11 +21,11 @@
               {{user.username}}
             </td>
             <td>
-              {{user.roleId.role}}
+              {{"UPORABNIKI." + user.roleId.role | translate}}
             </td>
             <td>
-              <div *ngIf="user.active">Aktiven</div>
-              <div *ngIf="!user.active">Neaktiven</div>
+              <div *ngIf="user.active">{{"UPORABNIKI.AKTIVEN" | translate}}</div>
+              <div *ngIf="!user.active">{{"UPORABNIKI.NEAKTIVEN" | translate}}</div>
             </td>
           </tr>
           </tbody>
@@ -49,7 +49,7 @@
   <div class="col-12">
     <div class="card mb-2">
       <div class="card-header">
-        Iskanje
+        {{"UPORABNIKI.ISKANJE" | translate}}
       </div>
       <div class="card-body">
         <div class="row">
@@ -60,31 +60,31 @@
           </div>
           <div class="col-5">
             <div class="input-group">
-              <input type="text" class="form-control" placeholder="Uporabniško ime" style="float: right" [(ngModel)]="searchUsername">
+              <input type="text" class="form-control" placeholder="{{'UPORABNIKI.UPORABNISKO_IME' | translate}}" style="float: right" [(ngModel)]="searchUsername">
             </div>
           </div>
           <div class="col-5">
             <div class="btn-group mr-4" dropdown style="float: left">
               <button id="button-vloga" dropdownToggle type="button" class="btn btn-outline-dark dropdown-toggle"
                       aria-controls="dropdown-vloga">
-                <span *ngIf="searchRoleId != null">{{vlogaDropMenu}}</span><span *ngIf="searchRoleId == null">Vloga</span> <span class="caret"></span>
+                <span *ngIf="searchRoleId != null">{{"UPORABNIKI." + vlogaDropMenu | translate}}</span><span *ngIf="searchRoleId == null">{{"UPORABNIKI.VLOGA" | translate}}</span> <span class="caret"></span>
               </button>
               <ul id="dropdown-vloga" *dropdownMenu class="dropdown-menu"
                   role="menu">
-                <li role="menuitem"><a class="dropdown-item" style="cursor: pointer" (click)="searchRoleId=1; vlogaDropMenu='Admin'">Admin</a></li>
-                <li role="menuitem"><a class="dropdown-item" style="cursor: pointer" (click)="searchRoleId=2; vlogaDropMenu='Reviewer'">Reviewer</a></li>
-                <li role="menuitem"><a class="dropdown-item" style="cursor: pointer" (click)="searchRoleId=3; vlogaDropMenu='Viewer'">Viewer</a></li>
+                <li role="menuitem"><a class="dropdown-item" style="cursor: pointer" (click)="searchRoleId=1; vlogaDropMenu='admin'">{{"UPORABNIKI.admin" | translate}}</a></li>
+                <li role="menuitem"><a class="dropdown-item" style="cursor: pointer" (click)="searchRoleId=2; vlogaDropMenu='reviewer'">{{"UPORABNIKI.reviewer" | translate}}</a></li>
+                <li role="menuitem"><a class="dropdown-item" style="cursor: pointer" (click)="searchRoleId=3; vlogaDropMenu='viewer'">{{"UPORABNIKI.viewer" | translate}}</a></li>
               </ul>
             </div>
             <div class="btn-group mb-2" dropdown style="float: left">
               <button id="button-active" dropdownToggle type="button" class="btn btn-outline-dark dropdown-toggle"
                       aria-controls="dropdown-active">
-                <span *ngIf="searchActive != null">{{activeDropMenu}}</span><span *ngIf="searchActive == null">Aktivnost</span> <span class="caret"></span>
+                <span *ngIf="searchActive != null">{{activeDropMenu}}</span><span *ngIf="searchActive == null">{{"UPORABNIKI.AKTIVNOST" | translate}}</span> <span class="caret"></span>
               </button>
               <ul id="dropdown-active" *dropdownMenu class="dropdown-menu"
                   role="menu">
-                <li role="menuitem"><a class="dropdown-item" (click)="searchActive=true; activeDropMenu='Aktiven'">Aktiven</a></li>
-                <li role="menuitem"><a class="dropdown-item" (click)="searchActive=false; activeDropMenu='Neaktiven'">Neaktiven</a></li>
+                <li role="menuitem"><a class="dropdown-item" (click)="searchActive=true; activeDropMenu='Aktiven'">{{"UPORABNIKI.AKTIVEN" | translate}}</a></li>
+                <li role="menuitem"><a class="dropdown-item" (click)="searchActive=false; activeDropMenu='Neaktiven'">{{"UPORABNIKI.NEAKTIVEN" | translate}}</a></li>
               </ul>
             </div>
             <div style="float: right">
@@ -97,7 +97,7 @@
                 <i class="material-icons">
                   search
                 </i>
-                Search
+                {{"UPORABNIKI.ISKANJE" | translate}}
               </button>
             </div>
           </div>
@@ -108,7 +108,7 @@
 </div>
 <ng-template #editUser>
   <div class="modal-header">
-    <h4 class="modal-title pull-left">Podatki uporabnika</h4>
+    <h4 class="modal-title pull-left">{{"UPORABNIKI.PODATKI_UPORABNIKA" | translate}}</h4>
     <button type="button" class="close pull-right" aria-label="Close"
             (click)="editUserRef.hide();">
       <span aria-hidden="true">&times;</span>
@@ -116,59 +116,58 @@
   </div>
   <div class="modal-body">
     <ul class="list-group mb-2">
-      <li class="list-group-item"><b>Uporabniško ime: </b>
+      <li class="list-group-item"><b>{{"UPORABNIKI.UPORABNISKO_IME" | translate}}: </b>
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="Uporabniško ime" style="float: right" [(ngModel)]="userToEdit.username">
+          <input type="text" class="form-control" placeholder="{{'UPORABNIKI.UPORABNISKO_IME' | translate}}" style="float: right" [(ngModel)]="userToEdit.username">
         </div>
       </li>
-      <li class="list-group-item"><b>Vloga: </b>
+      <li class="list-group-item"><b>{{"UPORABNIKI.VLOGA" | translate}}: </b>
         <div class="btn-group" dropdown style="float: right">
           <button id="edit-vloga" dropdownToggle type="button" class="btn btn-outline-dark dropdown-toggle"
                   aria-controls="dropdown-edit-vloga">
-            {{userToEdit.roleId.role}} <span class="caret"></span>
+            {{"UPORABNIKI." + userToEdit.roleId.role | translate}} <span class="caret"></span>
           </button>
           <ul id="dropdown-edit-vloga" *dropdownMenu class="dropdown-menu"
               role="menu">
-            <li role="menuitem"><a class="dropdown-item" style="cursor: pointer" (click)="userToEdit.roleId.roleId=1; userToEdit.roleId.role='admin'">Admin</a></li>
-            <li role="menuitem"><a class="dropdown-item" style="cursor: pointer" (click)="userToEdit.roleId.roleId=2; userToEdit.roleId.role='reviewer'">Reviewer</a></li>
-            <li role="menuitem"><a class="dropdown-item" style="cursor: pointer" (click)="userToEdit.roleId.roleId=3; userToEdit.roleId.role='viewer'">Viewer</a></li>
+            <li role="menuitem"><a class="dropdown-item" style="cursor: pointer" (click)="userToEdit.roleId.roleId=1; userToEdit.roleId.role='admin'">{{"UPORABNIKI.admin" | translate}}</a></li>
+            <li role="menuitem"><a class="dropdown-item" style="cursor: pointer" (click)="userToEdit.roleId.roleId=2; userToEdit.roleId.role='reviewer'">{{"UPORABNIKI.reviewer" | translate}}</a></li>
+            <li role="menuitem"><a class="dropdown-item" style="cursor: pointer" (click)="userToEdit.roleId.roleId=3; userToEdit.roleId.role='viewer'">{{"UPORABNIKI.viewer" | translate}}</a></li>
           </ul>
         </div>
       </li>
-      <li class="list-group-item"><b>Aktivnost: </b>
+      <li class="list-group-item"><b>{{"UPORABNIKI.AKTIVNOST" | translate}}: </b>
         <div class="btn-group" dropdown style="float: right">
           <button id="edit-active" dropdownToggle type="button" class="btn btn-outline-dark dropdown-toggle"
                   aria-controls="dropdown-edit-active">
-            <span *ngIf="userToEdit.active">Aktiven</span><span *ngIf="!userToEdit.active">Neaktiven</span> <span class="caret"></span>
+            <span *ngIf="userToEdit.active">{{"UPORABNIKI.AKTIVEN" | translate}}</span><span *ngIf="!userToEdit.active">{{"UPORABNIKI.NEAKTIVEN" | translate}}</span> <span class="caret"></span>
           </button>
           <ul id="dropdown-edit-active" *dropdownMenu class="dropdown-menu"
               role="menu">
-            <li role="menuitem"><a class="dropdown-item" style="cursor: pointer" (click)="userToEdit.active=true">Aktiven</a></li>
-            <li role="menuitem"><a class="dropdown-item" style="cursor: pointer" (click)="userToEdit.active=false">Neaktiven</a></li>
+            <li role="menuitem"><a class="dropdown-item" style="cursor: pointer" (click)="userToEdit.active=true">{{"UPORABNIKI.AKTIVEN" | translate}}</a></li>
+            <li role="menuitem"><a class="dropdown-item" style="cursor: pointer" (click)="userToEdit.active=false">{{"UPORABNIKI.NEAKTIVEN" | translate}}</a></li>
           </ul>
         </div>
       </li>
     </ul>
     <div class="row">
       <div class="col-12">
-        <button class="btn btn-outline-danger" style="float: right" (click)="editUserRef.hide(); dobiUporabnike()">Prekliči</button>
-        <button class="btn btn-outline-success mr-2" style="float: right" (click)="saveUsrChanges(userToEdit)">Shrani</button>
-        <button class="btn btn-danger" style="float: left" (click)="deleteUser(userToEdit)">Izbriši</button>
+        <button class="btn btn-outline-danger" style="float: right" (click)="editUserRef.hide(); dobiUporabnike()">{{"UPORABNIKI.PPREKLICI" | translate}}</button>
+        <button class="btn btn-outline-success mr-2" style="float: right" (click)="saveUsrChanges(userToEdit)">{{"UPORABNIKI.SHRANI" | translate}}</button>
       </div>
     </div>
     <div class="row" *ngIf="editUserSuccess||deleteUserSuccess||userFail">
       <div class="col-12">
         <hr>
-        <div class="alert alert-success" style="float: left;" *ngIf="editUserSuccess">Spremembe shranjene</div>
-        <div class="alert alert-success" style="float: left;" *ngIf="deleteUserSuccess">Uporabnik izbrisan</div>
-        <div class="alert alert-danger" style="float: left;" *ngIf="userFail">Napaka</div>
+        <div class="alert alert-success" style="float: left;" *ngIf="editUserSuccess">{{"UPORABNIKI.SPREMEMBE_SHRANJENE" | translate}}</div>
+        <div class="alert alert-success" style="float: left;" *ngIf="deleteUserSuccess">{{"UPORABNIKI.UPORABNIK_IZBRISAN" | translate}}</div>
+        <div class="alert alert-danger" style="float: left;" *ngIf="userFail">{{"UPORABNIKI.NAPAKA" | translate}}</div>
       </div>
     </div>
   </div>
 </ng-template>
 <ng-template #newUser>
   <div class="modal-header">
-    <h4 class="modal-title pull-left">Nov uporabnik</h4>
+    <h4 class="modal-title pull-left">{{"UPORABNIKI.NOV_UPORABNIK" | translate}}</h4>
     <button type="button" class="close pull-right" aria-label="Close"
             (click)="newUserRef.hide();">
       <span aria-hidden="true">&times;</span>
@@ -176,50 +175,50 @@
   </div>
   <div class="modal-body">
     <ul class="list-group mb-2">
-      <li class="list-group-item"><b>Uporabniško ime: </b>
+      <li class="list-group-item"><b>{{"UPORABNIKI.UPORABNISKO_IME" | translate}}: </b>
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="Uporabniško ime" style="float: right" [(ngModel)]="userToEdit.username">
+          <input type="text" class="form-control" placeholder="{{'UPORABNIKI.SHRANI' | translate}}" style="float: right" [(ngModel)]="userToEdit.username">
         </div>
       </li>
-      <li class="list-group-item"><b>Vloga: </b>
+      <li class="list-group-item"><b>{{"UPORABNIKI.VLOGA" | translate}}: </b>
         <div class="btn-group" dropdown style="float: right">
           <button id="create-vloga" dropdownToggle type="button" class="btn btn-outline-dark dropdown-toggle"
                   aria-controls="dropdown-create-vloga">
-            {{userToEdit.roleId.role}} <span class="caret"></span>
+            {{"UPORABNIKI." + userToEdit.roleId.role | translate}} <span class="caret"></span>
           </button>
           <ul id="dropdown-create-vloga" *dropdownMenu class="dropdown-menu"
               role="menu">
-            <li role="menuitem"><a class="dropdown-item" style="cursor: pointer" (click)="userToEdit.roleId.roleId=1; userToEdit.roleId.role='admin'">Admin</a></li>
-            <li role="menuitem"><a class="dropdown-item" style="cursor: pointer" (click)="userToEdit.roleId.roleId=2; userToEdit.roleId.role='reviewer'">Reviewer</a></li>
-            <li role="menuitem"><a class="dropdown-item" style="cursor: pointer" (click)="userToEdit.roleId.roleId=3; userToEdit.roleId.role='viewer'">Viewer</a></li>
+            <li role="menuitem"><a class="dropdown-item" style="cursor: pointer" (click)="userToEdit.roleId.roleId=1; userToEdit.roleId.role='admin'">{{"UPORABNIKI.admin" | translate}}</a></li>
+            <li role="menuitem"><a class="dropdown-item" style="cursor: pointer" (click)="userToEdit.roleId.roleId=2; userToEdit.roleId.role='reviewer'">{{"UPORABNIKI.reviewer" | translate}}</a></li>
+            <li role="menuitem"><a class="dropdown-item" style="cursor: pointer" (click)="userToEdit.roleId.roleId=3; userToEdit.roleId.role='viewer'">{{"UPORABNIKI.viewer" | translate}}</a></li>
           </ul>
         </div>
       </li>
-      <li class="list-group-item"><b>Aktivnost: </b>
+      <li class="list-group-item"><b>{{"UPORABNIKI.AKTIVNOST" | translate}}: </b>
         <div class="btn-group" dropdown style="float: right">
           <button id="create-active" dropdownToggle type="button" class="btn btn-outline-dark dropdown-toggle"
                   aria-controls="dropdown-create-active">
-            <span *ngIf="userToEdit.active">Aktiven</span><span *ngIf="!userToEdit.active">Neaktiven</span> <span class="caret"></span>
+            <span *ngIf="userToEdit.active">{{"UPORABNIKI.AKTIVEN" | translate}}</span><span *ngIf="!userToEdit.active">{{"UPORABNIKI.NEAKTIVEN" | translate}}</span> <span class="caret"></span>
           </button>
           <ul id="dropdown-create-active" *dropdownMenu class="dropdown-menu"
               role="menu">
-            <li role="menuitem"><a class="dropdown-item" style="cursor: pointer" (click)="userToEdit.active=true">Aktiven</a></li>
-            <li role="menuitem"><a class="dropdown-item" style="cursor: pointer" (click)="userToEdit.active=false">Neaktiven</a></li>
+            <li role="menuitem"><a class="dropdown-item" style="cursor: pointer" (click)="userToEdit.active=true">{{"UPORABNIKI.AKTIVEN" | translate}}</a></li>
+            <li role="menuitem"><a class="dropdown-item" style="cursor: pointer" (click)="userToEdit.active=false">{{"UPORABNIKI.NEAKTIVEN" | translate}}</a></li>
           </ul>
         </div>
       </li>
     </ul>
     <div class="row">
       <div class="col-12">
-        <button class="btn btn-outline-danger" style="float: right" (click)="newUserRef.hide()">Prekliči</button>
-        <button class="btn btn-outline-success mr-2" style="float: right" (click)="createUser(userToEdit)">Shrani</button>
+        <button class="btn btn-outline-danger" style="float: right" (click)="newUserRef.hide()">{{"UPORABNIKI.PREKLICI" | translate}}</button>
+        <button class="btn btn-outline-success mr-2" style="float: right" (click)="createUser(userToEdit)">{{"UPORABNIKI.SHRANI" | translate}}</button>
       </div>
     </div>
     <div class="row" *ngIf="createUserSuccess||userFail">
       <div class="col-12">
         <hr>
-        <div class="alert alert-success" style="float: left;" *ngIf="createUserSuccess">Uporabnik ustvarjen</div>
-        <div class="alert alert-danger" style="float: left;" *ngIf="userFail">Napaka</div>
+        <div class="alert alert-success" style="float: left;" *ngIf="createUserSuccess">{{"UPORABNIKI.UPORABNIK_USTVARJEN" | translate}}</div>
+        <div class="alert alert-danger" style="float: left;" *ngIf="userFail">{{"UPORABNIKI.NAPAKA" | translate}}</div>
       </div>
     </div>
   </div>

@@ -69,6 +69,8 @@ import {MatSelectModule,
     MatTreeModule,
 } from "@angular/material";
 
+import {ButtonsModule} from "ngx-bootstrap";
+import { SpremembaGeslaComponent } from './controllers/sprememba-gesla/sprememba-gesla.component';
 
 const imageViewerSettings = {
     btnClass: "default", // The CSS class(es) that will apply to the buttons
@@ -98,7 +100,7 @@ const imageViewerSettings = {
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
-    return new TranslateHttpLoader(http);
+    return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
 }
 
 @NgModule({
@@ -116,7 +118,8 @@ export function HttpLoaderFactory(http: HttpClient) {
         UrejanjeZnackeComponent,
         AddFolderComponent,
         UporabnikiComponent,
-        PathSettingsComponent
+        PathSettingsComponent,
+        SpremembaGeslaComponent
     ],
     imports: [
         // angular material
@@ -165,6 +168,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         FormsModule,
         ReactiveFormsModule,
         BootstrapModule,
+        ButtonsModule,
         ModalModule.forRoot(),
         PaginationModule.forRoot(),
         PopoverModule.forRoot(),

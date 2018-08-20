@@ -4,11 +4,15 @@ import {OznacevanjeService} from "../../services/oznacevanje/oznacevanje.service
 import {BsModalRef, BsModalService} from "ngx-bootstrap";
 import {PageChangedEvent} from "ngx-bootstrap/pagination";
 import {Tag} from "../../models/entities/tag.entity";
+import {ViewEncapsulation} from "@angular/core";
+import {TranslateService} from "@ngx-translate/core";
+import {LanguageService} from "../../services/language.service";
 
 @Component({
     selector: "app-nastavitve",
     templateUrl: "./nastavitve.component.html",
-    styleUrls: ["./nastavitve.component.css"]
+    styleUrls: ["./nastavitve.component.css"],
+    encapsulation: ViewEncapsulation.None,
 })
 export class NastavitveComponent implements OnInit, ErrorHandler {
 
@@ -50,8 +54,12 @@ export class NastavitveComponent implements OnInit, ErrorHandler {
     public tagToEdit: Tag = null;
 
     constructor(private projectService: ProjektService, private oznacevanjeService: OznacevanjeService,
-                private modalService: BsModalService) {
-
+                private modalService: BsModalService, public translate: TranslateService,
+                private languageService: LanguageService) {
+        this.translate.setDefaultLang("slo");
+        this.languageService.dobiTrenutniJezik().then(lang => {
+            this.translate.use(lang);
+        });
     }
 
     public setDir() {
@@ -125,6 +133,7 @@ export class NastavitveComponent implements OnInit, ErrorHandler {
     }
 
     public urediZnacko(template: TemplateRef<any>, tag: Tag) {
+        console.log(tag);
         this.clearAlerts();
         this.tagSettingsRef = this.modalService.show(template, Object.assign({class: "modal-lg"}));
         this.tagToEdit = tag;

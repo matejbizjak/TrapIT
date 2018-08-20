@@ -8,6 +8,7 @@ import {Media} from "../entity/Media";
 import {FiltriranjeNastavitve} from "../entity/requests/filtriranje-nastavitve";
 import {SfiltriraniPodatki} from "../entity/responses/sfiltrirani-podatki";
 import {MediaProject} from "../entity/MediaProject";
+import {MediaSearch} from "../entity/custom/media-search";
 
 module.exports = class ProjektService {
     private tagRepository = getRepository(Tag);
@@ -171,7 +172,7 @@ module.exports = class ProjektService {
         });
     }
 
-    public filtrirajPodatke(filtri: TagZInputValue[], nastavitve: FiltriranjeNastavitve, mediaId?: number): Promise<SfiltriraniPodatki> {
+    public filtrirajPodatke(filtri: TagZInputValue[], nastavitve: FiltriranjeNastavitve, mediaSearch: MediaSearch, mediaId?: number): Promise<SfiltriraniPodatki> {
         return new Promise((resolve, reject) => {
 
             //if there is a specific media id search, get that one
@@ -179,7 +180,7 @@ module.exports = class ProjektService {
                 this.mediaRepository.findOne(
                     {
                         where: {mediaId: mediaId},
-                        relations: ["siteId", "mediaProjects", "mediaProjects.projectId", "last"]
+                        relations: ["siteId", "mediaProjects", "mediaProjects.projectId", "lastUserId"]
                     }).then
                 ((foundMedia: Media) => {
                     resolve(new SfiltriraniPodatki([foundMedia], 1));
@@ -196,8 +197,34 @@ module.exports = class ProjektService {
 
             //if there are no selected filters for tags, just search the damn media table
             if (filtriArr.length === 0) { // select all from media
+                this.mediaRepository
+                    .createQueryBuilder("media")
+                    .leftJoinAndSelect("media.lastUserId", "lastUserId")
+                    .leftJoinAndSelect("media.siteId", "siteId")
+                    .leftJoinAndSelect("media.mediaProjects", "mediaProjects")
+                    .leftJoinAndSelect("mediaProjects.projectId", "projectId")
+                    .where("media.date like :date", {date: (mediaSearch.mediaDate ? mediaSearch.mediaDate + '%' : "%")})
+                    .andWhere("media.name like :name", {name: (mediaSearch.mediaName ? '%' + mediaSearch.mediaName + '%' : "%")})
+                    .andWhere(mediaSearch.mediaContent != null ? "media.empty = :empty" : "media.empty = media.empty", {empty: mediaSearch.mediaContent})
+                    .andWhere(mediaSearch.picture != null ? "media.image = :image" : "media.image = media.image", {image: mediaSearch.picture})
+                    .andWhere(mediaSearch.lastReviewer != null ? "lastUserId.username like :username" : "media.media_id = media.media_id", mediaSearch.lastReviewer ? {username: '%' + mediaSearch.lastReviewer + '%'} : {})
+                    .andWhere(mediaSearch.lastDate != null ? "media.lastDate like :lastDate" : "media.media_id = media.media_id", {lastDate: '%' + mediaSearch.lastDate + '%'})
+                    .orderBy("media.mediaId", "ASC")
+                    .getMany()
+                    .then((medias: Media[]) => {
+                        this.filtrirajPoNastavitvah(medias, nastavitve).then
+                        ((filteredBySettings: SfiltriraniPodatki) => {
+                            resolve(filteredBySettings);
+                        }, (err) => {
+                            console.log(err);
+                            reject();
+                        })
+                    }, (err) => {
+                        console.log(err);
+                        reject();
+                    });
                 this.mediaRepository.find({
-                    relations: ["siteId", "mediaProjects", "mediaProjects.projectId"],
+                    relations: ["siteId", "mediaProjects", "mediaProjects.projectId", "lastUserId"],
                     order: {mediaId: "ASC"}
                 }).then((medias: Media[]) => {
                     this.filtrirajPoNastavitvah(medias, nastavitve).then
@@ -213,12 +240,42 @@ module.exports = class ProjektService {
                 })
                 //if there are filters involved
             } else { // select where filtrisdan
+                this.mediaTagRepository.createQueryBuilder("mediaTag")
+                    .leftJoinAndSelect("mediaTag.tagId", "tagId")
+                    .leftJoinAndSelect("mediaTag.mediaId", "mediaId")
+                    .leftJoinAndSelect("mediaId.siteId", "siteId")
+                    .leftJoin("mediaId.lastUserId", "lastUserId")
+                    .where("mediaTag.tagId.tagId in (:tags_id)", {tags_id: filtriArr})
+                    .andWhere("mediaId.date like :date", {date: (mediaSearch.mediaDate ? mediaSearch.mediaDate + '%' : "%")})
+                    .andWhere("mediaId.name like :name", {name: (mediaSearch.mediaName ? '%' + mediaSearch.mediaName + '%' : "%")})
+                    .andWhere(mediaSearch.mediaContent != null ? "mediaId.empty = :empty" : "mediaId.empty = mediaId.empty", {empty: mediaSearch.mediaContent})
+                    .andWhere(mediaSearch.picture != null ? "mediaId.image = :image" : "mediaId.image = mediaId.image", {image: mediaSearch.picture})
+                    .andWhere(mediaSearch.lastReviewer != null ? "lastUserId.username like :username" : "mediaId.media_id = mediaId.media_id", mediaSearch.lastReviewer ? {username: '%' + mediaSearch.lastReviewer + '%'} : {})
+                    .andWhere(mediaSearch.lastDate != null ? "mediaId.lastDate like :lastDate" : "mediaId.media_id = mediaId.media_id", {lastDate: '%' + mediaSearch.lastDate + '%'})
+                    .orderBy("mediaId.mediaId", "ASC")
+                    .getMany()
+                    .then((mediaTags: MediaTag[]) => {
+                        this.izlusciMediaIdje(mediaTags, filtriArr).then((medias: Media[]) => {
+                                this.filtrirajPoNastavitvah(medias, nastavitve).then
+                                ((filteredBySettings: SfiltriraniPodatki) => {
+                                    resolve(filteredBySettings);
+                                }, (err) => {
+                                    console.log(err);
+                                    reject();
+                                })
+                            }
+                        );
+                    }, (err) => {
+                        console.log(err);
+                        reject();
+                    });
                 this.mediaTagRepository.find({
                     where: {tagId: In(filtriArr)},
                     relations: ["tagId", "mediaId", "mediaId.siteId", "mediaId.mediaProjects", "mediaId.mediaProjects.projectId"],
                     order: {mediaId: "ASC"}
                 }).then(
                     (mediaTags: MediaTag[]) => {
+                        //console.log(mediaTags);
                         this.izlusciMediaIdje(mediaTags, filtriArr).then((medias: Media[]) => {
                                 this.filtrirajPoNastavitvah(medias, nastavitve).then
                                 ((filteredBySettings: SfiltriraniPodatki) => {

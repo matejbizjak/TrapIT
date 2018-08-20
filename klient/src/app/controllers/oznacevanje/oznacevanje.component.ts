@@ -11,6 +11,7 @@ import {MediaData} from "../../models/entities/custom/media-data";
 import {ZnaniTagiZaMedia} from "../../models/responses/znani-tagi-za-media";
 import {ProjektComponent} from "../projekt/projekt.component";
 import {AuthService} from "../../services/avtentikacija/auth.service";
+import {LanguageService} from "../../services/language.service";
 
 
 @Component({
@@ -38,8 +39,16 @@ export class OznacevanjeComponent implements OnInit {
     vstavljenih = 0;
     bul = false;
 
-    constructor(private translate: TranslateService, private sharingService: SharingService, private projektService: ProjektService,
-                private oznacevanjeService: OznacevanjeService, private authService: AuthService) {
+    saveSuccess = false;
+    saveFail = false;
+
+    constructor(public translate: TranslateService, private sharingService: SharingService, private projektService: ProjektService,
+                private oznacevanjeService: OznacevanjeService, private authService: AuthService,
+                private languageService: LanguageService) {
+        this.translate.setDefaultLang("slo");
+        this.languageService.dobiTrenutniJezik().then(lang => {
+            this.translate.use(lang);
+        });
     }
 
     ngOnInit(): void {
@@ -129,7 +138,7 @@ export class OznacevanjeComponent implements OnInit {
         for (let i = 0; i < this.mozniTagi.length; i++) {
             if (stNaPrvemNivoju[Number(this.mozniTagi[i].tagId)] > 1) {
                 for (let j = 0; j < stNaPrvemNivoju[Number(this.mozniTagi[i].tagId)] - 1; j++) {
-                    const copy: TagParent = new TagParent(null, null, null, null, null, null, null, null, null);
+                    const copy: TagParent = new TagParent(null, null, null, null, null, null, null, null, null, null, null);
                     Object.assign(copy, JSON.parse(JSON.stringify(this.mozniTagi[i])));
                     i++;
                     this.mozniTagi.splice(i, 0, copy);
@@ -209,6 +218,7 @@ export class OznacevanjeComponent implements OnInit {
         this.dobiTage();
         this.mozniTagi = new Array();
         Object.assign(this.mozniTagi, JSON.parse(JSON.stringify(this.mozniTagiCopy)));
+        console.log(this.izbranMedia);
         this.loading = false;
     }
 
@@ -303,7 +313,7 @@ export class OznacevanjeComponent implements OnInit {
     dodajSeEnTag(tag: TagParent) {
         for (let i = 0; i < this.mozniTagi.length; i++) {
             if (this.mozniTagi[i] === tag) {
-                const copy: TagParent = new TagParent(null, null, null, null, null, null, null, null, null);
+                const copy: TagParent = new TagParent(null, null, null, null, null, null, null, null, null, null, null);
                 Object.assign(copy, JSON.parse(JSON.stringify(tag)));
                 copy.selectedChild = null;
                 this.mozniTagi.splice(i + 1, 0, copy);
@@ -346,7 +356,7 @@ export class OznacevanjeComponent implements OnInit {
             for (let i = 0; i < tagi.length; i++) {
                 if (tagi[i].parentTagId === null) {
                     this.mozniTagi.push(new TagParent(tagi[i].tagId, tagi[i].name, [], tagi[i].input, tagi[i].checkbox,
-                        null, null, null, null));
+                        null, null, null, null, tagi[i].sloName, tagi[i].engName));
                     this.mozniTagiSamoId.add(tagi[i].tagId);
                     this.vstavljenih++;
                     tagiCopy.splice(i - stIzbrisanih, 1);
@@ -390,7 +400,7 @@ export class OznacevanjeComponent implements OnInit {
         for (let i = 0; i < this.mozniTagi.length; i++) {
             if (this.mozniTagi[i].tagId === parent.tagId) {
                 this.mozniTagi[i].childTags.push(new TagParent(child.tagId, child.name, [], child.input, child.checkbox,
-                    null, null, null, null));
+                    null, null, null, null, child.sloName, child.engName));
                 this.mozniTagiSamoId.add(child.tagId);
                 this.bul = true;
                 this.vstavljenih++;
@@ -399,7 +409,7 @@ export class OznacevanjeComponent implements OnInit {
             for (let j = 0; j < this.mozniTagi[i].childTags.length; j++) {
                 if (this.mozniTagi[i].childTags[j].tagId === parent.tagId) {
                     this.mozniTagi[i].childTags[j].childTags.push(new TagParent(child.tagId, child.name, [], child.input,
-                        child.checkbox, null, null, null, null));
+                        child.checkbox, null, null, null, null, child.sloName, child.engName));
                     this.mozniTagiSamoId.add(child.tagId);
                     this.bul = true;
                     this.vstavljenih++;
@@ -408,7 +418,7 @@ export class OznacevanjeComponent implements OnInit {
                 for (let k = 0; k < this.mozniTagi[i].childTags[j].childTags.length; k++) {
                     if (this.mozniTagi[i].childTags[j].childTags[k].tagId === parent.tagId) {
                         this.mozniTagi[i].childTags[j].childTags[k].childTags.push(new TagParent(child.tagId, child.name, [],
-                            child.input, child.checkbox, null, null, null, null));
+                            child.input, child.checkbox, null, null, null, null, child.sloName, child.engName));
                         this.mozniTagiSamoId.add(child.tagId);
                         this.bul = true;
                         this.vstavljenih++;

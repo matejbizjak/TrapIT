@@ -1,4 +1,4 @@
-import {Component, OnInit, TemplateRef} from "@angular/core";
+import {Component, OnInit, TemplateRef, ViewEncapsulation} from "@angular/core";
 import {TranslateService} from "@ngx-translate/core";
 import {ProjektService} from "../../services/projekt/projekt.service";
 import {Router} from "@angular/router";
@@ -13,11 +13,14 @@ import {MediaProject} from "../../models/entities/media-project.entity";
 import {Project} from "../../models/entities/project.entity";
 import {MatFormField, MatSelect} from "@angular/material";
 import {FormControl} from "@angular/forms";
+import {LanguageService} from "../../services/language.service";
+import {MediaSearch} from "../../models/entities/custom/media-search";
 
 @Component({
     selector: "app-projekt",
     templateUrl: "./projekt.component.html",
-    styleUrls: ["./projekt.component.css"]
+    styleUrls: ["./projekt.component.css"],
+    encapsulation: ViewEncapsulation.None
 })
 export class ProjektComponent implements OnInit {
     modalRef: BsModalRef;
@@ -48,8 +51,21 @@ export class ProjektComponent implements OnInit {
     vstavljenih = 0;
     bul = false;
 
-    constructor(private router: Router, private modalService: BsModalService, private translate: TranslateService,
-                private projektService: ProjektService) {
+    empty: boolean = null;
+    media: boolean = null;
+    searchName: string = null;
+    searchDate: Date = null;
+    lastUser: string = null;
+    lastDate: Date = null;
+
+    mediaSearch: MediaSearch;
+
+    constructor(private router: Router, private modalService: BsModalService, public translate: TranslateService,
+                private projektService: ProjektService, private languageService: LanguageService) {
+        this.translate.setDefaultLang("slo");
+        this.languageService.dobiTrenutniJezik().then(lang => {
+            this.translate.use(lang);
+        });
     }
 
     ngOnInit(): void {
@@ -117,7 +133,32 @@ export class ProjektComponent implements OnInit {
     //     }
     // }
 
+    resetSearch() {
+        this.specificMediaId = null;
+        this.empty = null;
+        this.media = null;
+        this.searchName = null;
+        this.searchDate = null;
+        this.lastUser = null;
+        this.lastDate = null;
+
+        this.mozniTagi.forEach(element => {
+            element.selectedChild = null;
+            element.checkboxValue = null;
+            element.inputValue = null;
+        });
+    }
+
     filtrirajPrikaz(resetSort): Promise<Media[]> {
+        this.mediaSearch = new MediaSearch(
+            this.specificMediaId,
+            this.searchDate,
+            this.searchName,
+            this.empty,
+            this.media,
+            this.lastUser,
+            this.lastDate
+        );
         return new Promise<Media[]>((resolve, reject) => {
             this.loading = true;
             this.filtriranjeNastavitve.stNaStran = this.mediaPerPage;
@@ -130,13 +171,11 @@ export class ProjektComponent implements OnInit {
             }
             this.projektService.pretovriVOblikoZaPosiljatFiltriranje(this.mozniTagi).then(
                 (tagi: TagZInputValue[]) => {
-                    this.projektService.filtrirajSlike(tagi, this.filtriranjeNastavitve, this.specificMediaId).subscribe(
+                    this.projektService.filtrirajSlike(tagi, this.filtriranjeNastavitve, this.specificMediaId, this.mediaSearch).subscribe(
                         (sfiltriraniPodatki: SfiltriraniPodatki) => {
-                            console.log(sfiltriraniPodatki);
                             this.medijiSeznam = sfiltriraniPodatki.mediji;
                             this.stVsehZadetkov = sfiltriraniPodatki.stVsehMedijev;
                             this.loading = false;
-                            this.specificMediaId = null;
                             this.filtriraniProjektiControl = new FormControl();
 
                             resolve(sfiltriraniPodatki.mediji);
@@ -167,7 +206,7 @@ export class ProjektComponent implements OnInit {
 
     odpriOznacevanje(template: TemplateRef<any>, izbranMedia: Media) {
         this.izbranMedia = izbranMedia;
-        this.modalRef = this.modalService.show(template, {class: "modal-lg"});
+        this.modalRef = this.modalService.show(template, Object.assign({}, {class: "wide modal-lg"}));
     }
 
     jeIzbralNivo(el, parentTag: TagParent) {
@@ -211,7 +250,7 @@ export class ProjektComponent implements OnInit {
     dodajSeEnTag(tag: TagParent) {
         for (let i = 0; i < this.mozniTagi.length; i++) {
             if (this.mozniTagi[i] === tag) {
-                const copy: TagParent = new TagParent(null, null, null, null, null, null, null, null, null);
+                const copy: TagParent = new TagParent(null, null, null, null, null, null, null, null, null, null, null);
                 Object.assign(copy, JSON.parse(JSON.stringify(tag)));
                 copy.selectedChild = null;
                 this.mozniTagi.splice(i + 1, 0, copy);
@@ -258,7 +297,7 @@ export class ProjektComponent implements OnInit {
             for (let i = 0; i < tagi.length; i++) {
                 if (tagi[i].parentTagId === null) {
                     this.mozniTagi.push(new TagParent(tagi[i].tagId, tagi[i].name, [], tagi[i].input, tagi[i].checkbox,
-                        null, null, null, null));
+                        null, null, null, null, tagi[i].sloName, tagi[i].engName));
                     this.mozniTagiSamoId.add(tagi[i].tagId);
                     this.vstavljenih++;
                     tagiCopy.splice(i - stIzbrisanih, 1);
@@ -302,7 +341,7 @@ export class ProjektComponent implements OnInit {
         for (let i = 0; i < this.mozniTagi.length; i++) {
             if (this.mozniTagi[i].tagId === parent.tagId) {
                 this.mozniTagi[i].childTags.push(new TagParent(child.tagId, child.name, [], child.input, child.checkbox,
-                    null, null, null, null));
+                    null, null, null, null, child.sloName, child.engName));
                 this.mozniTagiSamoId.add(child.tagId);
                 this.bul = true;
                 this.vstavljenih++;
@@ -311,7 +350,7 @@ export class ProjektComponent implements OnInit {
             for (let j = 0; j < this.mozniTagi[i].childTags.length; j++) {
                 if (this.mozniTagi[i].childTags[j].tagId === parent.tagId) {
                     this.mozniTagi[i].childTags[j].childTags.push(new TagParent(child.tagId, child.name, [], child.input,
-                        child.checkbox, null, null, null, null));
+                        child.checkbox, null, null, null, null, child.sloName, child.engName));
                     this.mozniTagiSamoId.add(child.tagId);
                     this.bul = true;
                     this.vstavljenih++;
@@ -320,7 +359,7 @@ export class ProjektComponent implements OnInit {
                 for (let k = 0; k < this.mozniTagi[i].childTags[j].childTags.length; k++) {
                     if (this.mozniTagi[i].childTags[j].childTags[k].tagId === parent.tagId) {
                         this.mozniTagi[i].childTags[j].childTags[k].childTags.push(new TagParent(child.tagId, child.name, [],
-                            child.input, child.checkbox, null, null, null, null));
+                            child.input, child.checkbox, null, null, null, null, child.sloName, child.engName));
                         this.mozniTagiSamoId.add(child.tagId);
                         this.bul = true;
                         this.vstavljenih++;

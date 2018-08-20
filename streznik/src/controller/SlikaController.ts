@@ -88,10 +88,11 @@ module.exports.dobiVideo = function (req: Request, res: Response, next: NextFunc
 module.exports.shraniTage = function (req: Request, res: Response, next: NextFunction) {
     const slikaService = new SlikaService();
 
-    slikaService.shraniTage(req.body.podatki).then(
+    slikaService.shraniTage(req.body.podatki, req.params).then(
         () => {
             res.status(200).json();
-        }, () => {
+        }, (err) => {
+            console.log(err);
             res.status(400).json();
         }
     )

@@ -1,5 +1,7 @@
 import {Component, OnInit} from "@angular/core";
 import {ApiService} from "../../../services/api/api.service";
+import {TranslateService} from "@ngx-translate/core";
+import {LanguageService} from "../../../services/language.service";
 
 
 @Component({
@@ -20,7 +22,11 @@ export class AddFolderComponent implements OnInit {
     added: number[];
     exist: number[];
 
-    constructor(private apiService: ApiService) {
+    constructor(private apiService: ApiService, public translate: TranslateService, private languageService: LanguageService) {
+        this.translate.setDefaultLang("slo");
+        this.languageService.dobiTrenutniJezik().then(lang => {
+            this.translate.use(lang);
+        });
     }
 
     ngOnInit() {

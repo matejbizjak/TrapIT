@@ -1,7 +1,9 @@
 <div class="wrapper">
     <div class="container h-100 mt-5">
         <div class="row h-100 justify-content-center align-items-center">
-            <h2 class="col-sm-12">{{ "PRIJAVA.NASLOV" | translate }}</h2>
+            <h2 class="col-sm-5">{{ "PRIJAVA.NASLOV" | translate }}</h2>
+        </div>
+        <div class="row h-100 justify-content-center align-items-center">
             <form (submit)="prijaviUporabnika()" class="col-sm-5">
                 <div class="form-group">
                     <label for="username">{{ "PRIJAVA.UPIME" | translate }}:</label>
@@ -17,7 +19,7 @@
                     {{napaka}}
                 </div>
                 <div class="form-actions">
-                    <button type="submit" class="btn btn-outline-primary fri-button">{{ "PRIJAVA.GUMB" | translate }}
+                    <button type="submit" class="btn btn-outline-dark fri-button red-btn">{{ "PRIJAVA.GUMB" | translate }}
                     </button>
                 </div>
             </form>

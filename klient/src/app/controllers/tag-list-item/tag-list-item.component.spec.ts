@@ -2,7 +2,7 @@ import {async, ComponentFixture, TestBed} from "@angular/core/testing";
 
 import {TagListItemComponent} from "./tag-list-item.component";
 
-describe("TagListItemComponent", () => {
+describe("TagListItemNewComponent", () => {
     let component: TagListItemComponent;
     let fixture: ComponentFixture<TagListItemComponent>;
 

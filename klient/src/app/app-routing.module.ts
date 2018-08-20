@@ -10,6 +10,7 @@ import {RVguard} from "./services/guards/role.guard";
 import {OznacevanjeComponent} from "./controllers/oznacevanje/oznacevanje.component";
 import {NastavitveComponent} from "./controllers/nastavitve/nastavitve.component";
 import {UporabnikiComponent} from "./controllers/uporabniki/uporabniki.component";
+import {SpremembaGeslaComponent} from "./controllers/sprememba-gesla/sprememba-gesla.component";
 
 const routes: Routes = [
     // routes
@@ -19,6 +20,7 @@ const routes: Routes = [
     {path: "oznacevanje/:id", component: OznacevanjeComponent, canActivate: [RVguard]},
     {path: "nastavitve", component: NastavitveComponent},
     {path: "uporabniki", component: UporabnikiComponent},
+    {path: "geslo", component: SpremembaGeslaComponent},
     // errors
     {path: "404", component: Napaka404Component},
     {path: "403", component: Napaka403Component},

@@ -1,3 +1,5 @@
-<div class="col povezava" (click)="navigiraj(link)">
-    <span>{{tekst}}</span>
+<div class="card link border-dark border-2">
+    <div class="card-body" (click)="navigiraj(link)">
+        <div class="text">{{"OGRODJE.MENU." + tekst | translate}}</div>
+    </div>
 </div>

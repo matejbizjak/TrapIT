@@ -1,8 +1,14 @@
-<h3>{{ "INDEX.NASLOV" | translate }}</h3>
-<div style="margin-top:25px;">
-    <div class="row">
-        <app-index-link [link]="'/url'" [tekst]="'Url'"></app-index-link>
-        <app-index-link [link]="'/nastavitve'" [tekst]="'Nastavitve'"></app-index-link>
-        <app-index-link [link]="'/uporabniki'" [tekst]="'Uporabniki'"></app-index-link>
+<div class="row">
+    <div class="col-12">
+        <div class="card card-body">
+            <div class="row">
+                <div class="col-6">
+                    <app-index-link [link]="'/nastavitve'" [tekst]="'NASTAVITVE'"></app-index-link>
+                </div>
+                <div class="col-6">
+                    <app-index-link [link]="'/uporabniki'" [tekst]="'UPORABNIKI'"></app-index-link>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

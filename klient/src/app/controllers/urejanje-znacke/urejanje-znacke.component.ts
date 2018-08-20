@@ -3,6 +3,8 @@ import {Tag} from "../../models/entities/tag.entity";
 import {ZnackaService} from "../../services/znacka/znacka.service";
 import {TagWChild} from "../dodajanje-znacke/dodajanje-znacke.component";
 import {BsModalRef, BsModalService} from "ngx-bootstrap";
+import {TranslateService} from "@ngx-translate/core";
+import {LanguageService} from "../../services/language.service";
 
 export interface TagWChild {
     tag: Tag;
@@ -34,7 +36,12 @@ export class UrejanjeZnackeComponent implements OnInit {
 
     deleteRef: BsModalRef;
 
-    constructor(private znackaService: ZnackaService, private modalService: BsModalService) {
+    constructor(private znackaService: ZnackaService, private modalService: BsModalService,
+                private translate: TranslateService, private languageService: LanguageService) {
+        this.translate.setDefaultLang("eng");
+        this.languageService.dobiTrenutniJezik().then(lang => {
+            this.translate.use(lang);
+        });
     }
 
     ngOnInit() {
@@ -49,7 +56,7 @@ export class UrejanjeZnackeComponent implements OnInit {
     }
 
     public deepCopy(tag: TagWChild) {
-        const tg: Tag = {tagId: null, name: null, input: false, checkbox: false, parentTagId: null};
+        const tg: Tag = {tagId: null, name: null, input: false, checkbox: false, parentTagId: null, sloName: null, engName: null};
         Object.assign(tg, tag.tag);
         const arr: TagWChild[] = new Array;
         tag.children.forEach(child => {

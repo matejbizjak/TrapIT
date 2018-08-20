@@ -29,4 +29,9 @@ export class Tag {
 
     @OneToMany(type => MediaTag, mediaTag => mediaTag.mediaTagId)
     mediaTags: MediaTag[];
+
+    @Column({name: "slo_name"})
+    sloName: string;
+    @Column({name: "eng_name"})
+    engName: string;
 }

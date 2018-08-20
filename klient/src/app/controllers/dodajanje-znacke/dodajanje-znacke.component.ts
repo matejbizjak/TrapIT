@@ -1,6 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 import {Tag} from "../../models/entities/tag.entity";
 import {ZnackaService} from "../../services/znacka/znacka.service";
+import {TranslateService} from "@ngx-translate/core";
+import {LanguageService} from "../../services/language.service";
 
 export interface TagWChild {
     tag: Tag;
@@ -25,10 +27,14 @@ export class DodajanjeZnackeComponent implements OnInit {
     public newTagError: boolean;
     public nameError: boolean;
 
-    constructor(private znackaService: ZnackaService) {
+    constructor(private znackaService: ZnackaService, private translate: TranslateService, private languageService: LanguageService) {
         this.newTagSuccess = false;
         this.newTagError = false;
         this.nameError = false;
+        this.translate.setDefaultLang("slo");
+        this.languageService.dobiTrenutniJezik().then(lang => {
+            this.translate.use(lang);
+        });
     }
 
     ngOnInit() {
@@ -36,7 +42,7 @@ export class DodajanjeZnackeComponent implements OnInit {
 
     public addRootTag() {
         const newRoot: TagWChild = {
-            tag: {tagId: null, name: "", input: false, checkbox: false, parentTagId: null},
+            tag: {tagId: null, name: "", input: false, checkbox: false, parentTagId: null, sloName: "", engName: ""},
             children: null,
         };
         this.newTag.push(newRoot);

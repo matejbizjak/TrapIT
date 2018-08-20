@@ -4,4 +4,6 @@ export class Tag {
     public parentTagId: Tag;
     public input: boolean;
     public checkbox: boolean;
+    public sloName: string;
+    public engName: string;
 }
