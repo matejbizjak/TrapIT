@@ -8,26 +8,17 @@
                 <div class="card-body">
                     <!-- search by static values of media table-->
                     <div id = "mediaId">
-                        Media ID
+                        <span class="parent-tag"> Media ID </span>
                         <input [(ngModel)]="specificMediaId" #mediaIdInputHTML class="form-control form-control-sm mb-1" type="number">
-                        {{"PROJEKTI.DATUM" | translate}}
-                        <input class="form-control form-control-sm mb-1" type="date" [(ngModel)]="searchDate">
-                        {{"PROJEKTI.IME" | translate}}
+                        <span  class="parent-tag" > {{"PROJEKTI.IME" | translate}} </span>
                         <input class="form-control form-control-sm mb-1" type="text" [(ngModel)]="searchName">
-                        <div class="card card-body radio-box mb-1">
-                            <div class="row d-flex" style="height: 53px">
-                                <div class="col-12">
-                                    <span style="margin-top: 13px; position: absolute; top: 0;">{{"PROJEKTI.VSEBINA_SLIKE" | translate}}:</span>
-                                    <div class="btn-group" btnRadioGroup [(ngModel)]="empty" style="float: right">
-                                        <label class="btn btn-dark" btnRadio="false" style="margin-top: 7px"
-                                               uncheckable tabindex="0" role="button">{{"PROJEKTI.PRAZNO" | translate}}</label>
-                                        <label class="btn btn-dark" btnRadio="true" style="margin-top: 7px"
-                                               uncheckable tabindex="0" role="button">{{"PROJEKTI.Z_ZIVALMI" | translate}}</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card card-body radio-box mb-1">
+                        <span  class="parent-tag" > {{"PROJEKTI.DATUM" | translate}} </span>
+                        <input class="form-control form-control-sm mb-1" type="date" [(ngModel)]="searchDate">
+                        <span class="parent-tag">{{"PROJEKTI.ZADNJI_PREGLEDOVALEC" | translate}} </span>
+                        <input class="form-control form-control-sm mb-1" type="text" [(ngModel)]="lastUser">
+                        <span  class="parent-tag">{{"PROJEKTI.DATUM_ZADNJEGA_PREGLEDA" | translate}}</span>
+                        <input class="form-control form-control-sm mb-1" type="date" [(ngModel)]="lastDate">
+                        <div class="card card-body radio-box mb-1 p-1">
                             <div class="row d-flex" style="height: 53px">
                                 <div class="col-12">
                                     <span style="margin-top: 13px; position: absolute; top: 0;">{{"PROJEKTI.TIP_MEDIJA" | translate}}:</span>
@@ -40,10 +31,19 @@
                                 </div>
                             </div>
                         </div>
-                        {{"PROJEKTI.ZADNJI_PREGLEDOVALEC" | translate}}:
-                        <input class="form-control form-control-sm mb-1" type="text" [(ngModel)]="lastUser">
-                        {{"PROJEKTI.DATUM_ZADNJEGA_PREGLEDA" | translate}}:
-                        <input class="form-control form-control-sm mb-1" type="date" [(ngModel)]="lastDate">
+                        <div class="card card-body radio-box mb-1 p-1">
+                            <div class="row d-flex" style="height: 53px">
+                                <div class="col-12">
+                                    <span style="margin-top: 13px; position: absolute; top: 0;">{{"PROJEKTI.VSEBINA_SLIKE" | translate}}:</span>
+                                    <div class="btn-group" btnRadioGroup [(ngModel)]="empty" style="float: right">
+                                        <label class="btn btn-dark" btnRadio="false" style="margin-top: 7px"
+                                               uncheckable tabindex="0" role="button">{{"PROJEKTI.PRAZNO" | translate}}</label>
+                                        <label class="btn btn-dark" btnRadio="true" style="margin-top: 7px"
+                                               uncheckable tabindex="0" role="button">{{"PROJEKTI.Z_ZIVALMI" | translate}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -58,22 +58,23 @@
                     <form id="tagi">
                         <div class="row">
                             <div class="form-group col-6 mb-1" *ngFor="let tag of mozniTagi">
-                                <img *ngIf="preveriCeLahkoDodaTag(tag)" src="../../../assets/images/plus.png" width="8px" height="8px"
-                                     style="cursor: pointer"
-                                     (click)="dodajSeEnTag(tag)">
-                                <img *ngIf="preveriCeLahkoOdstraniTag(tag)" src="../../../assets/images/minus.png" width="8px" height="8px"
-                                     style="cursor: pointer"
-                                     (click)="odstraniTag(tag)" class="ml-2">
+
                                 <div *ngIf="tag.childTags.length > 0">
                                     <div *ngIf="!tag.checkbox">
-                                        <label>
+                                        <label class="parent-tag">
                                             <span *ngIf="translate.currentLang === 'slv'">{{tag.sloName}}</span>
                                             <span *ngIf="translate.currentLang === 'eng'">{{tag.engName}}</span>
+                                            <img *ngIf="preveriCeLahkoDodaTag(tag)" src="../../../assets/images/plus.png" width="8px" height="8px"
+                                                 style="cursor: pointer"
+                                                 (click)="dodajSeEnTag(tag)">
+                                            <img *ngIf="preveriCeLahkoOdstraniTag(tag)" src="../../../assets/images/minus.png" width="8px" height="8px"
+                                                 style="cursor: pointer"
+                                                 (click)="odstraniTag(tag)" class="ml-2">
                                         </label>
                                         <select class="form-control form-control-sm" [id]="tag.tagId" [(ngModel)]="tag.selectedChild"
                                                 [ngModelOptions]="{standalone: true}">
                                             <option selected></option>
-                                            <option *ngFor="let child of tag.childTags" [ngValue]="child">
+                                            <option *ngFor="let child of tag.childTags" [ngClass]="{'has-childs' : child != undefined && child.childTags.length > 0}" [ngValue]="child">
                                                 <span *ngIf="translate.currentLang === 'slv'">{{child.sloName}}</span>
                                                 <span *ngIf="translate.currentLang === 'eng'">{{child.engName}}</span>
                                             </option>
@@ -100,15 +101,11 @@
 
                                     <div *ngIf="tag.selectedChild && tag.selectedChild.childTags.length > 0">
                                         <div *ngIf="!tag.selectedChild.checkbox">
-                                            <label *ngIf="!tag.checkbox">
-                                                <span *ngIf="translate.currentLang === 'slv'">{{tag.selectedChild.name}}</span>
-                                                <span *ngIf="translate.currentLang === 'eng'">{{tag.selectedChild.name}}</span>
-                                            </label>
                                             <select class="form-control form-control-sm" [id]="tag.selectedChild.tagId"
                                                     [(ngModel)]="tag.selectedChild.selectedChild"
                                                     [ngModelOptions]="{standalone: true}">
                                                 <option selected></option>
-                                                <option *ngFor="let child2 of tag.selectedChild.childTags" [ngValue]="child2">
+                                                <option *ngFor="let child2 of tag.selectedChild.childTags" [ngClass]="{'has-childs' : child != undefined && child.childTags.length > 0}" [ngValue]="child2">
                                                     <span *ngIf="translate.currentLang === 'slv'">{{child2.sloName}}</span>
                                                     <span *ngIf="translate.currentLang === 'eng'">{{child2.engName}}</span>
                                                 </option>
@@ -137,15 +134,11 @@
 
                                         <div *ngIf="tag.selectedChild.selectedChild && tag.selectedChild.selectedChild.childTags.length > 0">
                                             <div *ngIf="!tag.selectedChild.selectedChild.checkbox">
-                                                <label *ngIf="!tag.checkbox">
-                                                    <span *ngIf="translate.currentLang === 'slv'">{{tag.selectedChild.selectedChild.name}}</span>
-                                                    <span *ngIf="translate.currentLang === 'eng'">{{tag.selectedChild.selectedChild.name}}</span>
-                                                </label>
                                                 <select class="form-control form-control-sm" [id]="tag.selectedChild.selectedChild.tagId"
                                                         [(ngModel)]="tag.selectedChild.selectedChild.selectedChild"
                                                         [ngModelOptions]="{standalone: true}">
                                                     <option selected></option>
-                                                    <option *ngFor="let child3 of tag.selectedChild.selectedChild.childTags"
+                                                    <option *ngFor="let child3 of tag.selectedChild.selectedChild.childTags" [ngClass]="{'has-childs' : child != undefined && child.childTags.length > 0}"
                                                             [ngValue]="child3">
                                                         <span *ngIf="translate.currentLang === 'slv'">{{child3.name}}</span>
                                                         <span *ngIf="translate.currentLang === 'eng'">{{child3.name}}</span>
@@ -177,7 +170,7 @@
                                     </div>
                                 </div>
                                 <div *ngIf="tag.childTags.length === 0 && tag.input">
-                                    <label>
+                                    <label class="parent-tag">
                                         <span *ngIf="translate.currentLang === 'slv'">{{tag.sloName}}</span>
                                         <span *ngIf="translate.currentLang === 'eng'">{{tag.engName}}</span>
                                     </label>

@@ -5,22 +5,23 @@
             <div class="card card-body tag-content">
                 <div class="row">
                     <div class="form-group col-6" *ngFor="let tag of mozniTagi">
-                        <img *ngIf="preveriCeLahkoDodaTag(tag)" src="../../../assets/images/plus.png" width="8px" height="8px"
-                             style="cursor: pointer"
-                             (click)="dodajSeEnTag(tag)">
-                        <img *ngIf="preveriCeLahkoOdstraniTag(tag) && !tag.checkbox" src="../../../assets/images/minus.png" width="8px" height="8px"
-                             style="cursor: pointer"
-                             (click)="odstraniTag(tag)" class="ml-2">
+
                         <div *ngIf="tag.childTags.length > 0">
                             <div *ngIf="!tag.checkbox">
-                                <label>
+                                <label class="parent-tag">
                                     <span *ngIf="translate.currentLang === 'slv'">{{tag.sloName}}</span>
                                     <span *ngIf="translate.currentLang === 'eng'">{{tag.engName}}</span>
+                                    <img *ngIf="preveriCeLahkoDodaTag(tag)" src="../../../assets/images/plus.png" width="8px" height="8px"
+                                         style="cursor: pointer"
+                                         (click)="dodajSeEnTag(tag)">
+                                    <img *ngIf="preveriCeLahkoOdstraniTag(tag) && !tag.checkbox" src="../../../assets/images/minus.png" width="8px" height="8px"
+                                         style="cursor: pointer"
+                                         (click)="odstraniTag(tag)" class="ml-2">
                                 </label>
-                                <select class="form-control form-control-sm" [id]="tag.tagId" [(ngModel)]="tag.selectedChild"
+                                <select class="form-control form-control-sm"  [id]="tag.tagId" [(ngModel)]="tag.selectedChild"
                                         [ngModelOptions]="{standalone: true}">
                                     <option selected></option>
-                                    <option *ngFor="let child of tag.childTags" [ngValue]="child">{{child.name}}</option>
+                                    <option *ngFor="let child of tag.childTags" [ngClass]="{'has-childs' : child != undefined && child.childTags.length > 0}" [ngValue]="child">{{child.name}}</option>
                                 </select>
                             </div>
                             <div *ngIf="tag.checkbox" class="card card-body radio-box mb-1">
@@ -38,16 +39,13 @@
                             </div>
 
                             <div *ngIf="tag.selectedChild && tag.selectedChild.childTags.length > 0">
-                                <div *ngIf="!tag.selectedChild.checkbox">
-                                    <label *ngIf="!tag.checkbox">
-                                        <span *ngIf="translate.currentLang === 'slv'">{{tag.selectedChild.sloName}}</span>
-                                        <span *ngIf="translate.currentLang === 'eng'">{{tag.selectedChild.engName}}</span>
-                                    </label>
+                                <div class="mt-1" *ngIf="!tag.selectedChild.checkbox">
+
                                     <select class="form-control form-control-sm" [id]="tag.selectedChild.tagId"
                                             [(ngModel)]="tag.selectedChild.selectedChild"
                                             [ngModelOptions]="{standalone: true}">
                                         <option selected></option>
-                                        <option *ngFor="let child2 of tag.selectedChild.childTags" [ngValue]="child2">
+                                        <option *ngFor="let child2 of tag.selectedChild.childTags" [ngClass]="{'has-childs' :  child != undefined && child2.childTags.length > 0}" [ngValue]="child2">
                                             <span *ngIf="translate.currentLang === 'slv'">{{child2.sloName}}</span>
                                             <span *ngIf="translate.currentLang === 'eng'">{{child2.engName}}</span>
                                         </option>
@@ -69,19 +67,14 @@
                                 </div>
 
                                 <div *ngIf="tag.selectedChild.selectedChild && tag.selectedChild.selectedChild.input">
-                                    <label>{{"OZNACEVANJE.STEVILO" | translate}}</label>
-                                    <input class="form-control form-control-sm" type="number"
+                                    <input placeholder="{{'OZNACEVANJE.STEVILO' | translate}}" class="form-control form-control-sm" type="number"
                                            [(ngModel)]="tag.selectedChild.selectedChild.inputValue"
                                            [ngModelOptions]="{standalone: true}">
                                 </div>
 
                                 <div *ngIf="tag.selectedChild.selectedChild && tag.selectedChild.selectedChild.childTags.length > 0">
-                                    <div *ngIf="!tag.selectedChild.selectedChild.checkbox">
-                                        <label *ngIf="!tag.checkbox">
-                                            <span *ngIf="translate.currentLang === 'slv'">{{tag.selectedChild.selectedChild.sloName}}</span>
-                                            <span *ngIf="translate.currentLang === 'eng'">{{tag.selectedChild.selectedChild.engName}}</span>
-                                        </label>
-                                        <select class="form-control form-control-sm" [id]="tag.selectedChild.selectedChild.tagId"
+                                    <div class="mt-1" *ngIf="!tag.selectedChild.selectedChild.checkbox">
+                                        <select class="form-control form-control-sm" [ngClass]="{'has-childs' :  child != undefined && child.childTags.length > 0}" [id]="tag.selectedChild.selectedChild.tagId"
                                                 [(ngModel)]="tag.selectedChild.selectedChild.selectedChild"
                                                 [ngModelOptions]="{standalone: true}">
                                             <option selected></option>
@@ -109,8 +102,7 @@
                                     </div>
 
                                     <div *ngIf="tag.selectedChild.selectedChild.selectedChild && tag.selectedChild.selectedChild.selectedChild.input">
-                                        <label>{{"OZNACEVANJE.STEVILO" | translate}}</label>
-                                        <input class="form-control form-control-sm" type="number"
+                                        <input class="form-control form-control-sm" placeholder="{{'OZNACEVANJE.STEVILO' | translate}}" type="number"
                                                [(ngModel)]="tag.selectedChild.selectedChild.selectedChild.inputValue"
                                                [ngModelOptions]="{standalone: true}">
                                     </div>
@@ -118,13 +110,16 @@
                             </div>
                         </div>
                         <div *ngIf="tag.childTags.length === 0 && tag.input">
-                            <label>
+                            <label class="parent-tag">
                                 <span *ngIf="translate.currentLang === 'slv'">{{tag.sloName}}</span>
                                 <span *ngIf="translate.currentLang === 'eng'">{{tag.engName}}</span>
                             </label>
                             <input class="form-control form-control-sm" type="number" [(ngModel)]="tag.inputValue"
                                    [ngModelOptions]="{standalone: true}">
                         </div>
+
+
+
                     </div>
                 </div>
             </div>
