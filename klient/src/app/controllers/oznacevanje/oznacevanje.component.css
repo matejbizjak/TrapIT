@@ -134,6 +134,8 @@
     transform: rotate(45deg);
 }
 
+
+
 .page-item.active .page-link {
     color: #fff !important;
     background-color: #a51000 !important;

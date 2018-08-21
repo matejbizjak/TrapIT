@@ -18,42 +18,36 @@
                         <input class="form-control form-control-sm mb-1" type="text" [(ngModel)]="lastUser">
                         <span  class="parent-tag">{{"PROJEKTI.DATUM_ZADNJEGA_PREGLEDA" | translate}}</span>
                         <input class="form-control form-control-sm mb-1" type="date" [(ngModel)]="lastDate">
+
+
+                        <!-- Search by empty or with animals -->
+                        <form>
+                            <mat-form-field class="mt-3">
+                                <mat-select  placeholder="{{'PROJEKTI.TIP_MEDIJA' | translate}}" [(value)]="this.media">
+                                    <mat-option [value]="true">{{"PROJEKTI.SLIKA" | translate}}</mat-option>
+                                    <mat-option [value]="false">{{"PROJEKTI.VIDEO" | translate}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </form>
+
+                        <!-- Search by empty or with animals -->
+                        <form>
+                            <mat-form-field class="mt-1">
+                                <mat-select  placeholder="{{'PROJEKTI.VSEBINA_SLIKE' | translate}}" [(value)]="this.empty">
+                                    <mat-option [value]="true">{{"PROJEKTI.PRAZNO" | translate}}</mat-option>
+                                    <mat-option [value]="false">{{"PROJEKTI.Z_ZIVALMI" | translate}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </form>
+
                         <!-- Search by projekti -->
                         <form class="projekti">
-                            <mat-form-field>
-                                <mat-select placeholder="Filtriranje po projektih" [formControl]="this.filtriraniProjektiControl" multiple>
+                            <mat-form-field class="mt-1">
+                                <mat-select placeholder="{{'PROJEKTI.FILTERPROJECTS' | translate}}" [formControl]="this.filtriraniProjektiControl" multiple>
                                     <mat-option *ngFor="let projekt of mozniProjekti" [value]="projekt">{{projekt.name}}</mat-option>
                                 </mat-select>
                             </mat-form-field>
-                            <p>Možno jih je izbrati več, našle se bodo pa vse slike, ki vključujejo vsaj enega izmed izbranih projektov.</p>
                         </form>
-
-                        <div class="card card-body radio-box mb-1 p-1">
-                            <div class="row d-flex" style="height: 53px">
-                                <div class="col-12">
-                                    <span style="margin-top: 13px; position: absolute; top: 0;">{{"PROJEKTI.TIP_MEDIJA" | translate}}:</span>
-                                    <div class="btn-group" btnRadioGroup [(ngModel)]="media" style="float: right">
-                                        <label class="btn btn-dark" btnRadio="true" style="margin-top: 7px"
-                                               uncheckable tabindex="0" role="button">{{"PROJEKTI.SLIKA" | translate}}</label>
-                                        <label class="btn btn-dark" btnRadio="false" style="margin-top: 7px"
-                                               uncheckable tabindex="0" role="button">{{"PROJEKTI.VIDEO" | translate}}</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card card-body radio-box mb-1 p-1">
-                            <div class="row d-flex" style="height: 53px">
-                                <div class="col-12">
-                                    <span style="margin-top: 13px; position: absolute; top: 0;">{{"PROJEKTI.VSEBINA_SLIKE" | translate}}:</span>
-                                    <div class="btn-group" btnRadioGroup [(ngModel)]="empty" style="float: right">
-                                        <label class="btn btn-dark" btnRadio="false" style="margin-top: 7px"
-                                               uncheckable tabindex="0" role="button">{{"PROJEKTI.PRAZNO" | translate}}</label>
-                                        <label class="btn btn-dark" btnRadio="true" style="margin-top: 7px"
-                                               uncheckable tabindex="0" role="button">{{"PROJEKTI.Z_ZIVALMI" | translate}}</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>

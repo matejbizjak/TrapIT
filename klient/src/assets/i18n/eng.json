@@ -121,7 +121,8 @@
     "SLIKA": "Image",
     "VIDEO": "Video",
     "OZNACEVANJE": "Reviewing",
-    "PONASTAVI": "Reset"
+    "PONASTAVI": "Reset",
+    "FILTERPROJECTS": "Filter by projects"
   },
   "ISKANJE": {
     "LOKACIJA": "Site",

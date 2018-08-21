@@ -388,7 +388,6 @@ module.exports = class ProjektService {
 
         //filtriranje po projektu, ce je posredovano
         if(nastavitve.projekti !== undefined && nastavitve.projekti !== null && nastavitve.projekti.length != 0){
-            console.log(nastavitve.projekti.length);
             medias = await this.filtrirajPoProjektih(nastavitve.projekti, medias);
         }
 

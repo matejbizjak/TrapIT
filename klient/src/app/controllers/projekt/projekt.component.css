@@ -58,7 +58,14 @@
 .wide {
     max-height: var(--height) !important;
     max-width: var(--width) !important;
+}
+
+.overflow {
     overflow-y: scroll !important;
+}
+
+.oznacevanje-background {
+    background-color: rgba(0,0,0,.03)
 }
 
 .radio-box {

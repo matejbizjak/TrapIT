@@ -113,7 +113,6 @@ export class ProjektComponent implements OnInit {
 
     dobiMozneProjekte() {
         this.projektService.dobiProjekte().subscribe((projekti: Project[]) => {
-            console.log(projekti);
             this.mozniProjekti = projekti;
         });
     }
@@ -150,6 +149,7 @@ export class ProjektComponent implements OnInit {
         this.searchDate = null;
         this.lastUser = null;
         this.lastDate = null;
+        this.filtriraniProjektiControl.reset();
 
         this.mozniTagi.forEach(element => {
             element.selectedChild = null;
@@ -176,7 +176,6 @@ export class ProjektComponent implements OnInit {
                 this.filtriranjeNastavitve.filtrirajAsc = true;
                 this.filtriranjeNastavitve.stStrani = 1;
                 this.filtriranjeNastavitve.projekti = this.filtriraniProjektiControl.value;
-                console.log(this.filtriranjeNastavitve);
             }
             this.projektService.pretovriVOblikoZaPosiljatFiltriranje(this.mozniTagi).then(
                 (tagi: TagZInputValue[]) => {
@@ -185,7 +184,6 @@ export class ProjektComponent implements OnInit {
                             this.medijiSeznam = sfiltriraniPodatki.mediji;
                             this.stVsehZadetkov = sfiltriraniPodatki.stVsehMedijev;
                             this.loading = false;
-                            this.filtriraniProjektiControl = new FormControl();
 
                             resolve(sfiltriraniPodatki.mediji);
                         }, (err) => {
@@ -215,7 +213,7 @@ export class ProjektComponent implements OnInit {
 
     odpriOznacevanje(template: TemplateRef<any>, izbranMedia: Media) {
         this.izbranMedia = izbranMedia;
-        this.modalRef = this.modalService.show(template, Object.assign({}, {class: "wide modal-lg"}));
+        this.modalRef = this.modalService.show(template, Object.assign({}, {class: "modal-lg wide overflow"}));
     }
 
     jeIzbralNivo(el, parentTag: TagParent) {
@@ -274,11 +272,6 @@ export class ProjektComponent implements OnInit {
         }
         return true;
     }
-
-    deluje() {
-        console.log("deluje");
-    }
-
     preveriCeLahkoOdstraniTag(tag: TagParent): boolean {
         let stTagovTeVrste = 0;
         for (let i = 0; i < this.mozniTagi.length; i++) {
