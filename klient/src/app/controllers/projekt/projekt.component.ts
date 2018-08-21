@@ -42,6 +42,10 @@ export class ProjektComponent implements OnInit {
     specificMediaId: number = null;
     mediaPerPage = 25;
 
+    // width and height of modal
+    width = 90;
+    height = 90;
+
     // nastavitve tabele
     projectsHide: boolean = false;
 
@@ -81,6 +85,11 @@ export class ProjektComponent implements OnInit {
 
         this.izbranMedia = null;
         this.medijiSeznam = [];
+    }
+
+    nastaviVisinoInDolzinoModala() {
+        document.body.style.setProperty("--width", this.width.toString() + "vw");
+        document.body.style.setProperty("--height", this.height.toString() + "vh");
     }
 
     dobiMozneTage(): Promise<any> {

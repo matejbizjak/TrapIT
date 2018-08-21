@@ -52,7 +52,9 @@ export class OznacevanjeComponent implements OnInit {
     }
 
     ngOnInit(): void {
+
         this.loading = true;
+        this.nastaviVisinoInDolzinoModala()
         this.nastaviPozicijoGledanegaMedie();
 
         // :TODO the domain will change
@@ -70,6 +72,10 @@ export class OznacevanjeComponent implements OnInit {
             this.dobiTage();
             }
         );
+    }
+
+    nastaviVisinoInDolzinoModala() {
+        this.projectComponent.nastaviVisinoInDolzinoModala();
     }
 
     nastaviPozicijoGledanegaMedie() {

@@ -48,8 +48,17 @@
     }
 }
 
+
+
+:root {
+    --width: 90vw;
+    --height: 90vh;
+}
+
 .wide {
-    max-width: 90vw !important;
+    max-height: var(--height) !important;
+    max-width: var(--width) !important;
+    overflow-y: scroll !important;
 }
 
 .radio-box {

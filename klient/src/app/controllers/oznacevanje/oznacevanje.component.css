@@ -14,7 +14,6 @@
 }
 
 .parent-tag{
-    float: left;
     background: rgb(107, 122, 122);
     color: white;
     padding: 0.05em .3em;
@@ -22,8 +21,16 @@
     border-radius: 3px;
 }
 
+.parent-head{
+    background: rgb(107, 122, 122);
+    color: white;
+    padding: 0.05em .3em;
+    margin: 3px 0px 3px 0px;
+    width: auto;
+    border-radius: 3px;
+}
+
 .parent-tag{
-    float: left;
     background: rgb(107, 122, 122);
     color: white;
     padding: 0.05em .3em;

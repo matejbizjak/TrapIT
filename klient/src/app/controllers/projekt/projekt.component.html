@@ -293,6 +293,21 @@
 <ng-template #modalOznacevanje>
     <div class="modal-header">
         <h4 class="modal-title pull-left">{{"PROJEKTI.OZNACEVANJE" | translate}}</h4>
+        <!-- width and height -->
+        <div class="float-right">
+            <input (change)="this.nastaviVisinoInDolzinoModala()"
+                   min="15" max="99"
+                   [(ngModel)]="this.width"
+                   type="number"
+                   style="width: 3em"
+                   class="ml-2 mr-1">  %
+            <input (change)="this.nastaviVisinoInDolzinoModala()"
+                   min="15" max="99"
+                   [(ngModel)]="this.height"
+                   type="number"
+                   style="width: 3em"
+                   class="ml-1 mr-1">  %
+        </div>
         <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
             <span aria-hidden="true">&times;</span>
         </button>
