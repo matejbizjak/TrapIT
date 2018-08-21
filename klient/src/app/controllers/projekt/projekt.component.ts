@@ -115,7 +115,7 @@ export class ProjektComponent implements OnInit {
         this.projektService.dobiProjekte().subscribe((projekti: Project[]) => {
             console.log(projekti);
             this.mozniProjekti = projekti;
-        })
+        });
     }
 
     // returns a check mark if it was already seen :,D

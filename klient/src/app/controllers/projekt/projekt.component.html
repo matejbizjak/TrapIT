@@ -18,6 +18,16 @@
                         <input class="form-control form-control-sm mb-1" type="text" [(ngModel)]="lastUser">
                         <span  class="parent-tag">{{"PROJEKTI.DATUM_ZADNJEGA_PREGLEDA" | translate}}</span>
                         <input class="form-control form-control-sm mb-1" type="date" [(ngModel)]="lastDate">
+                        <!-- Search by projekti -->
+                        <form class="projekti">
+                            <mat-form-field>
+                                <mat-select placeholder="Filtriranje po projektih" [formControl]="this.filtriraniProjektiControl" multiple>
+                                    <mat-option *ngFor="let projekt of mozniProjekti" [value]="projekt">{{projekt.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <p>Možno jih je izbrati več, našle se bodo pa vse slike, ki vključujejo vsaj enega izmed izbranih projektov.</p>
+                        </form>
+
                         <div class="card card-body radio-box mb-1 p-1">
                             <div class="row d-flex" style="height: 53px">
                                 <div class="col-12">

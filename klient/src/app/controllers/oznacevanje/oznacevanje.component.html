@@ -1,6 +1,79 @@
 <form id="tagi">
     <div class="row">
-        <!--media-->
+        <!--media coneten-->
+        <div class="col-6">
+            <div class="card card-body p-2">
+                <div>
+                    <ngx-image-viewer *ngIf="izbranMedia.image" [src]="potDoSlike"></ngx-image-viewer>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <div style="text-align: center">
+                            <button class="btn" (click)="prejsnjaSlika()" style="float: left">{{"OZNACEVANJE.NAZAJ" | translate}}</button>
+                            <button class="btn btn-success" (click)="shraniVnose()">{{"OZNACEVANJE.SHRANI" | translate}}</button>
+                            <button class="btn" (click)="naslednjaSlika()" style="float: right">{{"OZNACEVANJE.NAPREJ" | translate}}</button>
+                            <div *ngIf="loading === true" class="loader float-left ml-3 mt-1"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card card-body mt-3 static-media">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="mb-1 parent-head">{{"OZNACEVANJE.MEDIA_ID" | translate}}: <span style="color: limegreen">{{izbranMedia.mediaId}}</span></div>
+                        <div class="card card-body radio-box mb-1">
+                            <div class="row">
+                                <div class="col-12">
+                                    <label class="check-container">{{"OZNACEVANJE.PRAZNO" | translate}}
+                                        <input class="form-check-input" type="checkbox" [(ngModel)]="mediaData.empty"
+                                               [ngModelOptions]="{standalone: true}">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card card-body radio-box mb-1">
+                            <div class="row">
+                                <div class="col-12">
+                                    <label class="check-container">{{"OZNACEVANJE.ZANIMIVA" | translate}}
+                                        <input class="form-check-input" type="checkbox" [(ngModel)]="mediaData.interesting"
+                                               [ngModelOptions]="{standalone: true}">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="mb-1 parent-head">{{"OZNACEVANJE.PREGLEDANO" | translate}} {{this.projectComponent.alreadySeen(this.izbranMedia.mediaProjects)}}</div>
+                        <div class="card card-body radio-box mb-1" style="min-height: 41px">
+                            <span *ngIf="!this.izbranMedia.lastUserId">
+                                {{"OZNACEVANJE.NAZADNJE_PREGLEDAL" | translate}}: /
+                            </span>
+                            <span *ngIf="this.izbranMedia.lastUserId">
+                                {{"OZNACEVANJE.NAZADNJE_PREGLEDAL" | translate}}: {{this.izbranMedia.lastUserId.username}}
+                            </span>
+                        </div>
+                        <div class="card card-body radio-box mb-1" style="min-height: 41px">
+                            <span *ngIf="!this.izbranMedia.lastDate">
+                                {{"OZNACEVANJE.NAZADNJE_PREGLEDANO" | translate}}: /
+                            </span>
+                            <span *ngIf="this.izbranMedia.lastDate">
+                                {{"OZNACEVANJE.NAZADNJE_PREGLEDANO" | translate}}: {{this.izbranMedia.lastDate.toString().substring(8, 10) + '.' +
+                                  this.izbranMedia.lastDate.toString().substring(5, 7) + '.' +
+                                  this.izbranMedia.lastDate.toString().substring(0, 4)}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <label class="form-check-label" for="comment">{{"OZNACEVANJE.KOMENTAR" | translate}}</label>
+                    <textarea class="form-control" id="comment" [(ngModel)]="mediaData.comment"
+                              [ngModelOptions]="{standalone: true}"></textarea>
+                </div>
+            </div>
+        </div>
+        <!--tag content-->
         <div class="col-6">
             <div class="card card-body tag-content p-2">
                 <div class="row">
@@ -124,78 +197,6 @@
                 </div>
             </div>
         </div>
-        <!--tag-->
-        <div class="col-6">
-            <div class="card card-body p-2">
-                <div>
-                    <ngx-image-viewer *ngIf="izbranMedia.image" [src]="potDoSlike"></ngx-image-viewer>
-                </div>
-                <div class="row mt-2">
-                    <div class="col-12">
-                        <div style="text-align: center">
-                            <button class="btn" (click)="prejsnjaSlika()" style="float: left">{{"OZNACEVANJE.NAZAJ" | translate}}</button>
-                            <button class="btn btn-success" (click)="shraniVnose()">{{"OZNACEVANJE.SHRANI" | translate}}</button>
-                            <button class="btn" (click)="naslednjaSlika()" style="float: right">{{"OZNACEVANJE.NAPREJ" | translate}}</button>
-                            <div *ngIf="loading === true" class="loader float-left ml-3 mt-1"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card card-body mt-3 static-media">
-                <div class="row">
-                    <div class="col-6">
-                        <div class="mb-1 parent-head">{{"OZNACEVANJE.MEDIA_ID" | translate}}: <span style="color: limegreen">{{izbranMedia.mediaId}}</span></div>
-                        <div class="card card-body radio-box mb-1">
-                            <div class="row">
-                                <div class="col-12">
-                                    <label class="check-container">{{"OZNACEVANJE.PRAZNO" | translate}}
-                                        <input class="form-check-input" type="checkbox" [(ngModel)]="mediaData.empty"
-                                               [ngModelOptions]="{standalone: true}">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card card-body radio-box mb-1">
-                            <div class="row">
-                                <div class="col-12">
-                                    <label class="check-container">{{"OZNACEVANJE.ZANIMIVA" | translate}}
-                                        <input class="form-check-input" type="checkbox" [(ngModel)]="mediaData.interesting"
-                                               [ngModelOptions]="{standalone: true}">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="mb-1 parent-head">{{"OZNACEVANJE.PREGLEDANO" | translate}} {{this.projectComponent.alreadySeen(this.izbranMedia.mediaProjects)}}</div>
-                        <div class="card card-body radio-box mb-1" style="min-height: 41px">
-                            <span *ngIf="!this.izbranMedia.lastUserId">
-                                {{"OZNACEVANJE.NAZADNJE_PREGLEDAL" | translate}}: /
-                            </span>
-                            <span *ngIf="this.izbranMedia.lastUserId">
-                                {{"OZNACEVANJE.NAZADNJE_PREGLEDAL" | translate}}: {{this.izbranMedia.lastUserId.username}}
-                            </span>
-                        </div>
-                        <div class="card card-body radio-box mb-1" style="min-height: 41px">
-                            <span *ngIf="!this.izbranMedia.lastDate">
-                                {{"OZNACEVANJE.NAZADNJE_PREGLEDANO" | translate}}: /
-                            </span>
-                            <span *ngIf="this.izbranMedia.lastDate">
-                                {{"OZNACEVANJE.NAZADNJE_PREGLEDANO" | translate}}: {{this.izbranMedia.lastDate.toString().substring(8, 10) + '.' +
-                                  this.izbranMedia.lastDate.toString().substring(5, 7) + '.' +
-                                  this.izbranMedia.lastDate.toString().substring(0, 4)}}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <label class="form-check-label" for="comment">{{"OZNACEVANJE.KOMENTAR" | translate}}</label>
-                    <textarea class="form-control" id="comment" [(ngModel)]="mediaData.comment"
-                              [ngModelOptions]="{standalone: true}"></textarea>
-                </div>
-            </div>
-        </div>
+
     </div>
 </form>
