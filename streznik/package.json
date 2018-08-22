@@ -11,16 +11,17 @@
       "typescript": "^2.8.3"
    },
    "dependencies": {
-      "typeorm": "0.2.7",
-      "reflect-metadata": "^0.1.12",
-      "mysql": "^2.15.0",
-      "express": "^4.16.3",
-      "body-parser": "^1.18.3",
-      "jsonwebtoken": "^8.3.0",
       "bcrypt": "^2.0.1",
+      "body-parser": "^1.18.3",
+      "exif": "latest",
+      "express": "^4.16.3",
       "express-jwt": "^5.3.1",
       "find": "latest",
-      "exif": "latest"
+      "handbrake-js": "^3.0.6",
+      "jsonwebtoken": "^8.3.0",
+      "mysql": "^2.15.0",
+      "reflect-metadata": "^0.1.12",
+      "typeorm": "0.2.7"
    },
    "scripts": {
       "build": "tsc",
