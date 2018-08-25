@@ -71,6 +71,7 @@ import {MatSelectModule,
 
 import {ButtonsModule} from "ngx-bootstrap";
 import { SpremembaGeslaComponent } from './controllers/sprememba-gesla/sprememba-gesla.component';
+import { HomePageInfoEditorComponent } from './controllers/nastavitve/home-page-info-editor/home-page-info-editor.component';
 
 const imageViewerSettings = {
     btnClass: "default", // The CSS class(es) that will apply to the buttons
@@ -119,7 +120,8 @@ export function HttpLoaderFactory(http: HttpClient) {
         AddFolderComponent,
         UporabnikiComponent,
         PathSettingsComponent,
-        SpremembaGeslaComponent
+        SpremembaGeslaComponent,
+        HomePageInfoEditorComponent
     ],
     imports: [
         // angular material

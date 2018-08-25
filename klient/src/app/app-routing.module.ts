@@ -11,6 +11,7 @@ import {OznacevanjeComponent} from "./controllers/oznacevanje/oznacevanje.compon
 import {NastavitveComponent} from "./controllers/nastavitve/nastavitve.component";
 import {UporabnikiComponent} from "./controllers/uporabniki/uporabniki.component";
 import {SpremembaGeslaComponent} from "./controllers/sprememba-gesla/sprememba-gesla.component";
+import {HomePageInfoEditorComponent} from "./controllers/nastavitve/home-page-info-editor/home-page-info-editor.component";
 
 const routes: Routes = [
     // routes
@@ -20,6 +21,7 @@ const routes: Routes = [
     {path: "oznacevanje/:id", component: OznacevanjeComponent, canActivate: [RVguard]},
     {path: "nastavitve", component: NastavitveComponent},
     {path: "uporabniki", component: UporabnikiComponent},
+    {path: "home-page-editor", component: HomePageInfoEditorComponent},
     {path: "geslo", component: SpremembaGeslaComponent},
     // errors
     {path: "404", component: Napaka404Component},
