@@ -68,6 +68,11 @@
     background-color: rgba(0,0,0,.03)
 }
 
+.ikona {
+    position: relative;
+    top: 4px;
+}
+
 .radio-box {
     padding: 5px;
     padding-left: 10px;

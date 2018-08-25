@@ -1,3 +1,5 @@
+
+
 <div class="card card-body">
     <div class="row">
         <div class="col-6">
@@ -189,10 +191,10 @@
         </div>
         <div class="col-12 mt-3">
             <div class="btn btn-outline-dark" style="float: right; display: flex" (click)="resetSearch()">
-                <i class="material-icons">
-                    cached
+                <i class="fa fa-refresh ikona">
+
                 </i>
-                {{"PROJEKTI.PONASTAVI" | translate}}
+                <span class="ml-2">{{"PROJEKTI.PONASTAVI" | translate}}</span>
             </div>
         </div>
     </div>
@@ -265,7 +267,7 @@
                     <td>{{medij.mediaId}}</td>
                     <td>{{medij.siteId.name}}</td>
                     <td>{{medij.date | date:"dd.MM.yyyy"}}</td>
-                    <td>{{"ISKANJE." + medij.image ? "slika" : "video" | translate}}</td>
+                    <td>{{"ISKANJE." + (medij.image ? "slika" : "video" )| translate}}</td>
                     <td>{{"ISKANJE." + medij.empty | translate}}</td>
                     <td>{{"ISKANJE." + medij.interesting | translate}}</td>
                     <td>

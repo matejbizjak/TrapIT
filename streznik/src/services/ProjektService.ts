@@ -223,6 +223,23 @@ module.exports = class ProjektService {
                         console.log(err);
                         reject();
                     });
+                /*
+                this.mediaRepository.find({
+                    relations: ["siteId", "mediaProjects", "mediaProjects.projectId", "lastUserId"],
+                    order: {mediaId: "ASC"}
+                }).then((medias: Media[]) => {
+                    this.filtrirajPoNastavitvah(medias, nastavitve).then
+                    ((filteredBySettings: SfiltriraniPodatki) => {
+                        resolve(filteredBySettings);
+                    }, (err) => {
+                        console.log(err);
+                        reject();
+                    })
+                }, (err) => {
+                    console.log(err);
+                    reject();
+                })
+                */
                 //if there are filters involved
             } else { // select where filtrisdan
                 this.mediaTagRepository.createQueryBuilder("mediaTag")
@@ -254,6 +271,30 @@ module.exports = class ProjektService {
                         console.log(err);
                         reject();
                     });
+                /*
+                this.mediaTagRepository.find({
+                    where: {tagId: In(filtriArr)},
+                    relations: ["tagId", "mediaId", "mediaId.siteId", "mediaId.mediaProjects", "mediaId.mediaProjects.projectId"],
+                    order: {mediaId: "ASC"}
+                }).then(
+                    (mediaTags: MediaTag[]) => {
+                        //console.log(mediaTags);
+                        this.izlusciMediaIdje(mediaTags, filtriArr).then((medias: Media[]) => {
+                                this.filtrirajPoNastavitvah(medias, nastavitve).then
+                                ((filteredBySettings: SfiltriraniPodatki) => {
+                                    resolve(filteredBySettings);
+                                }, (err) => {
+                                    console.log(err);
+                                    reject();
+                                })
+                            }
+                        );
+                    }, (err) => {
+                        console.log(err);
+                        reject();
+                    }
+                );
+                */
             }
         });
     }
