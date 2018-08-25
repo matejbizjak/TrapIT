@@ -13,4 +13,13 @@ export class ApiService {
     apiCall(api: string) {
         return this.http.get(api);
     }
+
+    // updates markdown
+    updateMarkdownFile(content: string) {
+        return this.http.post("/settings/update/markdown", {markdown: content});
+    }
+
+    getMarkdownFile() {
+        return this.http.post("/settings/get/markdown", {});
+    }
 }

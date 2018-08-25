@@ -24,6 +24,10 @@ router.get('/folder/add/:path', prijavljen, security.jeAdmin, SettingsController
 router.get('/paths', prijavljen, security.jeAdmin, SettingsController.getAllPaths);
 //update path
 router.get('/update/path/:pathId/:value', prijavljen, security.jeAdmin, SettingsController.updatePathInDatabase);
+//updates the homepage markdown file
+router.post('/update/markdown', prijavljen, security.jeAdmin, SettingsController.updateMarkdownFile);
+//gets the markdown file as string
+router.post('/get/markdown', SettingsController.getMarkdownFile);
 
 
 module.exports = router;

@@ -58,6 +58,29 @@ module.exports.getAllPaths = function (req: Request, res: Response, next: NextFu
     })
 };
 
+module.exports.updateMarkdownFile = function (req: Request, res: Response, next: NextFunction) {
+    let settingsService = new SettingsService();
+
+    settingsService.saveMarkdownFile(req.body.markdown).then(
+        (data) => {
+            res.status(200).json({err: data.pop(), message: data.pop()});
+        }, (json) => {
+            res.status(505).json(json);
+        })
+};
+
+module.exports.getMarkdownFile = function (req: Request, res: Response, next: NextFunction) {
+    let settingsService = new SettingsService();
+
+    settingsService.getMarkdownFile().then(
+        (data) => {
+            res.status(200).json({markdown: data.pop(), err: data.pop(), message: data.pop()});
+        }, (json) => {
+            res.status(505).json(json);
+        })
+};
+
+
 module.exports.updatePathInDatabase = function (req: Request, res: Response, next: NextFunction) {
     let settingsService = new SettingsService();
 

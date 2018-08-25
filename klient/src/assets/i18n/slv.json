@@ -8,7 +8,7 @@
       "NASTAVITVE": "Nastavitve",
       "UPORABNIKI": "Uporabniki",
       "PROJEKT": "Projekti",
-      "HOMEPAGEEDITOR": "Urejevalec prijavne strani"
+      "HOMEPAGEEDITOR": "Urejevalnik besedila informacijske strani"
     }
   },
   "INDEX": {
@@ -21,6 +21,9 @@
     "GUMB": "Prijava"
   },
   "NASTAVITVE": {
+    "REFRESH": "Osveži",
+    "EDITOR": "Urejevalnik besedila informacijske strani",
+    "SAVE": "Shrani spremembe",
     "NASLOV": "Nastavitve",
     "POTDOSLIK": "Pot do slik",
     "POTPLACEHOLDER": "C:/Mapa1/Mapa2/...",

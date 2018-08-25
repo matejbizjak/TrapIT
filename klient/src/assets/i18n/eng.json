@@ -11,7 +11,7 @@
       "NASTAVITVE": "Settings",
       "UPORABNIKI": "Users",
       "PROJEKT": "Projects",
-      "HOMEPAGEEDITOR": "Login page editor"
+      "HOMEPAGEEDITOR": "Info page editor"
     }
   },
   "INDEX": {
@@ -24,6 +24,9 @@
     "GUMB": "Login"
   },
   "NASTAVITVE": {
+    "REFRESH": "Refresh",
+    "EDITOR": "Text editor of the info page",
+    "SAVE": "Save changes",
     "NASLOV": "Settings",
     "POTDOSLIK": "Path to images",
     "POTPLACEHOLDER": "C:/Folder1/Folder2/...",

@@ -1,17 +1,49 @@
-
 <head>
-  <!-- FOR MARKDOWN EDITOR -->
-  <!--
-  <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="https://cdn.bootcss.com/highlight.js/9.12.0/styles/agate.min.css" rel="stylesheet">
-  -->
-  <script src="https://cdn.bootcss.com/ace/1.2.8/ace.js"></script>
-  <script src="https://cdn.bootcss.com/marked/0.3.6/marked.min.js"></script>
-  <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
-  <!-- END -->
+
+    <!--
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    -->
+    <link href="https://cdn.bootcss.com/highlight.js/9.12.0/styles/agate.min.css" rel="stylesheet">
+
+
+
 </head>
 
-<p>
-  home-page-info-editor works!
-</p>
+<div class="col-12">
+    <div class="card mb-2">
+        <div class="card-header">
+            <span class="float-left">{{"NASTAVITVE.EDITOR" | translate}}</span>
+            <div *ngIf="loading == 0" class="loader float-left ml-3"></div>
+        </div>
+        <div class="card-body fixedSize p-0">
+
+            <span>
+                <button class="btn btn-outline-dark" id="save" (click)="getMarkdownFile()">{{"NASTAVITVE.REFRESH" | translate}}</button>
+                <button class="btn btn-outline-dark" id="save" (click)="saveMarkdownFile()">{{"NASTAVITVE.SAVE" | translate}}</button>
+            </span>
+            <div class="wrapper">
+                <md-editor
+                           [hideToolbar]="hideToolbar"
+                           [(ngModel)]="content"
+                           [height]="height"
+                           [mode]="mode"
+                           [options]="settings"
+                           required
+                           maxlength="maxLength">
+                </md-editor>
+            </div>
+            <div class="save">
+
+            </div>
+            <div class="card card-footer">
+                <div *ngIf = "serverReply"  style="text-align: center; font-style: italic" >{{serverReply}}</div>
+                <div *ngIf = "errReply"  style="text-align: center; font-style: italic"  >{{errReply}}</div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- //[preRender]="preRenderFunc" -->
+
+
+

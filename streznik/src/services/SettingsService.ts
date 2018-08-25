@@ -1,4 +1,5 @@
 import * as find from "find";
+import * as fs from "fs";
 import {getRepository} from "typeorm";
 import {Media} from "../entity/Media";
 import {Path} from "../entity/Path";
@@ -8,6 +9,7 @@ import {Site} from "../entity/Site";
 const GlobalVarService = require("../services/GlobalVarService");
 
 module.exports = class SettingsService {
+    private markdownFilePath: string = "./src/markdown/markdown.md";
     private lastRegDate: string = "1899-12-12 12:12:12";
     private mediaRepository = getRepository(Media);
     private siteRepository = getRepository(Site);
@@ -259,6 +261,46 @@ module.exports = class SettingsService {
                     resolve("unable");
                 })
         );
+    }
+
+    //saves the new markdown file to the sources
+    async saveMarkdownFile(content: string): Promise<string[]> {
+        let data = [];
+        return new Promise<string[]> ((resolve, reject) => {
+            fs.writeFile(this.markdownFilePath, content, (err) => {
+                if(err){
+                    console.log(err);
+                    data.push(err);
+                    data.push("Prišlo je do napake na strežniku!");
+                    resolve(data);
+                } else {
+                    data.push(null);
+                    data.push("Uspešno posodobljena informacijska stran.")
+                    resolve(data);
+                }
+            })
+        }) ;
+    }
+
+    //returns the markdown file as a string
+    async getMarkdownFile(): Promise<string[]> {
+        let data = [];
+        return new Promise<string[]> ((resolve, reject) => {
+            fs.readFile(this.markdownFilePath, 'utf-8', (err, markdown) => {
+                if(err){
+                    console.log(err);
+                    data.push("Prišlo je do napake na strežniku, informacijske strani ni bilo mogoče osvežiti.");
+                    data.push(err);
+                    data.push("error");
+                    resolve(data);
+                } else {
+                    data.push("Uspešno osvežena informacijska spletna stran.");
+                    data.push(null);
+                    data.push(markdown);
+                    resolve(data);
+                }
+            })
+        }) ;
     }
 
     //delay testing
