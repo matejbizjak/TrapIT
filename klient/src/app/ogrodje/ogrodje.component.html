@@ -10,6 +10,7 @@
              class="mr-1" (click)="spremeniJezik('eng')">
     </span>
     <span style="float: left; border-left: solid 1px #606060; height: 100%"></span>
+    <app-index-guest-sidebar></app-index-guest-sidebar>
     <span *ngIf="jePrijavljen">
         <app-index-reviewer-sidebar
                 *ngIf="trenutniUporabnik.roleId.role == roleEnum.REVIEWER"></app-index-reviewer-sidebar>

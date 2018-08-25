@@ -6,6 +6,7 @@
     "NAPACNI_PODATKI": "Napačni podatki, preverite ali Ste pravino vnesli geslo",
     "NAPAKA_SERVER": "Napaka na strežniku, prosimo poskusite kasneje",
     "MENU": {
+      "INFO": "Information",
       "DOMOV": "Home",
       "LINK": "Link",
       "NASTAVITVE": "Settings",

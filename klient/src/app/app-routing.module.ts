@@ -12,11 +12,13 @@ import {NastavitveComponent} from "./controllers/nastavitve/nastavitve.component
 import {UporabnikiComponent} from "./controllers/uporabniki/uporabniki.component";
 import {SpremembaGeslaComponent} from "./controllers/sprememba-gesla/sprememba-gesla.component";
 import {HomePageInfoEditorComponent} from "./controllers/nastavitve/home-page-info-editor/home-page-info-editor.component";
+import {GuestComponent} from "./controllers/index/guest/guest.component";
 
 const routes: Routes = [
     // routes
     {path: "", component: IndexComponent, canActivate: [PrijavaGuard], pathMatch: "full"},
     {path: "prijava", component: PrijavaComponent},
+    {path: "info", component: GuestComponent},
     {path: "projekt/:id", component: ProjektComponent, canActivate: [RVguard]},
     {path: "oznacevanje/:id", component: OznacevanjeComponent, canActivate: [RVguard]},
     {path: "nastavitve", component: NastavitveComponent},
