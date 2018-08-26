@@ -25,11 +25,11 @@ export class GuestComponent implements OnInit {
         this.apiService.getMarkdownFile().subscribe((body: { markdown, err, message }) => {
             this.loadingToggle();
             if (body.markdown !== "error") {
+                // Keep this not imported !!!
                 this.content = marked(body.markdown);
             }
             this.errReply = body.err;
             this.serverReply = body.message;
-            console.log(this.content);
         });
     }
 

@@ -193,7 +193,7 @@
                         </div>
                     </div>
                     <hr>
-                    <div class="row mb-2" *ngIf="prikazaniProjekti.length">
+                    <div class="row mb-2" *ngIf="!prikazaniProjekti || prikazaniProjekti.length">
                         <div class="col-12">
                             <div class="pageContainer">
                                 <pagination [totalItems]="totalProjects" [itemsPerPage]="20"
