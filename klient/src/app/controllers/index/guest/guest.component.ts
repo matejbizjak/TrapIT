@@ -1,7 +1,6 @@
 import {Component, OnInit} from "@angular/core";
 import {ApiService} from "../../../services/api/api.service";
 import {MarkdownComponent} from "ngx-markdown";
-import {MarkdownService} from "ngx-markdown";
 
 @Component({
     selector: "app-guest",
@@ -14,7 +13,7 @@ export class GuestComponent implements OnInit {
     content: string = "";
     loading: number = 1;
 
-    constructor(private apiService: ApiService, private markdownService: MarkdownService) {
+    constructor(private apiService: ApiService) {
     }
 
     ngOnInit() {
@@ -26,7 +25,7 @@ export class GuestComponent implements OnInit {
         this.apiService.getMarkdownFile().subscribe((body: { markdown, err, message }) => {
             this.loadingToggle();
             if (body.markdown !== "error") {
-                this.content = this.markdownService.compile(body.markdown);
+                this.content = marked(body.markdown);
             }
             this.errReply = body.err;
             this.serverReply = body.message;

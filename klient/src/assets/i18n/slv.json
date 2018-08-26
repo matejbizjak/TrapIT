@@ -23,7 +23,7 @@
   },
   "NASTAVITVE": {
     "REFRESH": "Osveži",
-    "EDITOR": "Urejevalnik besedila informacijske strani",
+    "EDITOR": "Urejevalnik besedila informacijske strani (Markdown urejevalnik, podpira tudi HTML)",
     "SAVE": "Shrani spremembe",
     "NASLOV": "Nastavitve",
     "POTDOSLIK": "Pot do slik",

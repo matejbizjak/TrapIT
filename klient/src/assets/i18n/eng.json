@@ -26,7 +26,7 @@
   },
   "NASTAVITVE": {
     "REFRESH": "Refresh",
-    "EDITOR": "Text editor of the info page",
+    "EDITOR": "Text editor of the info page (Markdown editor, supports HTML)",
     "SAVE": "Save changes",
     "NASLOV": "Settings",
     "POTDOSLIK": "Path to images",
