@@ -10,7 +10,8 @@ export class User {
     @Column()
     username: string;
 
-    @Column()
+    //does not select the password when using the relation
+    @Column({select: false})
     password: string;
 
     @Column()
