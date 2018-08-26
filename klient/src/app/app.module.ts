@@ -25,6 +25,8 @@ import {AddFolderComponent} from "./controllers/nastavitve/add-folder/add-folder
 import {UporabnikiComponent} from "./controllers/uporabniki/uporabniki.component";
 import {ImageViewerModule} from "ngx-image-viewer";
 import { PathSettingsComponent } from "./controllers/nastavitve/path-settings/path-settings.component";
+import {MarkdownModule} from "ngx-markdown";
+import {MarkdownService} from "ngx-markdown";
 
 
 // angular material
@@ -174,6 +176,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         AppRoutingModule,
         HttpClientModule,
         FormsModule,
+        MarkdownModule.forRoot(),
         ReactiveFormsModule,
         BootstrapModule,
         ButtonsModule,

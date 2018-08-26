@@ -32,6 +32,7 @@
     "moment": "^2.22.2",
     "ngx-bootstrap": "^3.0.1",
     "ngx-image-viewer": "^1.0.10",
+    "ngx-markdown": "^6.2.0",
     "ngx-markdown-editor": "^1.1.7",
     "rxjs": "^6.0.0",
     "zone.js": "^0.8.26"
