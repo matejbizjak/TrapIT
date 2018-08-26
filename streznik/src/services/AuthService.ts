@@ -11,7 +11,7 @@ module.exports = class AuthService {
         let user: User = await this.userRepository.findOne({where: {username: username}, relations: ["roleId"]});
 
         return new Promise<User>((resolve, reject) => {
-            if (user === undefined) {
+            if (user === undefined || user.active == false) {
                 reject();
             } else {
                 bcrypt.compare(password, user.password).then(
