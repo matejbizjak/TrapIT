@@ -29,9 +29,14 @@ export class SpremembaGeslaComponent implements OnInit {
       this.authService.spremeniGeslo(this.oldPswrd, this.newPswrd, this.confPswrd).then(() => {
         this.success = true;
       }, (err: HttpErrorResponse) => {
+          this.success = false;
           switch (err.status) {
               case 401:
                   this.error = "NAPACNI_PODATKI";
+                  break;
+              case 200:
+                  this.error = null;
+                  this.success = true;
                   break;
               default:
                   this.error = "NAPAKA_SERVER";

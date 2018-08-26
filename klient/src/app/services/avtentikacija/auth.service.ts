@@ -74,10 +74,12 @@ export class AuthService {
 
         return new Promise((resolve, reject) => {
             this.http.post(url, {user: JSON.parse(localStorage.getItem("trapitUserInfo")).username, old: old, nEw: nEw, conf: conf}).subscribe(
-                () => {
+                (data) => {
+                    console.log(data);
                     resolve();
                 },
                 (err) => {
+                    console.log(err);
                     reject(err);
                 }
             );

@@ -2,6 +2,9 @@ import {Component, OnInit} from "@angular/core";
 import {ApiService} from "../../../services/api/api.service";
 import {MarkdownComponent} from "ngx-markdown";
 
+
+
+
 @Component({
     selector: "app-guest",
     templateUrl: "./guest.component.html",
@@ -10,8 +13,9 @@ import {MarkdownComponent} from "ngx-markdown";
 export class GuestComponent implements OnInit {
     errReply: string = null;
     serverReply: string = null;
-    content: string = "";
+    content: string = null;
     loading: number = 1;
+
 
     constructor(private apiService: ApiService) {
     }

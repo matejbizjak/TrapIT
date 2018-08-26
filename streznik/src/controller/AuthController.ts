@@ -40,32 +40,28 @@ module.exports.geslo = function (req: Request, res: Response, next: NextFunction
     const userRepository = getRepository(User);
     const username = req.body.user;
     const oldPswd = req.body.old;
-    const newPswd = req.body.new;
+    const newPswd = req.body.nEw;
     const confPswd = req.body.conf;
 
     authService.preveriUpImeInGeslo(username, oldPswd).then(() => {
         bcrypt.genSalt(10, function(err, salt) {
             bcrypt.hash(newPswd, salt, function(err, hash) {
-                console.log(err);
+                if (newPswd === confPswd) {
+                    userRepository.createQueryBuilder("user")
+                        .update(User)
+                        .set({password: hash})
+                        .where("username = :name", {name: username})
+                        .execute()
+                        .then(() => {
+                            res.sendStatus(200);
+                        }, (err) => {
+                            res.sendStatus(500);
+                        });
+                } else {
+                    res.sendStatus(401);
+                }
             });
         });
-        /*
-        if (newPswd === confPswd) {
-            userRepository.createQueryBuilder("user")
-                .update(User)
-                .set({password: ""})
-                .where("username = :name", {name: username})
-                .execute()
-                .then(() => {
-                    res.sendStatus(200);
-                }, (err) => {
-                    res.sendStatus(500);
-                });
-        } else {
-            res.sendStatus(400);
-        }
-        */
-        res.sendStatus(200);
     }, () => {
         res.sendStatus(401);
     }).catch(err => {
