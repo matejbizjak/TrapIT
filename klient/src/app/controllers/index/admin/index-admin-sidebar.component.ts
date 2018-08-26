@@ -23,7 +23,7 @@ import {LanguageService} from "../../../services/language.service";
             </span>
         </div>
     `,
-    styles: [   ".nav-header {height: 100%; float: left; line-height: 60px; font-size: 30px; color: white}" +
+    styles: [   ".nav-header {height: 60px; float: left; line-height: 60px; font-size: 30px; color: white}" +
                 ".nav-frame {float: left; padding-left: 10px; padding-right: 10px; border-right: solid 1px #606060}" +
                 ".nav-frame:hover {background-color: #1b1e26}" +
                 ".nav-item {text-decoration: none; color: white}"]
