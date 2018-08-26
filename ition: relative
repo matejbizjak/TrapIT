@@ -1,0 +1,30 @@
+[1mdiff --git a/klient/src/app/controllers/projekt/projekt.component.css b/klient/src/app/controllers/projekt/projekt.component.css[m
+[1mindex 4709a25..e7a8812 100644[m
+[1m--- a/klient/src/app/controllers/projekt/projekt.component.css[m
+[1m+++ b/klient/src/app/controllers/projekt/projekt.component.css[m
+[36m@@ -60,10 +60,11 @@[m
+ .wide {[m
+     max-height: var(--height) !important;[m
+     max-width: var(--width) !important;[m
+[32m+[m[32m    position: relative;[m
+ }[m
+ [m
+ .overflow {[m
+[31m-    overflow-y: scroll !important;[m
+[32m+[m[32m    overflow-y: auto !important;[m
+ }[m
+ [m
+ .oznacevanje-background {[m
+[1mdiff --git a/klient/src/app/controllers/projekt/projekt.component.html b/klient/src/app/controllers/projekt/projekt.component.html[m
+[1mindex 9edf58e..5160b09 100644[m
+[1m--- a/klient/src/app/controllers/projekt/projekt.component.html[m
+[1m+++ b/klient/src/app/controllers/projekt/projekt.component.html[m
+[36m@@ -296,7 +296,7 @@[m
+ </div>[m
+ [m
+ <!--Modal za oznacevanje-->[m
+[31m-<ng-template #modalOznacevanje>[m
+[32m+[m[32m<ng-template #modalOznacevanje >[m
+     <div class="modal-header">[m
+         <h4 class="modal-title pull-left">{{"PROJEKTI.OZNACEVANJE" | translate}}</h4>[m
+         <!-- width and height -->[m

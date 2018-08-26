@@ -60,10 +60,11 @@
 .wide {
     max-height: var(--height) !important;
     max-width: var(--width) !important;
+    position: relative;
 }
 
 .overflow {
-    overflow-y: scroll !important;
+    overflow-y: auto !important;
 }
 
 .oznacevanje-background {
