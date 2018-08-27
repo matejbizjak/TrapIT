@@ -1,7 +1,7 @@
 import {Component, OnInit} from "@angular/core";
 import {ApiService} from "../../../services/api/api.service";
 import {MarkdownComponent} from "ngx-markdown";
-
+import * as MRKD from "./marked.js";
 
 
 
@@ -30,7 +30,7 @@ export class GuestComponent implements OnInit {
             this.loadingToggle();
             if (body.markdown !== "error") {
                 // Keep this not imported !!!
-                this.content = marked(body.markdown);
+                this.content = MRKD(body.markdown);
             }
             this.errReply = body.err;
             this.serverReply = body.message;
@@ -41,4 +41,6 @@ export class GuestComponent implements OnInit {
         if (this.loading) this.loading = 0;
         else this.loading = 1;
     }
+
+
 }

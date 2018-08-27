@@ -29,6 +29,7 @@ import {MarkdownModule} from "ngx-markdown";
 import {MarkdownService} from "ngx-markdown";
 
 
+
 // angular material
 import {platformBrowserDynamic} from "@angular/platform-browser-dynamic";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
@@ -194,7 +195,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         // services
         ServicesModule,
         IndexModule,
-        NapakeModule,
+        NapakeModule
     ],
     providers: [
         BsModalService,
