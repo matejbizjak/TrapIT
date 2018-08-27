@@ -12,7 +12,7 @@
 
 <!-- Super bi bilo, če se ta spodnji del ohrani na informacijski strani-->
 
-<center> *Biotehniška fakulteta UL* <center>
+<center> *Biotehniška fakulteta UL* </center>
 <center> 
         Urša Fležar,
         Klemen Juršič, 
@@ -32,3 +32,4 @@
 </center>
 
 <br>
+
