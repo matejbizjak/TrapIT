@@ -22,6 +22,12 @@ import {LanguageService} from "../../../services/language.service";
                 <a class="nav-item" [routerLink]="['/home-page-editor']">{{"OGRODJE.MENU.HOMEPAGEEDITOR" | translate}}</a>
             </span>
         </div>
+
+        <div class="nav-header">
+            <span class="nav-frame">
+                <a class="nav-item" [routerLink]="['/dodajanje-slik']">{{"OGRODJE.MENU.UVOZSLIK" | translate}}</a>
+            </span>
+        </div>
     `,
     styles: [   ".nav-header {height: 60px; float: left; line-height: 60px; font-size: 30px; color: white}" +
                 ".nav-frame {float: left; padding-left: 10px; padding-right: 10px; border-right: solid 1px #606060}" +

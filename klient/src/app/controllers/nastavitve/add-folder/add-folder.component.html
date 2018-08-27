@@ -1,122 +1,129 @@
-<div class="row">
-    <div class="col-lg-12">
-        <div class="card mt-3">
-            <div class="card-header">
-                {{"NASTAVITVE.POTDOSLIK" | translate}}
-            </div>
-            <div class="card-body">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="{{'NASTAVITVE.POTPLACEHOLDER' | translate}}" aria-label="potDoSlik"
-                           aria-describedby="basic-addon2" [(ngModel)]="potDoSlik">
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="button" (click)="setDir()">{{"NASTAVITVE.SHRANI" | translate}}
-                        </button>
+<div id="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <h3>{{"OGRODJE.MENU.UVOZSLIK" | translate}}</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card mt-3">
+                <div class="card-header">
+                    {{"NASTAVITVE.POTDOSLIK" | translate}}
+                </div>
+                <div class="card-body">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="{{'NASTAVITVE.POTPLACEHOLDER' | translate}}" aria-label="potDoSlik"
+                               aria-describedby="basic-addon2" [(ngModel)]="potDoSlik">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button" (click)="setDir()">{{"NASTAVITVE.SHRANI" | translate}}
+                            </button>
+                        </div>
+                    </div>
+                    <div class="alert alert-success mt-1" role="alert" *ngIf="potSuccess1 && potSuccess2">
+                        {{"NASTAVITVE.POTUSPEH" | translate}}
+                    </div>
+                    <div class="alert alert-danger mt-1" role="alert" *ngIf="potEmpty">
+                        {{"NASTAVITVE.POTPRAZNA" | translate}}
                     </div>
                 </div>
-                <div class="alert alert-success mt-1" role="alert" *ngIf="potSuccess1 && potSuccess2">
-                    {{"NASTAVITVE.POTUSPEH" | translate}}
-                </div>
-                <div class="alert alert-danger mt-1" role="alert" *ngIf="potEmpty">
-                    {{"NASTAVITVE.POTPRAZNA" | translate}}
-                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="card mt-3">
-    <div class="card-header">
-        <span class="float-left">{{"MAPA.DODAJANJE" | translate}}</span>
-        <div *ngIf="loading == 0" class="loader float-left ml-3"></div>
-    </div>
-    <div class="card-body">
-        <!-- functional part -->
-        <!-- current basePath name-->
-        <div>{{"MAPA.TRENUTNA" | translate}}: <span id="basePath">{{basePath}}</span>
-            <button class="btn btn-outline-dark ml-2" (click)="getBasePath()">{{"MAPA.OSVEZI" | translate}}</button>
+    <div class="card mt-3">
+        <div class="card-header">
+            <span class="float-left">{{"MAPA.DODAJANJE" | translate}}</span>
+            <div *ngIf="loading == 0" class="loader float-left ml-3"></div>
         </div>
-
-        <!-- what is the new folders name -->
-        <hr>
-        <div>{{"MAPA.NAVODILA_H" | translate}}:</div>
-        <ul>
-            <li>{{"MAPA.NAVODILA_1" | translate}}</li>
-            <li>{{"MAPA.NAVODILA_2" | translate}}</li>
-            <li>{{"MAPA.NAVODILA_3" | translate}}</li>
-            <li>{{"MAPA.NAVODILA_4" | translate}}</li>
-            <li>{{"MAPA.NAVODILA_5" | translate}}</li>
-        </ul>
-
-        <div class="input-group">
-            <input #inputFolderHTML type="text" placeholder="{{'MAPA.NAVODILA_PLACEHOLDER' | translate}}" class="form-control" aria-label="potDoSlik"
-                   aria-describedby="basic-addon2" (keyup.enter)="getAvaliableFolders(inputFolderHTML.value)">
-            <div class="input-group-append">
-                <button class="btn btn-outline-secondary" type="button" (click)="getAvaliableFolders(inputFolderHTML.value)">OK
-                </button>
-            </div>
-        </div>
-
-        <!-- warning form / instruction div-->
-        <div *ngIf="serverReply" class="card card-body mt-3">
-            <div>{{'MAPA.ODGOVOR_STREZNIKA' | translate}}:</div>
-            <div id="server-reply" class="md-3">{{serverReply}}</div>
-
-            <!-- clickable selection of buttons -->
-            <div *ngIf="folders">
-                <hr>
-
-                <table class="table table-bordered table-hover table-sm">
-                    <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Folder</th>
-                    </tr>
-                    </thead>
-
-                    <tbody *ngFor="let folder of folders; let i = index">
-                    <tr style="cursor: pointer" (click)="addFolderToDataBase(folder)">
-                        <td>
-                            {{i + 1}}
-                        </td>
-                        <td>
-                            {{folder}}
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+        <div class="card-body">
+            <!-- functional part -->
+            <!-- current basePath name-->
+            <div>{{"MAPA.TRENUTNA" | translate}}: <span id="basePath">{{basePath}}</span>
+                <button class="btn btn-outline-dark ml-2" (click)="getBasePath()">{{"MAPA.OSVEZI" | translate}}</button>
             </div>
 
-            <!-- files scrollable  -->
-            <div *ngIf="files">
-                <hr>
-                <ul>{{'MAPA.LEGENDA_BARV' | translate}}:
-                    <li>{{'MAPA.ZELENA' | translate}}</li>
-                    <li>{{'MAPA.RUMENA' | translate}}</li>
-                    <li>{{'MAPA.RDECA' | translate}}</li>
-                </ul>
-                <hr>
-                <div class="files">
+            <!-- what is the new folders name -->
+            <hr>
+            <div>{{"MAPA.NAVODILA_H" | translate}}:</div>
+            <ul>
+                <li>{{"MAPA.NAVODILA_1" | translate}}</li>
+                <li>{{"MAPA.NAVODILA_2" | translate}}</li>
+                <li>{{"MAPA.NAVODILA_3" | translate}}</li>
+                <li>{{"MAPA.NAVODILA_4" | translate}}</li>
+                <li>{{"MAPA.NAVODILA_5" | translate}}</li>
+            </ul>
+
+            <div class="input-group">
+                <input #inputFolderHTML type="text" placeholder="{{'MAPA.NAVODILA_PLACEHOLDER' | translate}}" class="form-control" aria-label="potDoSlik"
+                       aria-describedby="basic-addon2" (keyup.enter)="getAvaliableFolders(inputFolderHTML.value)">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" (click)="getAvaliableFolders(inputFolderHTML.value)">OK
+                    </button>
+                </div>
+            </div>
+
+            <!-- warning form / instruction div-->
+            <div *ngIf="serverReply" class="card card-body mt-3">
+                <div>{{'MAPA.ODGOVOR_STREZNIKA' | translate}}:</div>
+                <div id="server-reply" class="md-3">{{serverReply}}</div>
+
+                <!-- clickable selection of buttons -->
+                <div *ngIf="folders">
+                    <hr>
+
                     <table class="table table-bordered table-hover table-sm">
-                        <thead class="thead-dark ">
-                        <tr class="theader">
+                        <thead class="thead-dark">
+                        <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Files</th>
+                            <th scope="col">Folder</th>
                         </tr>
                         </thead>
-                        <tbody *ngFor="let file of files; let i = index">
-                        <tr [class.green]="checkIfAdded(i) == 1" [class.yellow]="checkIfAdded(i) == 0"
-                            [class.red]="checkIfAdded(i) == -1">
+
+                        <tbody *ngFor="let folder of folders; let i = index">
+                        <tr style="cursor: pointer" (click)="addFolderToDataBase(folder)">
                             <td>
                                 {{i + 1}}
                             </td>
                             <td>
-                                {{file}}
+                                {{folder}}
+                            </td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
+
+                <!-- files scrollable  -->
+                <div *ngIf="files">
+                    <hr>
+                    <ul>{{'MAPA.LEGENDA_BARV' | translate}}:
+                        <li>{{'MAPA.ZELENA' | translate}}</li>
+                        <li>{{'MAPA.RUMENA' | translate}}</li>
+                        <li>{{'MAPA.RDECA' | translate}}</li>
+                    </ul>
+                    <hr>
+                    <div class="files">
+                        <table class="table table-bordered table-hover table-sm">
+                            <thead class="thead-dark ">
+                            <tr class="theader">
+                                <th scope="col">#</th>
+                                <th scope="col">Files</th>
+                            </tr>
+                            </thead>
+                            <tbody *ngFor="let file of files; let i = index">
+                            <tr [class.green]="checkIfAdded(i) == 1" [class.yellow]="checkIfAdded(i) == 0"
+                                [class.red]="checkIfAdded(i) == -1">
+                                <td>
+                                    {{i + 1}}
+                                </td>
+                                <td>
+                                    {{file}}
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
+            <!-- functional part end -->
         </div>
-        <!-- functional part end -->
     </div>
 </div>

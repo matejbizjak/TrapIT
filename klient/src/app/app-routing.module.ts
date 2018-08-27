@@ -13,6 +13,7 @@ import {UporabnikiComponent} from "./controllers/uporabniki/uporabniki.component
 import {SpremembaGeslaComponent} from "./controllers/sprememba-gesla/sprememba-gesla.component";
 import {HomePageInfoEditorComponent} from "./controllers/nastavitve/home-page-info-editor/home-page-info-editor.component";
 import {GuestComponent} from "./controllers/index/guest/guest.component";
+import {AddFolderComponent} from "./controllers/nastavitve/add-folder/add-folder.component";
 
 const routes: Routes = [
     // routes
@@ -25,6 +26,7 @@ const routes: Routes = [
     {path: "uporabniki", component: UporabnikiComponent},
     {path: "home-page-editor", component: HomePageInfoEditorComponent},
     {path: "geslo", component: SpremembaGeslaComponent},
+    {path: "dodajanje-slik", component: AddFolderComponent},
     // errors
     {path: "404", component: Napaka404Component},
     {path: "403", component: Napaka403Component},
