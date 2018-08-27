@@ -26,7 +26,7 @@
     "EDITOR": "Urejevalnik besedila informacijske strani (Markdown urejevalnik, podpira tudi HTML)",
     "SAVE": "Shrani spremembe",
     "NASLOV": "Nastavitve",
-    "POTDOSLIK": "Pot do slik",
+    "POTDOSLIK": "Nastavitev poti do prve mape, kjer se nahajajo vse slike",
     "POTPLACEHOLDER": "C:/Mapa1/Mapa2/...",
     "SHRANI": "Shrani",
     "PREKLICI": "Prekliči",

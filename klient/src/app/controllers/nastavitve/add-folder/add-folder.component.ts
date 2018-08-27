@@ -2,6 +2,8 @@ import {Component, OnInit} from "@angular/core";
 import {ApiService} from "../../../services/api/api.service";
 import {TranslateService} from "@ngx-translate/core";
 import {LanguageService} from "../../../services/language.service";
+import {ProjektService} from "../../../services/projekt/projekt.service";
+import {OznacevanjeService} from "../../../services/oznacevanje/oznacevanje.service";
 
 
 @Component({
@@ -13,6 +15,7 @@ export class AddFolderComponent implements OnInit {
     loading: number = 1;
     serverReply: string = "V zgornje polje vpišite samo ime iskane mape...";
     basePath: string = "loading...";
+    public potDoSlik: string;
 
     // used for new folder insertion
     inputFolder: string;
@@ -22,7 +25,16 @@ export class AddFolderComponent implements OnInit {
     added: number[];
     exist: number[];
 
-    constructor(private apiService: ApiService, public translate: TranslateService, private languageService: LanguageService) {
+    public emptyProjektNameWarning = false;
+    public duplicateProjectWarning = false;
+    public otherErrorWarning = false;
+    public projectCreateSuccess = false;
+    public projectDeleteSuccess = false;
+    public potSuccess1 = false;
+    public potSuccess2 = false;
+    public potEmpty = false;
+
+    constructor(private apiService: ApiService, public translate: TranslateService, private languageService: LanguageService, private projectService: ProjektService, private oznacevanjeService: OznacevanjeService) {
         this.translate.setDefaultLang("slo");
         this.languageService.dobiTrenutniJezik().then(lang => {
             this.translate.use(lang);
@@ -39,6 +51,7 @@ export class AddFolderComponent implements OnInit {
         this.apiService.apiCall("/settings/basePath").subscribe((data: { basePath }) => {
                 this.loadingToggle();
                 this.basePath = data.basePath;
+                this.potDoSlik = data.basePath;
             }
         );
     }
@@ -96,5 +109,34 @@ export class AddFolderComponent implements OnInit {
     loadingToggle() {
         if (this.loading) this.loading = 0;
         else this.loading = 1;
+    }
+
+    public setDir() {
+        this.clearAlerts();
+        if (this.potDoSlik) {
+            this.projectService.nastaviPot(this.potDoSlik).subscribe((res) => {
+                if (res["message"] === "Success") {
+                    this.potSuccess1 = true;
+                }
+            });
+            this.oznacevanjeService.nastaviPot(this.potDoSlik).subscribe((res) => {
+                if (res["message"] === "Success") {
+                    this.potSuccess2 = true;
+                }
+            });
+        } else {
+            this.potEmpty = true;
+        }
+    }
+
+    public clearAlerts() {
+        this.emptyProjektNameWarning = false;
+        this.duplicateProjectWarning = false;
+        this.otherErrorWarning = false;
+        this.projectCreateSuccess = false;
+        this.projectDeleteSuccess = false;
+        this.potSuccess1 = false;
+        this.potSuccess2 = false;
+        this.potEmpty = false;
     }
 }

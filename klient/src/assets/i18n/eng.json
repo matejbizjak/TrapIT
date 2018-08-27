@@ -29,7 +29,7 @@
     "EDITOR": "Text editor of the info page (Markdown editor, supports HTML)",
     "SAVE": "Save changes",
     "NASLOV": "Settings",
-    "POTDOSLIK": "Path to images",
+    "POTDOSLIK": "Settings for the first folder path, that contains all the images",
     "POTPLACEHOLDER": "C:/Folder1/Folder2/...",
     "SHRANI": "Save",
     "PREKLICI": "Cancel",
