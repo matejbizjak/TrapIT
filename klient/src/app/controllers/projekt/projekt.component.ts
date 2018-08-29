@@ -61,6 +61,7 @@ export class ProjektComponent implements OnInit {
     searchDate: Date = null;
     lastUser: string = null;
     lastDate: Date = null;
+    interesting: boolean = null;
 
     mediaSearch: MediaSearch;
 
@@ -149,6 +150,7 @@ export class ProjektComponent implements OnInit {
         this.searchDate = null;
         this.lastUser = null;
         this.lastDate = null;
+        this.interesting = null;
         this.filtriraniProjektiControl.reset();
 
         this.mozniTagi.forEach(element => {
@@ -166,7 +168,8 @@ export class ProjektComponent implements OnInit {
             this.empty,
             this.media,
             this.lastUser,
-            this.lastDate
+            this.lastDate,
+            this.interesting
         );
         return new Promise<Media[]>((resolve, reject) => {
             this.loading = true;
@@ -196,6 +199,7 @@ export class ProjektComponent implements OnInit {
     }
 
     sortClick(e) {
+        console.log("Test " + e.target.attributes.value.value);
         const clickedName = e.target.attributes.value.value;
         if (this.filtriranjeNastavitve.filtrirajPo === clickedName) {
             this.filtriranjeNastavitve.filtrirajAsc = !this.filtriranjeNastavitve.filtrirajAsc;
@@ -370,5 +374,13 @@ export class ProjektComponent implements OnInit {
                 }
             }
         }
+    }
+
+    public readableDate(date: string) {
+        date = date.split("T")[0];
+        const day = date.split("-")[2];
+        const month = date.split("-")[1];
+        const year = date.split("-")[0];
+        return day + "." + month + "." + year;
     }
 }

@@ -4,6 +4,7 @@
         <div class="col-6">
             <div class="card card-body p-2">
                 <div>
+                    <div>{{izbranMedia.name.split("/")[1]}}</div>
                     <ngx-image-viewer *ngIf="izbranMedia.image" [src]="potDoSlike" ></ngx-image-viewer>
                     <video controls *ngIf="!izbranMedia.image" style="max-width: 99%" loop autoplay [src]="potDoSlike" type="video/mp4">
                         Your browser does not support the HTML5 videos.

@@ -73,11 +73,11 @@ import {MatSelectModule,
 } from "@angular/material";
 
 import {ButtonsModule} from "ngx-bootstrap";
-import { SpremembaGeslaComponent } from './controllers/sprememba-gesla/sprememba-gesla.component';
-import { HomePageInfoEditorComponent } from './controllers/nastavitve/home-page-info-editor/home-page-info-editor.component';
+import { SpremembaGeslaComponent } from "./controllers/sprememba-gesla/sprememba-gesla.component";
+import { HomePageInfoEditorComponent } from "./controllers/nastavitve/home-page-info-editor/home-page-info-editor.component";
 import {LMarkdownEditorModule} from "ngx-markdown-editor";
-import { IndexGuestSidebarComponent } from './controllers/index/guest/index-guest-sidebar/index-guest-sidebar.component';
-import { GuestComponent } from './controllers/index/guest/guest.component';
+import { IndexGuestSidebarComponent } from "./controllers/index/guest/index-guest-sidebar/index-guest-sidebar.component";
+import { GuestComponent } from "./controllers/index/guest/guest.component";
 
 const imageViewerSettings = {
     btnClass: "default", // The CSS class(es) that will apply to the buttons

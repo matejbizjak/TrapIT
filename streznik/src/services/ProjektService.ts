@@ -209,6 +209,7 @@ module.exports = class ProjektService {
                     .andWhere(mediaSearch.picture != null ? "media.image = :image" : "media.image = media.image", {image: mediaSearch.picture})
                     .andWhere(mediaSearch.lastReviewer != null ? "lastUserId.username like :username" : "media.media_id = media.media_id", mediaSearch.lastReviewer ? {username: '%' + mediaSearch.lastReviewer + '%'} : {})
                     .andWhere(mediaSearch.lastDate != null ? "media.lastDate like :lastDate" : "media.media_id = media.media_id", {lastDate: '%' + mediaSearch.lastDate + '%'})
+                    .andWhere(mediaSearch.interesting != null ? "media.interesting = :interesting" : "media.interesting = media.interesting", {interesting: mediaSearch.interesting})
                     .orderBy("media.mediaId", "ASC")
                     .getMany()
                     .then((medias: Media[]) => {
@@ -400,9 +401,23 @@ module.exports = class ProjektService {
         //filtriranje po drugih nastavitvah
         return new Promise<SfiltriraniPodatki>((resolve, reject) => {
 
-            medias.sort(function (a, b) {
-                return a[nastavitve.filtrirajPo] - b[nastavitve.filtrirajPo];
-            });
+            if (nastavitve.filtrirajPo === "lastUserId") {
+                medias.sort(function (a, b) {
+                    if (a[nastavitve.filtrirajPo] && b[nastavitve.filtrirajPo]) {
+                        return a[nastavitve.filtrirajPo]["username"] - b[nastavitve.filtrirajPo]["username"];
+                    } else if (a[nastavitve.filtrirajPo] && !b[nastavitve.filtrirajPo]) {
+                        return -1;
+                    } else if (!a[nastavitve.filtrirajPo] && b[nastavitve.filtrirajPo]) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                });
+            } else {
+                medias.sort(function (a, b) {
+                    return a[nastavitve.filtrirajPo] - b[nastavitve.filtrirajPo];
+                });
+            }
 
             if (nastavitve.filtrirajAsc === false) {
                 medias.reverse();

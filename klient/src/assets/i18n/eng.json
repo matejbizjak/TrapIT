@@ -12,7 +12,7 @@
       "NASTAVITVE": "Settings",
       "UPORABNIKI": "Users",
       "PROJEKT": "Projects",
-      "HOMEPAGEEDITOR": "Info page editor",
+      "HOMEPAGEEDITOR": "Editor",
       "UVOZSLIK": "Import media"
     }
   },
@@ -128,7 +128,11 @@
     "VIDEO": "Video",
     "OZNACEVANJE": "Tagging",
     "PONASTAVI": "Reset",
-    "FILTERPROJECTS": "Filter by projects"
+    "FILTERPROJECTS": "Filter by projects",
+    "ZANIMIVO": "Interesting",
+    "DA": "Yes",
+    "NE": "No",
+    "NEDOLOCENO": "Undefined"
   },
   "ISKANJE": {
     "LOKACIJA": "Site",
@@ -140,7 +144,9 @@
     "slika": "Image",
     "video": "Video",
     "true": "Yes",
-    "false": "No"
+    "false": "No",
+    "PREGLEDOVALEC": "Last reviewer",
+    "PREG_DATUM": "Last date"
   },
   "OZNACEVANJE": {
     "NAZAJ": "Previous",
