@@ -14,12 +14,50 @@
                         <input [(ngModel)]="specificMediaId" #mediaIdInputHTML class="form-control form-control-sm mb-1" type="number">
                         <span  class="parent-tag" > {{"PROJEKTI.IME" | translate}} </span>
                         <input class="form-control form-control-sm mb-1" type="text" [(ngModel)]="searchName">
-                        <span  class="parent-tag" > {{"PROJEKTI.DATUM" | translate}} </span>
-                        <input class="form-control form-control-sm mb-1" type="date" [(ngModel)]="searchDate">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="parent-tag" > {{"PROJEKTI.DATUM" | translate}} </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="input-group input-group-sm mb-1">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">{{"PROJEKTI.OD" | translate}}:</span>
+                                    </div>
+                                    <input type="date" class="form-control" [(ngModel)]="searchDateFrom">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="input-group input-group-sm mb-1">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">{{"PROJEKTI.DO" | translate}}:</span>
+                                    </div>
+                                    <input type="date" class="form-control" [(ngModel)]="searchDateTill">
+                                </div>
+                            </div>
+                        </div>
                         <span class="parent-tag">{{"PROJEKTI.ZADNJI_PREGLEDOVALEC" | translate}} </span>
                         <input class="form-control form-control-sm mb-1" type="text" [(ngModel)]="lastUser">
-                        <span  class="parent-tag">{{"PROJEKTI.DATUM_ZADNJEGA_PREGLEDA" | translate}}</span>
-                        <input class="form-control form-control-sm mb-1" type="date" [(ngModel)]="lastDate">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="parent-tag">{{"PROJEKTI.DATUM_ZADNJEGA_PREGLEDA" | translate}}</div>
+                            </div>
+                            <div class="col-6">
+                                <div class="input-group input-group-sm mb-1">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">{{"PROJEKTI.OD" | translate}}:</span>
+                                    </div>
+                                    <input type="date" class="form-control" [(ngModel)]="lastDateFrom">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="input-group input-group-sm mb-1">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">{{"PROJEKTI.DO" | translate}}:</span>
+                                    </div>
+                                    <input type="date" class="form-control" [(ngModel)]="lastDateTill">
+                                </div>
+                            </div>
+                        </div>
 
                         <div class="row">
                             <div class="col-6">

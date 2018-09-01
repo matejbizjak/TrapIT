@@ -9,7 +9,7 @@
       "NASTAVITVE": "Nastavitve",
       "UPORABNIKI": "Uporabniki",
       "PROJEKT": "Projekti",
-      "HOMEPAGEEDITOR": "Urejevalnik",
+      "HOMEPAGEEDITOR": "Urejevalnik besedilaaaaaaaaaaaa",
       "UVOZSLIK": "Uvoz medije"
     }
   },
@@ -129,7 +129,9 @@
     "ZANIMIVO": "Zanimivo",
     "DA": "Da",
     "NE": "Ne",
-    "NEDOLOCENO": "Nedoločeno"
+    "NEDOLOCENO": "Nedoločeno",
+    "OD": "Od",
+    "DO": "Do"
   },
   "ISKANJE": {
     "LOKACIJA": "Lokacija",

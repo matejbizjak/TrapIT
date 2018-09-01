@@ -132,7 +132,9 @@
     "ZANIMIVO": "Interesting",
     "DA": "Yes",
     "NE": "No",
-    "NEDOLOCENO": "Undefined"
+    "NEDOLOCENO": "Undefined",
+    "OD": "From",
+    "DO": "To"
   },
   "ISKANJE": {
     "LOKACIJA": "Site",

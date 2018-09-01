@@ -47,7 +47,7 @@ export class ProjektComponent implements OnInit {
     height = 90;
 
     // nastavitve tabele
-    projectsHide: boolean = false;
+    projectsHide = false;
 
     loading = false;
 
@@ -58,9 +58,11 @@ export class ProjektComponent implements OnInit {
     empty: boolean = null;
     media: boolean = null;
     searchName: string = null;
-    searchDate: Date = null;
+    searchDateFrom: Date = null;
+    searchDateTill: Date = null;
     lastUser: string = null;
-    lastDate: Date = null;
+    lastDateFrom: Date = null;
+    lastDateTill: Date = null;
     interesting: boolean = null;
 
     mediaSearch: MediaSearch;
@@ -147,9 +149,11 @@ export class ProjektComponent implements OnInit {
         this.empty = null;
         this.media = null;
         this.searchName = null;
-        this.searchDate = null;
+        this.searchDateFrom = null;
+        this.searchDateTill = null;
         this.lastUser = null;
-        this.lastDate = null;
+        this.lastDateFrom = null;
+        this.lastDateTill = null;
         this.interesting = null;
         this.filtriraniProjektiControl.reset();
 
@@ -163,12 +167,14 @@ export class ProjektComponent implements OnInit {
     filtrirajPrikaz(resetSort): Promise<Media[]> {
         this.mediaSearch = new MediaSearch(
             this.specificMediaId,
-            this.searchDate,
+            this.searchDateFrom,
+            this.searchDateTill,
             this.searchName,
             this.empty,
             this.media,
             this.lastUser,
-            this.lastDate,
+            this.lastDateFrom,
+            this.lastDateTill,
             this.interesting
         );
         return new Promise<Media[]>((resolve, reject) => {
