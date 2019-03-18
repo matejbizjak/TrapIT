@@ -1,0 +1,15 @@
+﻿PISANJE DIREKTNO V PODATKOVNO BAZO:
+Nastavitve za povezovanje na podatkovno bazo so v datoteki db_conn_properties. V njej nastavite ime podatkovne baze
+ter username in password strežnika.
+Program se požene z:
+
+    java -cp "mysql-connector-java-8.0.11.jar;" TagsToMySQL -db
+
+Ce zelite program prevesti uporabite ukaz:
+
+    javac -cp ".:/mysql-connector-java-8.0.11.jar;" TagsToMySQL.java
+
+PISANJE V SKRIPTO:
+Program se požene z:
+
+    java -cp "mysql-connector-java-8.0.11.jar;" TagsToMySQL -script

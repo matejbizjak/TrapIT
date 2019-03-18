@@ -1,0 +1,22 @@
+﻿PROGRAM SE PREVAJA Z UKAZOM
+
+    javac -cp ".:/mysql-connector-java-8.0.11.jar;" DB_Creator.java
+
+PROGRAM SE POGANJA Z UKAZOM
+
+    java -cp "mysql-connector-java-8.0.11.jar;" DB_Creator
+
+OZIROMA
+
+    java -cp "mysql-connector-java-8.0.11.jar;" DB_Creator -db
+    (za pisanje v podatkovno  bazo)
+
+NASTAVITVE
+Nastavitve programa zo v settings.xml datoteki v mapi 'Settings'. Tam lahko nastavite imena datotek
+iz katerih program jemlje podatke.
+
+VHODNE DATOTEKE
+Program bere iz vhodnih datotek v mapi 'SourceFiles'. Če želite da program bere iz neke druge datoteke
+jo kopirajte v to mapo in v settings.xml datoteki spremenite ime pri vnosu na vašo novo datoteko.
+
+REZULTATI PROGRAMA SO V MAPI Sctipts

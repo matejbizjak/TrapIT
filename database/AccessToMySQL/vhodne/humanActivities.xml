@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<parent>
+    <translation>človeška_aktivnost</translation>
+
+    <activity key="Bringing food">nošnja_hrane</activity>
+
+    <activity key="Passing by">prehajanje</activity>
+    <activity key="hunter passing by">prehajanje</activity>
+    <activity key="Passing by in a tractor">prehajanje</activity>
+    <activity key="waking in the background">prehajanje</activity>
+    <activity key="Passing by and  greets">prehajanje</activity>
+    <activity key="walking to the feeding site">prehajanje</activity>
+    <activity key="walking around, car in the background">prehajanje</activity>
+
+
+    <activity key="working on camera">vzdrževanje_kamere</activity>
+    <activity key="Working on camera">vzdrževanje_kamere</activity>
+    <activity key="checking out camera">vzdrževanje_kamere</activity>
+    <activity key="Working on camera and bringing food">vzdrževanje_kamere</activity>
+    <activity key="Zamenjava spominske kartice">vzdrževanje_kamere</activity>
+    <activity key="camera in car">vzdrževanje_kamere</activity>
+    <activity key="taking camera with him">vzdrževanje_kamere</activity>
+
+    <activity key="taking camera with him">vzdrževanje_kamere</activity>
+    <activity key="taking camera with him">vzdrževanje_kamere</activity>
+    <activity key="car in the backgrond">vzdrževanje_kamere</activity>
+
+    <activity key="car">vožnja</activity>
+    <activity key="somebody with car during night">vožnja</activity>
+    <activity key="avto na krmišču">vožnja</activity>
+    <activity key="traktor se pelje mimo krmišča">vožnja</activity>
+    <activity key="vožnja s traktorjem mimo kamere">vožnja</activity>
+    <activity key="vožnja z avtom mimo kamere">vožnja</activity>
+    <activity key="vožnja s kamionom mimo kamere">vožnja</activity>
+    <activity key="vožnja s kamionom mimo krmišča">vožnja</activity>
+    <activity key="vožnja z avtom mimo krmišča">vožnja</activity>
+    <activity key="avto v ozadju krmišča">vožnja</activity>
+    <activity key="vožnja z gredarjem mimo kamere">vožnja</activity>
+    <activity key="traktor v ozadju krmišča">vožnja</activity>
+    <activity key="traktor na krmišču">vožnja</activity>
+    <activity key="car is standing there">vožnja</activity>
+    <activity key="passing by in a tractor">vožnja</activity>
+    <activity key="štirikolesnik">vožnja</activity>
+    <activity key="traktor na krmišču">vožnja</activity>
+    <activity key="avto stoji pred kamero">vožnja</activity>
+    <activity key="car standing there">vožnja</activity>
+
+    <activity key="working">drugo_delo</activity>
+    <activity key="Working">drugo_delo</activity>
+    <activity key="working on dispenser">drugo_delo</activity>
+    <activity key="picking something">drugo_delo</activity>
+    <activity key="postavljanje lestve na krmilnico">drugo_delo</activity>
+    <activity key="kids are playing">drugo_delo</activity>
+    <activity key="Working on a feeder">drugo_delo</activity>
+    <activity key="checking out dispenser">drugo_delo</activity>
+    <activity key="lifting stones">drugo_delo</activity>
+    <activity key="working with chainsaw (repairing feeders)">drugo_delo</activity>
+    <activity key="Tractor in the distance and burning of meadow">drugo_delo</activity>
+    <activity key="avto in ljudje v ozadju krmišča">drugo_delo</activity>
+
+    <activity key="checking feeding site">ogledovanje</activity>
+    <activity key="checking dispenser">ogledovanje</activity>
+    <activity key="checking out the feeding site">ogledovanje</activity>
+    <activity key="taking picture with smart phone">ogledovanje</activity>
+    <activity key="checking out feeding site">ogledovanje</activity>
+    <activity key="car in the background and guy is watching bear">ogledovanje</activity>
+    <activity key="hunter looking for something">ogledovanje</activity>
+    <activity key="hunter checking out feeding site">ogledovanje</activity>
+    <activity key="studying the carrion">ogledovanje</activity>
+    <activity key="Hunter obstructing the camera">ogledovanje</activity>
+    <activity key="ogled krmišča">ogledovanje</activity>
+    <activity key=" watching the feeding station">ogledovanje</activity>
+
+    <activity key="hunting">lov</activity>    
+    <activity key="2 lovca hodita po krmišču">lov</activity>  
+    <activity key="Hunter present">lov</activity>  
+    <activity key="Night hunting">lov</activity>  
+
+    <activity key="cutting vegetation">košnja</activity>
+    <activity key="cutting the grass">košnja</activity>
+    <activity key="burning meadow">košnja</activity>
+    <activity key="working in the background, cutting vegetation">košnja</activity>
+    
+    <activity key="sečnja">sečnja</activity>
+
+</parent>

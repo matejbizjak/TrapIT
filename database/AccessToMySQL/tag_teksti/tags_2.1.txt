@@ -1,0 +1,280 @@
+﻿///////////////////////////FORMAT ZAPISA:
+//<input> == tag_value.input TINYINT
+
+>parent_tag (paret_tag_value_id == null)
+	vrednost_parent_taga <input>
+	+child_tag_x (partent_tag_value_id == parent_tag && i število vrednosti taga)
+		vrednost_child_taga_x_1 <input>
+		vrednost_child_taga_x_2 <input>
+		vrednost_child_taga_x_3 <input>
+		...
+		vrednost_child_taga_x_i <input>
+		+child_tag_xz (parent_tag_value_id == child_tag_x && j število vrednosti taga)
+			vrednost_child_taga_xz_1 <input>
+			vrednost_child_taga_xz_2 <input>
+			...
+			vrednost_child_taga_xz_j <input>
+	+child_tag_y (parent_tag_value_id == parent_tag && k število vrednosti taga)
+		vrednost_child_taga_y_1 <input>
+		vrednost_child_taga_y_2 <input>
+		vrednost_child_taga_y_3 <input>
+		...
+		vrednost_child_taga_y_k <input>
+
+//////////////////////////////////////////
+*parent_tags - vstavljeni v tabelo "tag" s parent_tag_value == null
+*child_tags  - vstavljeni v tabelo "tag" s parent_tag_value == parent_tag (id od zgornjega)
+*vrednost_child_tag - vstavljeni v tableo "tag_value" z <inputom> == tag_value.input
+/////////////////////////////////////////
+
+/format zapisa je takšen, ker bo enostavno spisati program,
+/ki zgenerira sql script, za vstavljanje v MySQL tabele.
+
+/////////////Preberite opombe in mi posredujte mnenje:
+
+/ali mora biti vrsta pod parent_tagom kategorija,
+/če bo imela kategorija le en child_tag in to bo vrsta?
+/Po mojem, lahko ostane kar vrsta...
+
+>kategorija
+	jelenjad 1
+	srnjad 1
+	divji_prašič 1
+	rjavi_medved 1
+	damjak 1
+	gams 1
+	muflon 1
+	pitca_pevka 1
+	ujeda 1
+	sova 1
+	kura 1
+	golobi 1
+	žolne 1
+	vse_ostale_vrste 1
+	
+
+>vrsta
+	+jelenjad
+		tele 1
+		junica 1
+		lanščak 1
+		jelen(2-4) 1
+		jelen(5-10) 1
+		jelen(10+) 1
+		košuta 1
+	+srnjad
+		mladič 1
+		gubar 1
+		lanščak 1
+		mladica 1
+		srna 1
+		srnjak(srednje_star) 1
+		srnjak(star) 1
+	+divji_prašič
+		mladič 1
+		ozimec 1
+		lanščak 1
+		svinja 1
+		merjasec 1
+	+rjavi_medved
+		mladič_0+ 1
+		mladič_1+ 1
+		medvedka 1
+		medved 1
+		200kg+ 1
+	+damjak
+		tele 1
+		junica 1
+		lanšlak 1
+		jelen(2-4) 1
+		jelen(5-10) 1
+		jelen(10+) 1
+		košuta 1
+	+gams
+		mladič 1
+		koza 1
+		kozel 1
+	+muflon
+		mladič 1
+		ovca 1
+		oven 1
+	+ptica_pevka
+		ščinkavec 1
+		brglez 1
+		kos 1
+		šoja 1
+		velika sinica 1
+		krokar 1
+		menišček 1
+	+ujeda
+		ščinkavec 1 
+		brglez 1
+		kos 1
+		šoja 1
+		velika_sinica 1
+		krokar 1
+		menišček 1
+	+sova
+		kozača 1
+		lesna_sova 1
+		velika_uharica 1
+		pegasta_sova 1 
+		čuk 1
+		veliki_skovik 1
+		mali_skovik 1
+		mala_uharica 1
+	+kura
+		divji_petelin 1
+		gozdni_jereb 1
+		ruševec 1
+		fazan 1
+		jerebica 1
+		kotorna 1
+		belka 1
+	+golobi
+		divja_grlica 1
+		duplar 1
+		grivar 1
+	+žolne
+		črna_žolna 1
+		zelena_žolna 1
+		pivka 1
+		veliki_detel 1
+		mali_detel 1
+		srednji_detel 1
+		belohrbti_detel 1
+		triprsti_detel 1
+	+vse_ostale_vrste
+		mladič 1
+		odrasel 1
+		
+>število
+	število 1
+	
+>vaba
+	false 0
+	+true 
+		/problem, ponavljanje >vedenje +hranjenje
+		koruza 0
+		mrhovina 0
+		solnica 0 
+		jabolka 0 
+		tropine 0 
+		seno 0 
+		sladkorna_pesa 0
+		slaščičarski_ostanki 0
+		druga_vaba 0
+		
+>vedenje
+	pitje 0
+	parjenje 0
+	bojevanje 0
+	prehajanje 0
+	vohanje 0
+	opazovanje 0
+	iztrebljanje 0
+	kopanje 0
+	lov 0
+	oglašanje 0
+	markiranje 0
+	valjanje 0
+	drugo 0
+	+hranjenje 
+		/problem, ponavljanje >vaba +true
+		koruza 0
+		mrhovina 0
+		solnica 0
+		jabolka 0
+		tropine 0
+		seno 0
+		sladkorna_pesa 0
+		slaščičarski_ostanki 0
+		druga_vaba 0
+
+>individual_id
+	/problem, kako imamo plan implementirati to oznako?
+	/namreč, individual_id se mora shraniti kot string v našo bazo 
+	/(npr. ime nekega srnjaka)
+	/možnost je, da se ta oznaka implementira posebej... Torej možnost vnašanja,
+	/bi bila implementirana na strani strežnika (npr. vnašanje srnjaka pod imenom,
+	/Rudi, bi se preko ukaza s strani clienta(administratorja), na strani za dodajanje 
+	/vrednosti k obstiječi oznaki dodala vrednost Rudi (String "Rudi", bi se vnesel v bazo
+	/v tabelo tag_value, kjer bi bil tag_value.tag_id enak tag.tag_id od "individual_id" oznake.
+	/
+	/Če se ne motim, mislimo dodajanje tagov tako ali tako implementirat... V primeru
+	/da bomo naredili tako, da lahko dodamo obstojecim oznakam nove tag_value, to sploh
+	/ne bo problem :)
+	
+>interakcije
+	+znotrajvrstne
+		true 0
+		false 0
+	+medvrstne
+		ne 0
+		+da 
+			/problem, ponavljanje >vedenje +hranjenje
+			koruza 0
+			mrhovina 0
+			solnica 0
+			jabolka 0
+			tropine 0
+			seno 0
+			sladkorna_pesa 0
+			slaščičarski_ostanki 0
+			druga_vaba 0
+
+>človeška_aktivnost
+	vzdrževanje_kamere 0
+	prinašanje_hrane 0
+	prehajanje 0
+	sečnja 0
+	košnja 0
+
+>moteči_faktorji
+	vreme 0
+	vegetacija 0
+	premik_kamere 0
+	okvara_kamere 0
+	ostalo 0
+
+>vreme
+	toča 0
+	megla 0
+	+sneženje
+		rahlo 0
+		srednje 0
+		močno 0
+	+dež
+		rahlo 0
+		srednje 0
+		močno 0
+
+	
+>napačna_ura
+	ne 0
+	+da
+		dan 0
+		noč 0
+		mrak 0
+		zora 0
+
+		
+/slednje bi se lahko implementirale z tickboxi... Kako?
+/mogoce tako, da če client zazna, da ima vrednost nek tag true/false
+/potem pokaže zraven tistega tag-a tickbox?
+
+>prisotnost_vode
+	true 0
+	false 0
+		
+>napačen_datum
+	true 0
+	false 0
+		
+>snežna_odeja
+	true 0
+	false 0
+
+>zanimiva_fotografija
+	true 0
+	false 0

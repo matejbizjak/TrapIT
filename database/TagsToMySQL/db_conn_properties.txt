@@ -1,0 +1,12 @@
+/The following line is the url for connecting to the database, the only thing that could need changing
+/here is the name of the database which is after the IP and port
+jdbc:mysql://127.0.0.1:3306/trapit?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&useSSL=false
+
+/Username
+root
+
+/Password
+password
+
+/You can change the values of theese strings and add or remove comments (starting with/) but never
+/change the order of them (url, then username, then password)
