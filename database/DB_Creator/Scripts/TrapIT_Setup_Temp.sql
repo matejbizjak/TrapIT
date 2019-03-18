@@ -39,7 +39,7 @@ DROP TABLE IF EXISTS `trapit`.`user` ;
 
 CREATE TABLE IF NOT EXISTS `trapit`.`user` (
   `user_id` INT NOT NULL AUTO_INCREMENT,
-  `username` VARCHAR(256) NOT NULL,
+  `username` VARCHAR(150) NOT NULL,
   `password` VARCHAR(64) NOT NULL,
   `role_id` INT NOT NULL,
   `active` TINYINT NOT NULL DEFAULT 1,
