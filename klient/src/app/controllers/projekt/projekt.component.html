@@ -14,42 +14,102 @@
                         <input [(ngModel)]="specificMediaId" #mediaIdInputHTML class="form-control form-control-sm mb-1" type="number">
                         <span  class="parent-tag" > {{"PROJEKTI.IME" | translate}} </span>
                         <input class="form-control form-control-sm mb-1" type="text" [(ngModel)]="searchName">
-                        <span  class="parent-tag" > {{"PROJEKTI.DATUM" | translate}} </span>
-                        <input class="form-control form-control-sm mb-1" type="date" [(ngModel)]="searchDate">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="parent-tag" > {{"PROJEKTI.DATUM" | translate}} </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="input-group input-group-sm mb-1">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">{{"PROJEKTI.OD" | translate}}:</span>
+                                    </div>
+                                    <input type="date" class="form-control" [(ngModel)]="searchDateFrom">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="input-group input-group-sm mb-1">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">{{"PROJEKTI.DO" | translate}}:</span>
+                                    </div>
+                                    <input type="date" class="form-control" [(ngModel)]="searchDateTill">
+                                </div>
+                            </div>
+                        </div>
                         <span class="parent-tag">{{"PROJEKTI.ZADNJI_PREGLEDOVALEC" | translate}} </span>
                         <input class="form-control form-control-sm mb-1" type="text" [(ngModel)]="lastUser">
-                        <span  class="parent-tag">{{"PROJEKTI.DATUM_ZADNJEGA_PREGLEDA" | translate}}</span>
-                        <input class="form-control form-control-sm mb-1" type="date" [(ngModel)]="lastDate">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="parent-tag">{{"PROJEKTI.DATUM_ZADNJEGA_PREGLEDA" | translate}}</div>
+                            </div>
+                            <div class="col-6">
+                                <div class="input-group input-group-sm mb-1">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">{{"PROJEKTI.OD" | translate}}:</span>
+                                    </div>
+                                    <input type="date" class="form-control" [(ngModel)]="lastDateFrom">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="input-group input-group-sm mb-1">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">{{"PROJEKTI.DO" | translate}}:</span>
+                                    </div>
+                                    <input type="date" class="form-control" [(ngModel)]="lastDateTill">
+                                </div>
+                            </div>
+                        </div>
 
+                        <div class="row">
+                            <div class="col-6">
+                                <!-- Search by empty or with animals -->
+                                <form>
+                                    <mat-form-field>
+                                        <mat-select  placeholder="{{'PROJEKTI.TIP_MEDIJA' | translate}}" [(value)]="this.media">
+                                            <mat-option [value]="true">{{"PROJEKTI.SLIKA" | translate}}</mat-option>
+                                            <mat-option [value]="false">{{"PROJEKTI.VIDEO" | translate}}</mat-option>
+                                            <mat-option [value]="null">{{'PROJEKTI.NEDOLOCENO' | translate}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </form>
+                            </div>
 
-                        <!-- Search by empty or with animals -->
-                        <form>
-                            <mat-form-field class="mt-3">
-                                <mat-select  placeholder="{{'PROJEKTI.TIP_MEDIJA' | translate}}" [(value)]="this.media">
-                                    <mat-option [value]="true">{{"PROJEKTI.SLIKA" | translate}}</mat-option>
-                                    <mat-option [value]="false">{{"PROJEKTI.VIDEO" | translate}}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </form>
+                            <div class="col-6">
+                                <!-- Search by empty or with animals -->
+                                <form>
+                                    <mat-form-field>
+                                        <mat-select  placeholder="{{'PROJEKTI.VSEBINA_SLIKE' | translate}}" [(value)]="this.empty">
+                                            <mat-option [value]="true">{{"PROJEKTI.PRAZNO" | translate}}</mat-option>
+                                            <mat-option [value]="false">{{"PROJEKTI.Z_ZIVALMI" | translate}}</mat-option>
+                                            <mat-option [value]="null">{{'PROJEKTI.NEDOLOCENO' | translate}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </form>
+                            </div>
 
-                        <!-- Search by empty or with animals -->
-                        <form>
-                            <mat-form-field class="mt-1">
-                                <mat-select  placeholder="{{'PROJEKTI.VSEBINA_SLIKE' | translate}}" [(value)]="this.empty">
-                                    <mat-option [value]="true">{{"PROJEKTI.PRAZNO" | translate}}</mat-option>
-                                    <mat-option [value]="false">{{"PROJEKTI.Z_ZIVALMI" | translate}}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </form>
+                            <div class="col-6">
+                                <!-- Search by projekti -->
+                                <form class="projekti">
+                                    <mat-form-field>
+                                        <mat-select placeholder="{{'PROJEKTI.FILTERPROJECTS' | translate}}" [formControl]="this.filtriraniProjektiControl" multiple>
+                                            <mat-option *ngFor="let projekt of mozniProjekti" [value]="projekt">{{projekt.name}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </form>
+                            </div>
 
-                        <!-- Search by projekti -->
-                        <form class="projekti">
-                            <mat-form-field class="mt-1">
-                                <mat-select placeholder="{{'PROJEKTI.FILTERPROJECTS' | translate}}" [formControl]="this.filtriraniProjektiControl" multiple>
-                                    <mat-option *ngFor="let projekt of mozniProjekti" [value]="projekt">{{projekt.name}}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </form>
+                            <div class="col-6">
+                                <!-- Search by interesting photo -->
+                                <form>
+                                    <mat-form-field>
+                                        <mat-select  placeholder="{{'PROJEKTI.ZANIMIVO' | translate}}" [(value)]="interesting">
+                                            <mat-option [value]="true">{{'PROJEKTI.DA' | translate}}</mat-option>
+                                            <mat-option [value]="false">{{'PROJEKTI.NE' | translate}}</mat-option>
+                                            <mat-option [value]="null">{{'PROJEKTI.NEDOLOCENO' | translate}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -250,7 +310,7 @@
                            *ngIf="filtriranjeNastavitve.filtrirajPo === 'empty' && !filtriranjeNastavitve.filtrirajAsc"
                            class="fa fa-sort-down"></i>
                     </th>
-                    <th value="interesting" (click)="sortClick($event)">{{"ISKANJE.ZANIMIVA" | translate}}
+                    <th value="interesting">{{"ISKANJE.ZANIMIVA" | translate}}
                         <i value="interesting"
                            *ngIf="filtriranjeNastavitve.filtrirajPo === 'interesting' && filtriranjeNastavitve.filtrirajAsc"
                            class="fa fa-sort-up"></i>
@@ -259,6 +319,22 @@
                            class="fa fa-sort-down"></i>
                     </th>
                     <th value="viewed" >{{"ISKANJE.PREGLEDANA" | translate}} (<span>hide? <input type="checkbox" [(ngModel)]="projectsHide"></span>)
+                    </th>
+                    <th value="lastUserId" (click)="sortClick($event)">{{"ISKANJE.PREGLEDOVALEC" | translate}}
+                        <i value="lastUserId"
+                           *ngIf="filtriranjeNastavitve.filtrirajPo === 'lastUserId' && filtriranjeNastavitve.filtrirajAsc"
+                           class="fa fa-sort-up"></i>
+                        <i value="lastUserId"
+                           *ngIf="filtriranjeNastavitve.filtrirajPo === 'lastUserId' && !filtriranjeNastavitve.filtrirajAsc"
+                           class="fa fa-sort-down"></i>
+                    </th>
+                    <th value="lastDate" (click)="sortClick($event)">{{"ISKANJE.PREG_DATUM" | translate}}
+                        <i value="lastDate"
+                           *ngIf="filtriranjeNastavitve.filtrirajPo === 'lastDate' && filtriranjeNastavitve.filtrirajAsc"
+                           class="fa fa-sort-up"></i>
+                        <i value="lastDate"
+                           *ngIf="filtriranjeNastavitve.filtrirajPo === 'lastDate' && !filtriranjeNastavitve.filtrirajAsc"
+                           class="fa fa-sort-down"></i>
                     </th>
                 </tr>
                 </thead>
@@ -273,11 +349,27 @@
                     <td>
                         <span>{{alreadySeen(medij.mediaProjects)}}</span>
                         <ng-container *ngIf="!projectsHide">
-                <span *ngFor="let project of medij.mediaProjects; let x = index">
-                    <span *ngIf="x != 0 ">,</span>
-                    {{project.projectId.name}}
-                </span>
+                            <span *ngFor="let project of medij.mediaProjects; let x = index">
+                            <span *ngIf="x != 0 ">,</span>
+                            {{project.projectId.name}}
+                            </span>
                         </ng-container>
+                    </td>
+                    <td>
+                        <span *ngIf="medij.lastUserId">
+                            {{medij.lastUserId.username}}
+                        </span>
+                        <span *ngIf="!medij.lastUserId">
+                            ❌
+                        </span>
+                    </td>
+                    <td>
+                        <span *ngIf="medij.lastDate">
+                            {{readableDate(medij.lastDate)}}
+                        </span>
+                        <span *ngIf="!medij.lastDate">
+                            ❌
+                        </span>
                     </td>
                 </tr>
                 </tbody>

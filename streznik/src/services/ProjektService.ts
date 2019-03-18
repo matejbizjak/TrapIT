@@ -203,12 +203,19 @@ module.exports = class ProjektService {
                     .leftJoinAndSelect("media.siteId", "siteId")
                     .leftJoinAndSelect("media.mediaProjects", "mediaProjects")
                     .leftJoinAndSelect("mediaProjects.projectId", "projectId")
-                    .where("media.date like :date", {date: (mediaSearch.mediaDate ? mediaSearch.mediaDate + '%' : "%")})
+                    .where(mediaSearch.mediaDateFrom == null && mediaSearch.mediaDateTill == null ? "true" : "media.date between :dateFrom and :dateTill", {
+                        dateFrom: (mediaSearch.mediaDateFrom ? mediaSearch.mediaDateFrom + ' 00:00:00' : "0000-00-00 00:00:00"),
+                        dateTill: (mediaSearch.mediaDateTill ? mediaSearch.mediaDateTill + ' 23:59:59' : "9999-12-31 23:59:59")
+                    })
                     .andWhere("media.name like :name", {name: (mediaSearch.mediaName ? '%' + mediaSearch.mediaName + '%' : "%")})
                     .andWhere(mediaSearch.mediaContent != null ? "media.empty = :empty" : "media.empty = media.empty", {empty: mediaSearch.mediaContent})
                     .andWhere(mediaSearch.picture != null ? "media.image = :image" : "media.image = media.image", {image: mediaSearch.picture})
                     .andWhere(mediaSearch.lastReviewer != null ? "lastUserId.username like :username" : "media.media_id = media.media_id", mediaSearch.lastReviewer ? {username: '%' + mediaSearch.lastReviewer + '%'} : {})
-                    .andWhere(mediaSearch.lastDate != null ? "media.lastDate like :lastDate" : "media.media_id = media.media_id", {lastDate: '%' + mediaSearch.lastDate + '%'})
+                    .andWhere(mediaSearch.lastDateFrom == null && mediaSearch.lastDateTill == null ? "true" : "media.lastDate between :lastFrom and :lastTill", {
+                        lastFrom: (mediaSearch.lastDateFrom ? mediaSearch.lastDateFrom + ' 00:00:00' : "0000-00-00 00:00:00"),
+                        lastTill: (mediaSearch.lastDateTill ? mediaSearch.lastDateTill + ' 23:59:59' : "9999-12-31 23:59:59")
+                    })
+                    .andWhere(mediaSearch.interesting != null ? "media.interesting = :interesting" : "media.interesting = media.interesting", {interesting: mediaSearch.interesting})
                     .orderBy("media.mediaId", "ASC")
                     .getMany()
                     .then((medias: Media[]) => {
@@ -250,12 +257,17 @@ module.exports = class ProjektService {
                     .leftJoinAndSelect("mediaId.mediaProjects", "mediaProjects")
                     .leftJoinAndSelect("mediaProjects.projectId", "projectId")
                     .where("mediaTag.tagId.tagId in (:tags_id)", {tags_id: filtriArr})
-                    .andWhere("mediaId.date like :date", {date: (mediaSearch.mediaDate ? mediaSearch.mediaDate + '%' : "%")})
-                    .andWhere("mediaId.name like :name", {name: (mediaSearch.mediaName ? '%' + mediaSearch.mediaName + '%' : "%")})
+                    .andWhere(mediaSearch.mediaDateFrom == null && mediaSearch.mediaDateTill == null ? "true" : "media.date between :dateFrom and :dateTill", {
+                        dateFrom: (mediaSearch.mediaDateFrom ? mediaSearch.mediaDateFrom + ' 00:00:00' : "0000-00-00 00:00:00"),
+                        dateTill: (mediaSearch.mediaDateTill ? mediaSearch.mediaDateTill + ' 23:59:59' : "9999-12-31 23:59:59")
+                    })                    .andWhere("mediaId.name like :name", {name: (mediaSearch.mediaName ? '%' + mediaSearch.mediaName + '%' : "%")})
                     .andWhere(mediaSearch.mediaContent != null ? "mediaId.empty = :empty" : "mediaId.empty = mediaId.empty", {empty: mediaSearch.mediaContent})
                     .andWhere(mediaSearch.picture != null ? "mediaId.image = :image" : "mediaId.image = mediaId.image", {image: mediaSearch.picture})
                     .andWhere(mediaSearch.lastReviewer != null ? "lastUserId.username like :username" : "mediaId.media_id = mediaId.media_id", mediaSearch.lastReviewer ? {username: '%' + mediaSearch.lastReviewer + '%'} : {})
-                    .andWhere(mediaSearch.lastDate != null ? "mediaId.lastDate like :lastDate" : "mediaId.media_id = mediaId.media_id", {lastDate: '%' + mediaSearch.lastDate + '%'})
+                    .andWhere(mediaSearch.lastDateFrom == null && mediaSearch.lastDateTill == null ? "true" :"media.lastDate between :lastFrom and :lastTill", {
+                        lastFrom: (mediaSearch.lastDateFrom ? mediaSearch.lastDateFrom + ' 00:00:00' : "0000-00-00 00:00:00"),
+                        lastTill: (mediaSearch.lastDateTill ? mediaSearch.lastDateTill + ' 23:59:59' : "9999-12-31 23:59:59")
+                    })
                     .orderBy("mediaId.mediaId", "ASC")
                     .getMany()
                     .then((mediaTags: MediaTag[]) => {
@@ -400,9 +412,23 @@ module.exports = class ProjektService {
         //filtriranje po drugih nastavitvah
         return new Promise<SfiltriraniPodatki>((resolve, reject) => {
 
-            medias.sort(function (a, b) {
-                return a[nastavitve.filtrirajPo] - b[nastavitve.filtrirajPo];
-            });
+            if (nastavitve.filtrirajPo === "lastUserId") {
+                medias.sort(function (a, b) {
+                    if (a[nastavitve.filtrirajPo] && b[nastavitve.filtrirajPo]) {
+                        return a[nastavitve.filtrirajPo]["username"] - b[nastavitve.filtrirajPo]["username"];
+                    } else if (a[nastavitve.filtrirajPo] && !b[nastavitve.filtrirajPo]) {
+                        return -1;
+                    } else if (!a[nastavitve.filtrirajPo] && b[nastavitve.filtrirajPo]) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                });
+            } else {
+                medias.sort(function (a, b) {
+                    return a[nastavitve.filtrirajPo] - b[nastavitve.filtrirajPo];
+                });
+            }
 
             if (nastavitve.filtrirajAsc === false) {
                 medias.reverse();

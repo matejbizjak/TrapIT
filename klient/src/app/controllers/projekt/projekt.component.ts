@@ -47,7 +47,7 @@ export class ProjektComponent implements OnInit {
     height = 90;
 
     // nastavitve tabele
-    projectsHide: boolean = false;
+    projectsHide = false;
 
     loading = false;
 
@@ -58,9 +58,12 @@ export class ProjektComponent implements OnInit {
     empty: boolean = null;
     media: boolean = null;
     searchName: string = null;
-    searchDate: Date = null;
+    searchDateFrom: Date = null;
+    searchDateTill: Date = null;
     lastUser: string = null;
-    lastDate: Date = null;
+    lastDateFrom: Date = null;
+    lastDateTill: Date = null;
+    interesting: boolean = null;
 
     mediaSearch: MediaSearch;
 
@@ -146,9 +149,12 @@ export class ProjektComponent implements OnInit {
         this.empty = null;
         this.media = null;
         this.searchName = null;
-        this.searchDate = null;
+        this.searchDateFrom = null;
+        this.searchDateTill = null;
         this.lastUser = null;
-        this.lastDate = null;
+        this.lastDateFrom = null;
+        this.lastDateTill = null;
+        this.interesting = null;
         this.filtriraniProjektiControl.reset();
 
         this.mozniTagi.forEach(element => {
@@ -161,12 +167,15 @@ export class ProjektComponent implements OnInit {
     filtrirajPrikaz(resetSort): Promise<Media[]> {
         this.mediaSearch = new MediaSearch(
             this.specificMediaId,
-            this.searchDate,
+            this.searchDateFrom,
+            this.searchDateTill,
             this.searchName,
             this.empty,
             this.media,
             this.lastUser,
-            this.lastDate
+            this.lastDateFrom,
+            this.lastDateTill,
+            this.interesting
         );
         return new Promise<Media[]>((resolve, reject) => {
             this.loading = true;
@@ -196,6 +205,7 @@ export class ProjektComponent implements OnInit {
     }
 
     sortClick(e) {
+        console.log("Test " + e.target.attributes.value.value);
         const clickedName = e.target.attributes.value.value;
         if (this.filtriranjeNastavitve.filtrirajPo === clickedName) {
             this.filtriranjeNastavitve.filtrirajAsc = !this.filtriranjeNastavitve.filtrirajAsc;
@@ -370,5 +380,13 @@ export class ProjektComponent implements OnInit {
                 }
             }
         }
+    }
+
+    public readableDate(date: string) {
+        date = date.split("T")[0];
+        const day = date.split("-")[2];
+        const month = date.split("-")[1];
+        const year = date.split("-")[0];
+        return day + "." + month + "." + year;
     }
 }

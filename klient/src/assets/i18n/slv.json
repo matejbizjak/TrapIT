@@ -9,7 +9,7 @@
       "NASTAVITVE": "Nastavitve",
       "UPORABNIKI": "Uporabniki",
       "PROJEKT": "Projekti",
-      "HOMEPAGEEDITOR": "Urejevalnik besedila informacijske strani",
+      "HOMEPAGEEDITOR": "Urejevalnik besedilaaaaaaaaaaaa",
       "UVOZSLIK": "Uvoz medije"
     }
   },
@@ -115,7 +115,7 @@
     "ZNACKE": "Značke",
     "DATUM": "Datum",
     "IME": "Ime",
-    "VSEBINA_SLIKE": "Vsebina slike",
+    "VSEBINA_SLIKE": "Vsebina",
     "TIP_MEDIJA": "Tip medija",
     "ZADNJI_PREGLEDOVALEC": "Zadnji označevalec",
     "DATUM_ZADNJEGA_PREGLEDA": "Datum zadnjega označevanja",
@@ -125,7 +125,13 @@
     "VIDEO": "Video",
     "OZNACEVANJE": "Oznacevanje",
     "PONASTAVI": "Ponastavi",
-    "FILTERPROJECTS": "Filtriranje po projektih"
+    "FILTERPROJECTS": "Filtriranje po projektih",
+    "ZANIMIVO": "Zanimivo",
+    "DA": "Da",
+    "NE": "Ne",
+    "NEDOLOCENO": "Nedoločeno",
+    "OD": "Od",
+    "DO": "Do"
   },
   "ISKANJE": {
     "LOKACIJA": "Lokacija",
@@ -137,7 +143,9 @@
     "slika": "Slika",
     "video": "Video",
     "true": "Da",
-    "false": "Ne"
+    "false": "Ne",
+    "PREGLEDOVALEC": "Zadnji pregledovalec",
+    "PREG_DATUM": "Zadnji datum"
   },
   "OZNACEVANJE": {
     "NAZAJ": "Nazaj",
