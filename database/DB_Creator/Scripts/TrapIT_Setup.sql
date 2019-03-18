@@ -26,8 +26,8 @@ CREATE TABLE IF NOT EXISTS `trapit`.`role` (
   `role_id` INT NOT NULL AUTO_INCREMENT,
   `role` VARCHAR(32) NOT NULL,
   PRIMARY KEY (`role_id`),
-  UNIQUE INDEX `role_UNIQUE` (`role` ASC) VISIBLE,
-  UNIQUE INDEX `role_id_UNIQUE` (`role_id` ASC) VISIBLE)
+  UNIQUE INDEX `role_UNIQUE` (`role` ASC),
+  UNIQUE INDEX `role_id_UNIQUE` (`role_id` ASC))
 ENGINE = InnoDB;
 
 
@@ -38,14 +38,14 @@ DROP TABLE IF EXISTS `trapit`.`user` ;
 
 CREATE TABLE IF NOT EXISTS `trapit`.`user` (
   `user_id` INT NOT NULL AUTO_INCREMENT,
-  `username` VARCHAR(256) NOT NULL,
+  `username` VARCHAR(200) NOT NULL,
   `password` VARCHAR(64) NOT NULL,
   `role_id` INT NOT NULL,
   `active` TINYINT NOT NULL DEFAULT 1,
   PRIMARY KEY (`user_id`),
-  UNIQUE INDEX `username_UNIQUE` (`username` ASC) VISIBLE,
-  INDEX `user_role_fk_idx` (`role_id` ASC) VISIBLE,
-  UNIQUE INDEX `user_id_UNIQUE` (`user_id` ASC) VISIBLE,
+  UNIQUE INDEX `username_UNIQUE` (`username` ASC),
+  INDEX `user_role_fk_idx` (`role_id` ASC),
+  UNIQUE INDEX `user_id_UNIQUE` (`user_id` ASC),
   CONSTRAINT `user_role_fk`
     FOREIGN KEY (`role_id`)
     REFERENCES `trapit`.`role` (`role_id`)
@@ -63,8 +63,8 @@ CREATE TABLE IF NOT EXISTS `trapit`.`site` (
   `site_id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(64) NOT NULL,
   PRIMARY KEY (`site_id`),
-  UNIQUE INDEX `site_id_UNIQUE` (`site_id` ASC) VISIBLE,
-  UNIQUE INDEX `name_UNIQUE` (`name` ASC) VISIBLE)
+  UNIQUE INDEX `site_id_UNIQUE` (`site_id` ASC),
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC))
 ENGINE = InnoDB;
 
 
@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS `trapit`.`path` (
   `path_id` INT NOT NULL AUTO_INCREMENT,
   `value` VARCHAR(128) NOT NULL,
   PRIMARY KEY (`path_id`),
-  UNIQUE INDEX `path_id_UNIQUE` (`path_id` ASC) VISIBLE)
+  UNIQUE INDEX `path_id_UNIQUE` (`path_id` ASC))
 ENGINE = InnoDB;
 
 
@@ -99,10 +99,10 @@ CREATE TABLE IF NOT EXISTS `trapit`.`media` (
   `last_user_id` INT NULL DEFAULT NULL,
   `last_date` DATETIME NULL DEFAULT NULL,
   PRIMARY KEY (`media_id`),
-  UNIQUE INDEX `media_id_UNIQUE` (`media_id` ASC) VISIBLE,
-  INDEX `media_site_fk_idx` (`site_id` ASC) VISIBLE,
-  INDEX `media_path_fk_idx` (`path_id` ASC) VISIBLE,
-  INDEX `fk_media_user1_idx` (`last_user_id` ASC) VISIBLE,
+  UNIQUE INDEX `media_id_UNIQUE` (`media_id` ASC),
+  INDEX `media_site_fk_idx` (`site_id` ASC),
+  INDEX `media_path_fk_idx` (`path_id` ASC),
+  INDEX `fk_media_user1_idx` (`last_user_id` ASC),
   CONSTRAINT `media_site_fk`
     FOREIGN KEY (`site_id`)
     REFERENCES `trapit`.`site` (`site_id`)
@@ -135,8 +135,8 @@ CREATE TABLE IF NOT EXISTS `trapit`.`tag` (
   `slo_name` VARCHAR(64) NULL,
   `eng_name` VARCHAR(64) NULL,
   PRIMARY KEY (`tag_id`),
-  UNIQUE INDEX `tag_id_UNIQUE` (`tag_id` ASC) VISIBLE,
-  INDEX `tag_parent_fk_idx` (`parent_tag_id` ASC) VISIBLE,
+  UNIQUE INDEX `tag_id_UNIQUE` (`tag_id` ASC),
+  INDEX `tag_parent_fk_idx` (`parent_tag_id` ASC),
   CONSTRAINT `fk_tag_parent`
     FOREIGN KEY (`parent_tag_id`)
     REFERENCES `trapit`.`tag` (`tag_id`)
@@ -156,11 +156,11 @@ CREATE TABLE IF NOT EXISTS `trapit`.`media_tag` (
   `tag_id` INT NOT NULL,
   `media_id` INT NOT NULL,
   `input_value` INT NULL DEFAULT NULL,
-  UNIQUE INDEX `media_tag_id_UNIQUE` (`media_tag_id` ASC) VISIBLE,
+  UNIQUE INDEX `media_tag_id_UNIQUE` (`media_tag_id` ASC) ,
   PRIMARY KEY (`media_tag_id`),
-  INDEX `media_tag_user_fk_idx` (`user_id` ASC) VISIBLE,
-  INDEX `media_tag_tag_fk_idx` (`tag_id` ASC) VISIBLE,
-  INDEX `media_tag_media_fk_idx` (`media_id` ASC) VISIBLE,
+  INDEX `media_tag_user_fk_idx` (`user_id` ASC),
+  INDEX `media_tag_tag_fk_idx` (`tag_id` ASC),
+  INDEX `media_tag_media_fk_idx` (`media_id` ASC),
   CONSTRAINT `media_tag_user_fk`
     FOREIGN KEY (`user_id`)
     REFERENCES `trapit`.`user` (`user_id`)
@@ -188,8 +188,8 @@ CREATE TABLE IF NOT EXISTS `trapit`.`project` (
   `project_id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(64) NOT NULL,
   PRIMARY KEY (`project_id`),
-  UNIQUE INDEX `project_id_UNIQUE` (`project_id` ASC) VISIBLE,
-  UNIQUE INDEX `name_UNIQUE` (`name` ASC) VISIBLE)
+  UNIQUE INDEX `project_id_UNIQUE` (`project_id` ASC),
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC))
 ENGINE = InnoDB;
 
 
@@ -204,9 +204,9 @@ CREATE TABLE IF NOT EXISTS `trapit`.`project_tag` (
   `tag_id` INT NOT NULL,
   `active` TINYINT NOT NULL,
   PRIMARY KEY (`project_tag_id`),
-  INDEX `project_tag_tag_fk_idx` (`tag_id` ASC) VISIBLE,
-  UNIQUE INDEX `project_tag_id_UNIQUE` (`project_tag_id` ASC) VISIBLE,
-  INDEX `project_tag_project_fk` (`project_id` ASC) VISIBLE,
+  INDEX `project_tag_tag_fk_idx` (`tag_id` ASC),
+  UNIQUE INDEX `project_tag_id_UNIQUE` (`project_tag_id` ASC),
+  INDEX `project_tag_project_fk` (`project_id` ASC),
   CONSTRAINT `project_tag_project_fk`
     FOREIGN KEY (`project_id`)
     REFERENCES `trapit`.`project` (`project_id`)
@@ -230,9 +230,9 @@ CREATE TABLE IF NOT EXISTS `trapit`.`media_project` (
   `media_id` INT NOT NULL,
   `project_id` INT NOT NULL,
   PRIMARY KEY (`media_project_id`),
-  UNIQUE INDEX `media_project_id_UNIQUE` (`media_project_id` ASC) VISIBLE,
-  INDEX `fk_media_project_media1_idx` (`media_id` ASC) VISIBLE,
-  INDEX `fk_media_project_project1_idx` (`project_id` ASC) VISIBLE,
+  UNIQUE INDEX `media_project_id_UNIQUE` (`media_project_id` ASC),
+  INDEX `fk_media_project_media1_idx` (`media_id` ASC),
+  INDEX `fk_media_project_project1_idx` (`project_id` ASC),
   CONSTRAINT `fk_media_project_media1`
     FOREIGN KEY (`media_id`)
     REFERENCES `trapit`.`media` (`media_id`)
