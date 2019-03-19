@@ -7,4 +7,4 @@ Povezava do navodil za namestitev je [tukaj][df1].
 
 
 
-[df1]: <https://github.com/matejbizjak/TrapIT/wiki/Wiki>
+[df1]: <https://github.com/matejbizjak/TrapIT/wiki>
